@@ -1,0 +1,111 @@
+using Timetracker.Domain.CustomerAggregate;
+using Timetracker.Domain.CustomerAggregate.Entities;
+
+namespace Timetracker.Domain.Tests.CustomerAggregate;
+
+public class CustomerTest
+{
+    [Fact]
+    public void CreateCustomer_WithValidData_ShouldCreate()
+    { 
+        // Act
+        var expectedCustomer = Customer.Create("name", "customerNr");
+
+        // Assert
+        Assert.NotNull(expectedCustomer);
+        Assert.NotNull(expectedCustomer.Id);
+        Assert.Equal("name", expectedCustomer.Name);
+        Assert.Equal("customerNr", expectedCustomer.CustomerNr);
+    }
+
+    [Fact]
+    public void AddActivity_WithValidData_ShouldContainCorrectActivity()
+    {
+        // Arrange
+        var customer = Customer.Create("name", "customerNr");
+        
+        // Act
+        customer.AddActivity(Activity.Create("activityName"));
+
+        // Assert
+        Assert.NotNull(customer);
+        Assert.NotEmpty(customer.Activities);
+        Assert.Collection(customer.Activities, a => Assert.Equal("activityName", a.Name));
+    }
+
+    [Fact]
+    public void AddActivity_WithInvalidData_ShouldThrowException()
+    {
+        // Arrange
+        var customer = Customer.Create("name", "customerNr");
+
+        // Act
+        Assert.Throws<ArgumentNullException>(() => customer.AddActivity(null));
+    }
+
+    [Fact]
+    public void UpdateName_WithValidData_ShouldUpdateCorrectly()
+    {
+        // Arrange
+        var customer = Customer.Create("name", "customerNr");
+
+        // Act
+        customer.UpdateName("newName");
+
+        // Assert
+        Assert.Equal("newName", customer.Name);
+    }
+    
+    [Theory]
+    [InlineData(null, typeof(ArgumentNullException))]
+    [InlineData("", typeof(ArgumentException))]
+    public void UpdateName_WithInvalidData_ShouldThrowException(string? name, Type exceptionType)
+    {
+        // Arrange
+        var customer = Customer.Create("name", "customerNr");
+
+        // Act
+        Assert.Throws(exceptionType,() => customer.UpdateName(name));
+    }
+    
+    [Fact]
+    public void UpdateCustomerNr_WithValidData_ShouldUpdateCorrectly()
+    {
+        // Arrange
+        var customer = Customer.Create("name", "customerNr");
+
+        // Act
+        customer.UpdateCustomerNr("newCustomerNr");
+
+        // Assert
+        Assert.Equal("newCustomerNr", customer.CustomerNr);
+    }
+    
+    [Theory]
+    [InlineData(null, typeof(ArgumentNullException))]
+    [InlineData("", typeof(ArgumentException))]
+    public void UpdateCustomerNr_WithInvalidData_ShouldThrowException(string? customerNr, Type exceptionType)
+    {
+        // Arrange
+        var customer = Customer.Create("name", "customerNr");
+
+        // Act
+        Assert.Throws(exceptionType,() => customer.UpdateCustomerNr(customerNr));
+    }
+
+    [Fact]
+    public void UpdateActivityName_WithValidData_ShouldUpdateCorrectly()
+    {
+        // Arrange
+        var customer = Customer.Create("name", "customerNr");
+        customer.AddActivity(Activity.Create("activityName"));
+        var activityId = customer.Activities.FirstOrDefault();
+        
+        // Act
+        customer.UpdateActivityName(activityId!.Id, "newActivityName");
+        
+        // Assert
+        Assert.NotEmpty(customer.Activities);
+        Assert.Collection(customer.Activities, a => Assert.Equal("newActivityName", a.Name));
+    }
+}
