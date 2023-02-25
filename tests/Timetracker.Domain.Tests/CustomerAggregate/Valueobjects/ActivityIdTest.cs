@@ -1,3 +1,7 @@
+// <copyright file="ActivityIdTest.cs" company="gustafwingren">
+// Copyright (c) gustafwingren. All rights reserved.
+// </copyright>
+
 using Timetracker.Domain.CustomerAggregate.ValueObjects;
 
 namespace Timetracker.Domain.Tests.CustomerAggregate.Valueobjects;

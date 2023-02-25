@@ -1,8 +1,11 @@
-using System.Diagnostics;
+// <copyright file="TimesheetTest.cs" company="gustafwingren">
+// Copyright (c) gustafwingren. All rights reserved.
+// </copyright>
+
 using Timetracker.Domain.CustomerAggregate;
+using Timetracker.Domain.CustomerAggregate.Entities;
 using Timetracker.Domain.TimesheetAggregate;
 using Timetracker.Domain.TimesheetAggregate.Entities;
-using Activity = Timetracker.Domain.CustomerAggregate.Entities.Activity;
 
 namespace Timetracker.Domain.Tests.TimesheetAggregate;
 
@@ -33,7 +36,9 @@ public class TimesheetTest
 
         // Assert
         Assert.NotEmpty(timesheet.Items);
-        Assert.Collection(timesheet.Items, i => 
+        Assert.Collection(
+            timesheet.Items,
+            i =>
             {
                 Assert.Null(i.Name);
                 Assert.Equal(customer.Id, i.CustomerId);
@@ -64,9 +69,9 @@ public class TimesheetTest
         var timesheet = CreateDefaultTimesheet(customer);
 
         // Assert/Act
-        Assert.Throws<ArgumentNullException>(() => timesheet.AddItem(null));
+        Assert.Throws<ArgumentNullException>(() => timesheet.AddItem(null!));
     }
-    
+
     [Fact]
     public void RemoveItem_WithValidData_ShouldAddItemToTimesheet()
     {
@@ -80,7 +85,7 @@ public class TimesheetTest
         // Assert
         Assert.Single(timesheet.Items);
     }
-    
+
     [Fact]
     public void RemoveItem_WithInValidData_ShouldThrow()
     {
@@ -89,7 +94,7 @@ public class TimesheetTest
         var timesheet = CreateDefaultTimesheet(customer);
 
         // Assert/Act
-        Assert.Throws<ArgumentNullException>(() => timesheet.RemoveItem(null));
+        Assert.Throws<ArgumentNullException>(() => timesheet.RemoveItem(null!));
     }
 
     [Fact]
@@ -98,25 +103,26 @@ public class TimesheetTest
         // Arrange
         var customer = CreateDefaultCustomer();
         var timesheet = CreateDefaultTimesheet(customer);
-        
+
         // Act
-        timesheet.UpdateTimesheetItemActivity(timesheet.Items.Last().Id, customer.Activities.First().Id);
-        
+        timesheet.UpdateTimesheetItemActivity(
+            timesheet.Items.Last().Id,
+            customer.Activities.First().Id);
+
         // Assert
         Assert.NotEmpty(timesheet.Items);
-        Assert.Collection(timesheet.Items, i =>
-        {
-            Assert.Equal(customer.Activities.First().Id, i.ActivityId);
-        }, i =>
-        {
-            Assert.Equal(customer.Activities.First().Id, i.ActivityId);
-        });
+        Assert.Collection(
+            timesheet.Items,
+            i => { Assert.Equal(customer.Activities.First().Id, i.ActivityId); },
+            i => { Assert.Equal(customer.Activities.First().Id, i.ActivityId); });
     }
 
     [Theory]
     [InlineData(true, false, typeof(ArgumentNullException))]
     [InlineData(false, true, typeof(ArgumentNullException))]
-    public void UpdateTimesheetItemActivity_WithInvalidData_ShouldThrow(bool useOkTimeSheetItemId, bool useOkActivityId,
+    public void UpdateTimesheetItemActivity_WithInvalidData_ShouldThrow(
+        bool useOkTimeSheetItemId,
+        bool useOkActivityId,
         Type exceptionType)
     {
         // Arrange
@@ -124,10 +130,14 @@ public class TimesheetTest
         var timesheet = CreateDefaultTimesheet(customer);
 
         // Assert/Act
-        Assert.Throws(exceptionType, () =>
-        {
-            timesheet.UpdateTimesheetItemActivity(useOkTimeSheetItemId ? timesheet.Items.First().Id : null, useOkActivityId ? customer.Activities.First().Id : null);
-        });
+        Assert.Throws(
+            exceptionType,
+            () =>
+            {
+                timesheet.UpdateTimesheetItemActivity(
+                    (useOkTimeSheetItemId ? timesheet.Items.First().Id : null)!,
+                    (useOkActivityId ? customer.Activities.First().Id : null)!);
+            });
     }
 
     [Fact]
@@ -141,20 +151,19 @@ public class TimesheetTest
         timesheet.UpdateTimesheetItemName(timesheet.Items.Last().Id, "newTimesheetItemName");
 
         // Assert
-        Assert.Collection(timesheet.Items, i =>
-        {
-            Assert.Null(i.Name);
-        }, i =>
-        {
-            Assert.Equal("newTimesheetItemName", i.Name);
-        });
+        Assert.Collection(
+            timesheet.Items,
+            i => { Assert.Null(i.Name); },
+            i => { Assert.Equal("newTimesheetItemName", i.Name); });
     }
-    
+
     [Theory]
     [InlineData(false, null, typeof(ArgumentNullException))]
     [InlineData(true, null, typeof(ArgumentNullException))]
     [InlineData(true, "", typeof(ArgumentException))]
-    public void UpdateTimesheetItemName_WithInvalidData_ShouldThrow(bool useOkTimeSheetItemId, string? newName,
+    public void UpdateTimesheetItemName_WithInvalidData_ShouldThrow(
+        bool useOkTimeSheetItemId,
+        string? newName,
         Type exceptionType)
     {
         // Arrange
@@ -162,12 +171,16 @@ public class TimesheetTest
         var timesheet = CreateDefaultTimesheet(customer);
 
         // Assert/Act
-        Assert.Throws(exceptionType, () =>
-        {
-            timesheet.UpdateTimesheetItemName(useOkTimeSheetItemId ? timesheet.Items.First().Id : null, newName);
-        });
+        Assert.Throws(
+            exceptionType,
+            () =>
+            {
+                timesheet.UpdateTimesheetItemName(
+                    (useOkTimeSheetItemId ? timesheet.Items.First().Id : null)!,
+                    newName!);
+            });
     }
-    
+
     [Fact]
     public void UpdateTimesheetItemTimeAmount_WithValidData_ShouldUpdateTimesheetItemCorrectly()
     {
@@ -179,40 +192,43 @@ public class TimesheetTest
         timesheet.UpdateTimesheetItemTimeAmount(timesheet.Items.Last().Id, TimeSpan.FromHours(5));
 
         // Assert
-        Assert.Collection(timesheet.Items, i =>
-        {
-            Assert.Equal(TimeSpan.FromHours(2), i.TimeAmount);
-        }, i =>
-        {
-            Assert.Equal(TimeSpan.FromHours(5), i.TimeAmount);
-        });
+        Assert.Collection(
+            timesheet.Items,
+            i => { Assert.Equal(TimeSpan.FromHours(2), i.TimeAmount); },
+            i => { Assert.Equal(TimeSpan.FromHours(5), i.TimeAmount); });
     }
-    
+
     [Fact]
     public void UpdateTimesheetItemTimeAmount_WithInvalidData_ShouldThrow()
     {
         // Arrange
         var customer = CreateDefaultCustomer();
         var timesheet = CreateDefaultTimesheet(customer);
-        
+
         // Assert/Act
-        Assert.Throws<ArgumentNullException>(() => timesheet.UpdateTimesheetItemTimeAmount(null, TimeSpan.FromHours(5)));
+        Assert.Throws<ArgumentNullException>(
+            () => timesheet.UpdateTimesheetItemTimeAmount(null!, TimeSpan.FromHours(5)));
     }
-    
+
     private static Customer CreateDefaultCustomer()
     {
         var customer = Customer.Create("name", "customerNr");
         customer.AddActivity(Activity.Create("activityName"));
-        
+
         return customer;
     }
 
     private static Timesheet CreateDefaultTimesheet(Customer customer)
     {
         var timesheet = Timesheet.Create(new DateTime(2023, 02, 23));
-        timesheet.AddItem(TimesheetItem.Create(customer, TimeSpan.FromHours(2), customer.Activities.FirstOrDefault()));
-        timesheet.AddItem(TimesheetItem.Create(customer, TimeSpan.FromHours(1), null, "timesheetItemName"));
-        
+        timesheet.AddItem(
+            TimesheetItem.Create(
+                customer,
+                TimeSpan.FromHours(2),
+                customer.Activities.FirstOrDefault()));
+        timesheet.AddItem(
+            TimesheetItem.Create(customer, TimeSpan.FromHours(1), null, "timesheetItemName"));
+
         return timesheet;
     }
 }

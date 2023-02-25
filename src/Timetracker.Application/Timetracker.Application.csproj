@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net7.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Timetracker.Domain\Timetracker.Domain.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Customer\Commands\AddActivity" />
+      <Folder Include="Customer\Commands\RemoveActivity" />
+      <Folder Include="Customer\Commands\UpdateActivity" />
+      <Folder Include="Customer\Commands\UpdateCustomer" />
+      <Folder Include="Timesheet\Commands" />
+      <Folder Include="Timesheet\Queries" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.5.1" />
+      <PackageReference Include="MediatR" Version="12.0.1" />
+    </ItemGroup>
+
+</Project>

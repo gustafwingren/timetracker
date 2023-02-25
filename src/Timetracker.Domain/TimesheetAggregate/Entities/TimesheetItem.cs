@@ -1,3 +1,7 @@
+// <copyright file="TimesheetItem.cs" company="gustafwingren">
+// Copyright (c) gustafwingren. All rights reserved.
+// </copyright>
+
 using Ardalis.GuardClauses;
 using Timetracker.Domain.CustomerAggregate;
 using Timetracker.Domain.CustomerAggregate.Entities;
@@ -9,25 +13,41 @@ namespace Timetracker.Domain.TimesheetAggregate.Entities;
 
 public sealed class TimesheetItem : BaseEntity<TimesheetItemId>
 {
-    public CustomerId CustomerId { get; }
-    
-    public ActivityId? ActivityId { get; private set; }
-    
-    public string? Name { get; private set; }
-    
-    public TimeSpan TimeAmount { get; private set; }
-
-    private TimesheetItem(TimesheetItemId id, CustomerId customerId, TimeSpan timeAmount, ActivityId? activityId = null, string? name = null)
+    private TimesheetItem(
+        TimesheetItemId id,
+        CustomerId customerId,
+        TimeSpan timeAmount,
+        ActivityId? activityId = null,
+        string? name = null)
+        : base(id)
     {
-        Id = id;
         CustomerId = customerId;
         TimeAmount = timeAmount;
         ActivityId = activityId;
         Name = name;
     }
 
-    public static TimesheetItem Create(Customer customer, TimeSpan timeAmount, Activity? activity = null, string? name = null) =>
-        new(TimesheetItemId.CreateUniqueId(), customer.Id, timeAmount, activity?.Id, name);
+    public CustomerId CustomerId { get; }
+
+    public ActivityId? ActivityId { get; private set; }
+
+    public string? Name { get; private set; }
+
+    public TimeSpan TimeAmount { get; private set; }
+
+    public static TimesheetItem Create(
+        Customer customer,
+        TimeSpan timeAmount,
+        Activity? activity = null,
+        string? name = null)
+    {
+        return new TimesheetItem(
+            TimesheetItemId.CreateUniqueId(),
+            customer.Id,
+            timeAmount,
+            activity?.Id,
+            name);
+    }
 
     public void UpdateActivity(ActivityId activityId)
     {

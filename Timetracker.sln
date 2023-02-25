@@ -5,12 +5,18 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Timetracker.Domain", "src\Timetracker.Domain\Timetracker.Domain.csproj", "{8C1AA116-1BBF-432F-9224-FB674D013FFD}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionFiles", "SolutionFiles", "{1ABF7C16-DFFE-44D8-B678-EA1B9BF17D25}"
+	ProjectSection(SolutionItems) = preProject
+		Directory.Build.props = Directory.Build.props
+		stylecop.ruleset = stylecop.ruleset
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Timetracker.Shared", "src\Timetracker.Shared\Timetracker.Shared.csproj", "{CAEB40C9-4C43-48B0-86A7-BE5311697FB2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Timetracker.Domain.Tests", "tests\Timetracker.Domain.Tests\Timetracker.Domain.Tests.csproj", "{4B030946-6342-4F77-8836-AD918C529C58}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{719BAB07-F33C-4FB8-972A-ED69FB79BA9B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Timetracker.Application", "src\Timetracker.Application\Timetracker.Application.csproj", "{5280F754-5C7F-4EB0-BC3C-F4DF495E3EA5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -34,6 +40,10 @@ Global
 		{4B030946-6342-4F77-8836-AD918C529C58}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4B030946-6342-4F77-8836-AD918C529C58}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4B030946-6342-4F77-8836-AD918C529C58}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5280F754-5C7F-4EB0-BC3C-F4DF495E3EA5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5280F754-5C7F-4EB0-BC3C-F4DF495E3EA5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5280F754-5C7F-4EB0-BC3C-F4DF495E3EA5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5280F754-5C7F-4EB0-BC3C-F4DF495E3EA5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{4B030946-6342-4F77-8836-AD918C529C58} = {719BAB07-F33C-4FB8-972A-ED69FB79BA9B}

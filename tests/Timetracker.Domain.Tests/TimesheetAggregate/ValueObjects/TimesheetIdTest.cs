@@ -1,3 +1,7 @@
+// <copyright file="TimesheetIdTest.cs" company="gustafwingren">
+// Copyright (c) gustafwingren. All rights reserved.
+// </copyright>
+
 using Timetracker.Domain.TimesheetAggregate.ValueObjects;
 
 namespace Timetracker.Domain.Tests.TimesheetAggregate.ValueObjects;

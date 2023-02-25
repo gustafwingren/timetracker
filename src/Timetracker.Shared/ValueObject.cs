@@ -1,10 +1,52 @@
-using System.Text;
+// <copyright file="ValueObject.cs" company="gustafwingren">
+// Copyright (c) gustafwingren. All rights reserved.
+// </copyright>
 
 namespace Timetracker.Shared;
 
 public abstract class ValueObject : IComparable, IComparable<ValueObject>
 {
-    private int? _cachedHashCode;
+    private int? CachedHashCode { get; set; }
+
+    public int CompareTo(object? obj)
+    {
+        if (obj == null)
+        {
+            return 1;
+        }
+
+        var thisType = GetUnproxiedType(this);
+        var otherType = GetUnproxiedType(obj);
+
+        if (thisType != otherType)
+        {
+            return string.Compare(
+                thisType.ToString(),
+                otherType.ToString(),
+                StringComparison.Ordinal);
+        }
+
+        var other = (ValueObject)obj;
+
+        var components = GetEqualityComponents().ToArray();
+        var otherComponents = other.GetEqualityComponents().ToArray();
+
+        for (var i = 0; i < components.Length; i++)
+        {
+            var comparison = CompareComponents(components[i], otherComponents[i]);
+            if (comparison != 0)
+            {
+                return comparison;
+            }
+        }
+
+        return 0;
+    }
+
+    public int CompareTo(ValueObject? other)
+    {
+        return CompareTo(other as object);
+    }
 
     protected abstract IEnumerable<object> GetEqualityComponents();
 
@@ -27,56 +69,21 @@ public abstract class ValueObject : IComparable, IComparable<ValueObject>
 
     public override int GetHashCode()
     {
-        if (!_cachedHashCode.HasValue)
+        if (!CachedHashCode.HasValue)
         {
-            _cachedHashCode = GetEqualityComponents()
-                .Aggregate(1, (current, obj) =>
-                {
-                    unchecked
+            CachedHashCode = GetEqualityComponents()
+                .Aggregate(
+                    1,
+                    (current, obj) =>
                     {
-                        return current * 23 + (obj?.GetHashCode() ?? 0);
-                    }
-                });
+                        unchecked
+                        {
+                            return (current * 23) + obj.GetHashCode();
+                        }
+                    });
         }
 
-        return _cachedHashCode.Value;
-    }
-
-    public int CompareTo(object? obj)
-    {
-        if (obj == null)
-        {
-            return 1;
-        }
-
-        var thisType = GetUnproxiedType(this);
-        var otherType = GetUnproxiedType(obj);
-
-        if (thisType != otherType)
-        {
-            return string.Compare(thisType.ToString(), otherType.ToString(), StringComparison.Ordinal);
-        }
-
-        var other = (ValueObject)obj;
-
-        var components = GetEqualityComponents().ToArray();
-        var otherComponents = other.GetEqualityComponents().ToArray();
-
-        for (int i = 0; i < components.Length; i++)
-        {
-            var comparison = CompareComponents(components[i], otherComponents[i]);
-            if (comparison != 0)
-            {
-                return comparison;
-            }
-        }
-
-        return 0;
-    }
-
-    public int CompareTo(ValueObject? other)
-    {
-        return CompareTo(other as object);
+        return CachedHashCode.Value;
     }
 
     private static int CompareComponents(object? object1, object? object2)
@@ -104,7 +111,7 @@ public abstract class ValueObject : IComparable, IComparable<ValueObject>
         return object1.Equals(object2) ? 0 : -1;
     }
 
-    public static bool operator ==(ValueObject a, ValueObject b)
+    public static bool operator ==(ValueObject? a, ValueObject? b)
     {
         if (a is null && b is null)
         {
@@ -118,7 +125,7 @@ public abstract class ValueObject : IComparable, IComparable<ValueObject>
 
         return a.Equals(b);
     }
-    
+
     public static bool operator !=(ValueObject a, ValueObject b)
     {
         return !(a == b);

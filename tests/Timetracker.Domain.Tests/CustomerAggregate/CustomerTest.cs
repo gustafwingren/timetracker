@@ -1,3 +1,7 @@
+// <copyright file="CustomerTest.cs" company="gustafwingren">
+// Copyright (c) gustafwingren. All rights reserved.
+// </copyright>
+
 using Timetracker.Domain.CustomerAggregate;
 using Timetracker.Domain.CustomerAggregate.Entities;
 
@@ -7,7 +11,7 @@ public class CustomerTest
 {
     [Fact]
     public void CreateCustomer_WithValidData_ShouldCreate()
-    { 
+    {
         // Act
         var expectedCustomer = Customer.Create("name", "customerNr");
 
@@ -23,7 +27,7 @@ public class CustomerTest
     {
         // Arrange
         var customer = Customer.Create("name", "customerNr");
-        
+
         // Act
         customer.AddActivity(Activity.Create("activityName"));
 
@@ -40,7 +44,7 @@ public class CustomerTest
         var customer = Customer.Create("name", "customerNr");
 
         // Act
-        Assert.Throws<ArgumentNullException>(() => customer.AddActivity(null));
+        Assert.Throws<ArgumentNullException>(() => customer.AddActivity(null!));
     }
 
     [Fact]
@@ -55,7 +59,7 @@ public class CustomerTest
         // Assert
         Assert.Equal("newName", customer.Name);
     }
-    
+
     [Theory]
     [InlineData(null, typeof(ArgumentNullException))]
     [InlineData("", typeof(ArgumentException))]
@@ -65,9 +69,9 @@ public class CustomerTest
         var customer = Customer.Create("name", "customerNr");
 
         // Act
-        Assert.Throws(exceptionType,() => customer.UpdateName(name));
+        Assert.Throws(exceptionType, () => customer.UpdateName(name!));
     }
-    
+
     [Fact]
     public void UpdateCustomerNr_WithValidData_ShouldUpdateCorrectly()
     {
@@ -80,17 +84,19 @@ public class CustomerTest
         // Assert
         Assert.Equal("newCustomerNr", customer.CustomerNr);
     }
-    
+
     [Theory]
     [InlineData(null, typeof(ArgumentNullException))]
     [InlineData("", typeof(ArgumentException))]
-    public void UpdateCustomerNr_WithInvalidData_ShouldThrowException(string? customerNr, Type exceptionType)
+    public void UpdateCustomerNr_WithInvalidData_ShouldThrowException(
+        string? customerNr,
+        Type exceptionType)
     {
         // Arrange
         var customer = Customer.Create("name", "customerNr");
 
         // Act
-        Assert.Throws(exceptionType,() => customer.UpdateCustomerNr(customerNr));
+        Assert.Throws(exceptionType, () => customer.UpdateCustomerNr(customerNr!));
     }
 
     [Fact]
@@ -100,10 +106,10 @@ public class CustomerTest
         var customer = Customer.Create("name", "customerNr");
         customer.AddActivity(Activity.Create("activityName"));
         var activityId = customer.Activities.FirstOrDefault();
-        
+
         // Act
         customer.UpdateActivityName(activityId!.Id, "newActivityName");
-        
+
         // Assert
         Assert.NotEmpty(customer.Activities);
         Assert.Collection(customer.Activities, a => Assert.Equal("newActivityName", a.Name));
