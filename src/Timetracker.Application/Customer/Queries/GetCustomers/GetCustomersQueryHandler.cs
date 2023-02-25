@@ -28,11 +28,10 @@ public sealed class GetCustomersQueryHandler : IRequestHandler<GetCustomersQuery
             cancellationToken);
 
         return customers.Select(
-            c => new CustomerDto
-            {
-                Id = c.Id.Value,
-                Name = c.Name,
-                Number = c.CustomerNr,
-            }).ToList();
+            c => new CustomerDto(
+                c.Id.Value,
+                c.Name,
+                c.CustomerNr,
+                c.Activities.Select(x => new ActivityDto(x.Id.Value, x.Name)).ToList())).ToList();
     }
 }

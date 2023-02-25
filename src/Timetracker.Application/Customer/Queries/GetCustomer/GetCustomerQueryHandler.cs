@@ -33,11 +33,10 @@ public class GetCustomerQueryHandler : IRequestHandler<GetCustomerQuery, Custome
             // TODO: Return error
         }
 
-        return new CustomerDto
-        {
-            Id = customer.Id.Value,
-            Name = customer.Name,
-            Number = customer.CustomerNr,
-        };
+        return new CustomerDto(
+            customer.Id.Value,
+            customer.Name,
+            customer.CustomerNr,
+            customer.Activities.Select(x => new ActivityDto(x.Id.Value, x.Name)).ToList());
     }
 }
