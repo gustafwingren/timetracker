@@ -1,10 +1,55 @@
+using FastEndpoints;
+using FastEndpoints.Swagger;
 using Hellang.Middleware.ProblemDetails;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Identity.Web;
+using NSwag;
+using NSwag.AspNetCore;
 using Timetracker.Application;
 using Timetracker.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
+var config = builder.Configuration;
 
-// Add services to the container.
+builder.Services.AddFastEndpoints();
+builder.Services.AddSwaggerDoc(
+    s =>
+    {
+        s.AddAuth(
+            "OAuth2",
+            new OpenApiSecurityScheme
+            {
+                Type = OpenApiSecuritySchemeType.OAuth2,
+                Flows = new OpenApiOAuthFlows
+                {
+                    Implicit = new OpenApiOAuthFlow
+                    {
+                        AuthorizationUrl =
+                            $"https://login.microsoftonline.com/{config.GetSection("AzureAd").GetValue<string>("TenantId")}/oauth2/v2.0/authorize",
+                        TokenUrl =
+                            $"https://login.microsoftonline.com/{config.GetSection("AzureAd").GetValue<string>("TenantId")}/oauth2/v2.0/token",
+                        Scopes = new Dictionary<string, string>
+                        {
+                            {
+                                "api://a7c9672e-5357-494a-ba92-88f28cda925e/Read",
+                                "Reads the Weather forecast"
+                            },
+                        },
+                    },
+                },
+            });
+    },
+    addJWTBearerAuth: false);
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddMicrosoftIdentityWebApi(
+        options =>
+        {
+            builder.Configuration.Bind("AzureAd", options);
+            options.Events = new JwtBearerEvents();
+        },
+        options => { builder.Configuration.Bind("AzureAd", options); });
+
 builder.Services.AddApplicationServices();
 builder.Services.AddInfrastructureServices();
 builder.Services.AddProblemDetails(
@@ -12,26 +57,28 @@ builder.Services.AddProblemDetails(
     {
         options.IncludeExceptionDetails = (_, _) => !builder.Environment.IsProduction();
     });
-builder.Services.AddControllers();
-
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
-
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
 
 app.UseProblemDetails();
 app.UseHttpsRedirection();
 
+// app.UseCors();
+app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapControllers();
+app.UseFastEndpoints();
+app.UseOpenApi();
+app.UseSwaggerUi3(
+    s =>
+    {
+        s.ConfigureDefaults();
+        s.OAuth2Client = new OAuth2ClientSettings
+        {
+            AppName = "OAuth2",
+            ClientId = config.GetSection("AzureAd").GetValue<string>("ClientId"),
+            ClientSecret = config.GetSection("AzureAd").GetValue<string>("ClientSecret"),
+        };
+    });
 
 app.Run();

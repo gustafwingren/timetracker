@@ -7,9 +7,11 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Ardalis.ApiEndpoints" Version="4.0.1" />
-        <PackageReference Include="Hellang.Middleware.ProblemDetails" Version="6.5.1" />
+        <PackageReference Include="FastEndpoints" Version="5.8.0" />
+        <PackageReference Include="FastEndpoints.Swagger" Version="5.8.0" />
+        <PackageReference Include="Hellang.Middleware.ProblemDetails" Version="6.5.0" />
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.2" />
+        <PackageReference Include="Microsoft.Identity.Web" Version="2.5.0" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
     </ItemGroup>
 

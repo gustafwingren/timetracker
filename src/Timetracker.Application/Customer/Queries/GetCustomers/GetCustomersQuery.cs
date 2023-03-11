@@ -3,7 +3,7 @@
 // </copyright>
 
 using MediatR;
-using Timetracker.Shared.Dtos;
+using Timetracker.Shared.Contracts.Responses;
 
 namespace Timetracker.Application.Customer.Queries.GetCustomers;
 

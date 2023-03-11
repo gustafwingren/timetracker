@@ -4,7 +4,7 @@
 
 using MediatR;
 using Timetracker.Application.Common.Interfaces;
-using Timetracker.Shared.Dtos;
+using Timetracker.Shared.Contracts.Responses;
 
 namespace Timetracker.Application.Customer.Commands.CreateCustomer;
 

@@ -29,6 +29,8 @@ public sealed class Customer : BaseEntity<CustomerId>, IAggregateRoot
 
     public static Customer Create(string name, string customerNr)
     {
+        Guard.Against.NullOrEmpty(name);
+        Guard.Against.NullOrEmpty(customerNr);
         return new Customer(CustomerId.CreateUniqueId(), name, customerNr);
     }
 
@@ -36,6 +38,12 @@ public sealed class Customer : BaseEntity<CustomerId>, IAggregateRoot
     {
         Guard.Against.Null(activity, nameof(activity));
         _activities.Add(activity);
+    }
+
+    public void RemoveActivity(Activity activity)
+    {
+        Guard.Against.Null(activity);
+        _activities.Remove(activity);
     }
 
     public void UpdateName(string newName)

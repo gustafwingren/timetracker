@@ -2,6 +2,6 @@
 // Copyright (c) gustafwingren. All rights reserved.
 // </copyright>
 
-namespace Timetracker.Shared.Dtos;
+namespace Timetracker.Shared.Contracts.Responses;
 
 public record CustomerDto(Guid Id, string Name, string Number, List<ActivityDto> Activities);

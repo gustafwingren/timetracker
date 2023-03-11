@@ -446,3 +446,4 @@ Desktop.ini
 .DS_Store
 
 local.settings.json
+src/Timetracker.Api/appsettings.Development.json

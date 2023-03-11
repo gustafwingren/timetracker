@@ -11,10 +11,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Customer\Commands\AddActivity" />
-      <Folder Include="Customer\Commands\RemoveActivity" />
-      <Folder Include="Customer\Commands\UpdateActivity" />
-      <Folder Include="Customer\Commands\UpdateCustomer" />
       <Folder Include="Timesheet\Commands" />
       <Folder Include="Timesheet\Queries" />
     </ItemGroup>

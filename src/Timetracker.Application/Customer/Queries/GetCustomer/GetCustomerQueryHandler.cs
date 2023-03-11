@@ -4,7 +4,7 @@
 
 using MediatR;
 using Timetracker.Domain.CustomerAggregate.Specifications;
-using Timetracker.Shared.Dtos;
+using Timetracker.Shared.Contracts.Responses;
 using Timetracker.Shared.Interfaces;
 
 namespace Timetracker.Application.Customer.Queries.GetCustomer;

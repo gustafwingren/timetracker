@@ -45,7 +45,7 @@ public class ListRepository<T> : IReadRepository<T>, IRepository<T>
         ISpecification<T> specification,
         CancellationToken cancellationToken = new())
     {
-        throw new NotImplementedException();
+        return Task.FromResult(ApplySpecification(specification).FirstOrDefault());
     }
 
     public Task<TResult?> FirstOrDefaultAsync<TResult>(
@@ -59,14 +59,14 @@ public class ListRepository<T> : IReadRepository<T>, IRepository<T>
         ISingleResultSpecification<T> specification,
         CancellationToken cancellationToken = new())
     {
-        throw new NotImplementedException();
+        return Task.FromResult(ApplySpecification(specification).SingleOrDefault());
     }
 
     public Task<TResult?> SingleOrDefaultAsync<TResult>(
         ISingleResultSpecification<T, TResult> specification,
         CancellationToken cancellationToken = new())
     {
-        throw new NotImplementedException();
+        return Task.FromResult(ApplySpecification(specification).SingleOrDefault());
     }
 
     public Task<List<T>> ListAsync(CancellationToken cancellationToken = new())
@@ -131,7 +131,9 @@ public class ListRepository<T> : IReadRepository<T>, IRepository<T>
 
     public Task UpdateAsync(T entity, CancellationToken cancellationToken = new())
     {
-        throw new NotImplementedException();
+        _items.Remove(entity);
+        _items.Add(entity);
+        return Task.FromResult(entity);
     }
 
     public Task UpdateRangeAsync(
