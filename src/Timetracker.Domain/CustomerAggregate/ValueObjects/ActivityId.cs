@@ -2,26 +2,11 @@
 // Copyright (c) gustafwingren. All rights reserved.
 // </copyright>
 
-using Timetracker.Shared;
+using StronglyTypedIds;
 
 namespace Timetracker.Domain.CustomerAggregate.ValueObjects;
 
-public sealed class ActivityId : ValueObject
+[StronglyTypedId(StronglyTypedIdBackingType.Guid, StronglyTypedIdConverter.SystemTextJson)]
+public partial struct ActivityId
 {
-    private ActivityId(Guid value)
-    {
-        Value = value;
-    }
-
-    public Guid Value { get; }
-
-    public static ActivityId CreateUniqueId()
-    {
-        return new ActivityId(Guid.NewGuid());
-    }
-
-    protected override IEnumerable<object> GetEqualityComponents()
-    {
-        yield return Value;
-    }
 }

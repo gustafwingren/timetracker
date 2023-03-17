@@ -22,11 +22,13 @@ public sealed class CreateActivityEndpoint : Endpoint<CreateActivityRequest, Cus
         _sender = sender;
     }
 
-    public override async Task HandleAsync(CreateActivityRequest req, CancellationToken ct)
+    public override async Task<CustomerDto> ExecuteAsync(
+        CreateActivityRequest req,
+        CancellationToken ct)
     {
         var command = new AddActivityCommand(req.Id, req.Name);
         var customer = await _sender.Send(command, ct);
 
-        await SendOkAsync(customer, ct);
+        return customer;
     }
 }

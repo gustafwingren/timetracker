@@ -2,26 +2,12 @@
 // Copyright (c) gustafwingren. All rights reserved.
 // </copyright>
 
-using Timetracker.Shared;
+using StronglyTypedIds;
+using Timetracker.Shared.Interfaces;
 
 namespace Timetracker.Domain.TimesheetAggregate.ValueObjects;
 
-public sealed class TimesheetId : ValueObject
+[StronglyTypedId(StronglyTypedIdBackingType.Guid, StronglyTypedIdConverter.SystemTextJson)]
+public partial struct TimesheetId : StronglyTypedId
 {
-    private TimesheetId(Guid guid)
-    {
-        Value = guid;
-    }
-
-    public Guid Value { get; }
-
-    public static TimesheetId CreateUniqueId()
-    {
-        return new TimesheetId(Guid.NewGuid());
-    }
-
-    protected override IEnumerable<object> GetEqualityComponents()
-    {
-        yield return Value;
-    }
 }

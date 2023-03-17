@@ -10,7 +10,8 @@ namespace Timetracker.Application.Customer.Commands.CreateCustomer;
 
 public sealed class CreateCustomerCommandValidation : AbstractValidator<CreateCustomerCommand>
 {
-    private readonly IReadRepository<Domain.CustomerAggregate.Customer> _customerRepository;
+    private readonly IReadRepository<Domain.CustomerAggregate.Customer>
+        _customerRepository;
 
     public CreateCustomerCommandValidation(
         IReadRepository<Domain.CustomerAggregate.Customer> customerRepository)

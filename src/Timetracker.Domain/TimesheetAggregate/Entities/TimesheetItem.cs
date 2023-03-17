@@ -42,7 +42,7 @@ public sealed class TimesheetItem : BaseEntity<TimesheetItemId>
         string? name = null)
     {
         return new TimesheetItem(
-            TimesheetItemId.CreateUniqueId(),
+            TimesheetItemId.New(),
             customer.Id,
             timeAmount,
             activity?.Id,

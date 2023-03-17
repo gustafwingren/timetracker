@@ -1,6 +1,6 @@
 using Ardalis.GuardClauses;
 using MediatR;
-using Timetracker.Domain.CustomerAggregate.Specifications;
+using Timetracker.Domain.CustomerAggregate.ValueObjects;
 using Timetracker.Shared.Contracts.Responses;
 using Timetracker.Shared.Interfaces;
 
@@ -10,7 +10,8 @@ public class UpdateCustomerCommandHandler : IRequestHandler<UpdateCustomerComman
 {
     private readonly IRepository<Domain.CustomerAggregate.Customer> _repository;
 
-    public UpdateCustomerCommandHandler(IRepository<Domain.CustomerAggregate.Customer> repository)
+    public UpdateCustomerCommandHandler(
+        IRepository<Domain.CustomerAggregate.Customer> repository)
     {
         _repository = repository;
     }
@@ -19,8 +20,8 @@ public class UpdateCustomerCommandHandler : IRequestHandler<UpdateCustomerComman
         UpdateCustomerCommand request,
         CancellationToken cancellationToken)
     {
-        var customer = await _repository.FirstOrDefaultAsync(
-            new GetByIdSpecification(request.Id),
+        var customer = await _repository.GetByIdAsync(
+            new CustomerId(request.Id),
             cancellationToken);
 
         if (customer == null)

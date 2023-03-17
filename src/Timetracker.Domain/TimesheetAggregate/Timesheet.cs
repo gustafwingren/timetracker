@@ -27,7 +27,7 @@ public sealed class Timesheet : BaseEntity<TimesheetId>, IAggregateRoot
 
     public static Timesheet Create(DateTime date)
     {
-        return new Timesheet(TimesheetId.CreateUniqueId(), date);
+        return new Timesheet(TimesheetId.New(), date);
     }
 
     public void AddItem(TimesheetItem item)
@@ -44,8 +44,14 @@ public sealed class Timesheet : BaseEntity<TimesheetId>, IAggregateRoot
 
     public void UpdateTimesheetItemActivity(TimesheetItemId timesheetItemId, ActivityId activityId)
     {
-        Guard.Against.Null(timesheetItemId, nameof(timesheetItemId));
-        Guard.Against.Null(activityId, nameof(activityId));
+        Guard.Against.NullOrInvalidInput(
+            timesheetItemId,
+            nameof(timesheetItemId),
+            id => id != TimesheetItemId.Empty);
+        Guard.Against.NullOrInvalidInput(
+            activityId,
+            nameof(activityId),
+            id => id != ActivityId.Empty);
 
         var timesheetItem = _items.FirstOrDefault(t => t.Id == timesheetItemId);
 
@@ -64,7 +70,10 @@ public sealed class Timesheet : BaseEntity<TimesheetId>, IAggregateRoot
 
     public void UpdateTimesheetItemTimeAmount(TimesheetItemId timesheetItemId, TimeSpan timeAmount)
     {
-        Guard.Against.Null(timesheetItemId, nameof(timesheetItemId));
+        Guard.Against.NullOrInvalidInput(
+            timesheetItemId,
+            nameof(timesheetItemId),
+            id => id != TimesheetItemId.Empty);
         Guard.Against.Null(timeAmount, nameof(timeAmount));
 
         var timesheetItem = _items.FirstOrDefault(t => t.Id == timesheetItemId);

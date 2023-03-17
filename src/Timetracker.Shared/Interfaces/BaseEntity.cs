@@ -5,6 +5,7 @@
 namespace Timetracker.Shared;
 
 public abstract class BaseEntity<T>
+    where T : notnull
 {
     protected BaseEntity(T id)
     {

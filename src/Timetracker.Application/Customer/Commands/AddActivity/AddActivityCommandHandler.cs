@@ -5,17 +5,18 @@
 using Ardalis.GuardClauses;
 using MediatR;
 using Timetracker.Domain.CustomerAggregate.Entities;
-using Timetracker.Domain.CustomerAggregate.Specifications;
+using Timetracker.Domain.CustomerAggregate.ValueObjects;
 using Timetracker.Shared.Contracts.Responses;
 using Timetracker.Shared.Interfaces;
 
 namespace Timetracker.Application.Customer.Commands.AddActivity;
 
-public sealed class AddActivityHandler : IRequestHandler<AddActivityCommand, CustomerDto>
+public sealed class AddActivityCommandHandler : IRequestHandler<AddActivityCommand, CustomerDto>
 {
     private readonly IRepository<Domain.CustomerAggregate.Customer> _repository;
 
-    public AddActivityHandler(IRepository<Domain.CustomerAggregate.Customer> repository)
+    public AddActivityCommandHandler(
+        IRepository<Domain.CustomerAggregate.Customer> repository)
     {
         _repository = repository;
     }
@@ -24,8 +25,8 @@ public sealed class AddActivityHandler : IRequestHandler<AddActivityCommand, Cus
         AddActivityCommand request,
         CancellationToken cancellationToken)
     {
-        var customer = await _repository.FirstOrDefaultAsync(
-            new GetByIdSpecification(request.Id),
+        var customer = await _repository.GetByIdAsync(
+            new CustomerId(request.Id),
             cancellationToken);
 
         Guard.Against.Null(customer);

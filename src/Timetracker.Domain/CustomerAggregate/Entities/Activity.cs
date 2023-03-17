@@ -20,7 +20,7 @@ public sealed class Activity : BaseEntity<ActivityId>
 
     public static Activity Create(string name)
     {
-        return new Activity(ActivityId.CreateUniqueId(), name);
+        return new Activity(ActivityId.New(), name);
     }
 
     public void UpdateName(string name)

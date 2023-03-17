@@ -12,8 +12,8 @@ public class ActivityIdTest
     public void CreateUniqueId_ShouldBeUnique()
     {
         // Act
-        var activityId1 = ActivityId.CreateUniqueId();
-        var activityId2 = ActivityId.CreateUniqueId();
+        var activityId1 = ActivityId.New();
+        var activityId2 = ActivityId.New();
 
         // Assert
         Assert.NotEqual(activityId1, activityId2);

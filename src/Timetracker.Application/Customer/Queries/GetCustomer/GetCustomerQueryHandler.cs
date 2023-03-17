@@ -11,7 +11,8 @@ namespace Timetracker.Application.Customer.Queries.GetCustomer;
 
 public class GetCustomerQueryHandler : IRequestHandler<GetCustomerQuery, CustomerDto>
 {
-    private readonly IReadRepository<Domain.CustomerAggregate.Customer> _customerRepository;
+    private readonly IReadRepository<Domain.CustomerAggregate.Customer>
+        _customerRepository;
 
     public GetCustomerQueryHandler(
         IReadRepository<Domain.CustomerAggregate.Customer> customerRepository)

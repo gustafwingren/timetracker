@@ -12,8 +12,8 @@ public class CustomerIdTest
     public void CreateUniqueId_ShouldBeUnique()
     {
         // Act
-        var customerId1 = CustomerId.CreateUniqueId();
-        var customerId2 = CustomerId.CreateUniqueId();
+        var customerId1 = CustomerId.New();
+        var customerId2 = CustomerId.New();
 
         // Assert
         Assert.NotEqual(customerId1, customerId2);

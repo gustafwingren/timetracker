@@ -12,8 +12,8 @@ public class TimesheetItemIdTest
     public void CreateUniqueId_ShouldBeUnique()
     {
         // Act
-        var timesheetItemId1 = TimesheetItemId.CreateUniqueId();
-        var timesheetItemId2 = TimesheetItemId.CreateUniqueId();
+        var timesheetItemId1 = TimesheetItemId.New();
+        var timesheetItemId2 = TimesheetItemId.New();
 
         // Assert
         Assert.NotEqual(timesheetItemId1, timesheetItemId2);

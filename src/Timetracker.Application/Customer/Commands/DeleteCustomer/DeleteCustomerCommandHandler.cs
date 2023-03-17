@@ -3,7 +3,7 @@
 // </copyright>
 
 using MediatR;
-using Timetracker.Domain.CustomerAggregate.Specifications;
+using Timetracker.Domain.CustomerAggregate.ValueObjects;
 using Timetracker.Shared.Interfaces;
 
 namespace Timetracker.Application.Customer.Commands.DeleteCustomer;
@@ -12,15 +12,16 @@ public class DeleteCustomerCommandHandler : IRequestHandler<DeleteCustomerComman
 {
     private readonly IRepository<Domain.CustomerAggregate.Customer> _repository;
 
-    public DeleteCustomerCommandHandler(IRepository<Domain.CustomerAggregate.Customer> repository)
+    public DeleteCustomerCommandHandler(
+        IRepository<Domain.CustomerAggregate.Customer> repository)
     {
         _repository = repository;
     }
 
     public async Task Handle(DeleteCustomerCommand request, CancellationToken cancellationToken)
     {
-        var customer = await _repository.FirstOrDefaultAsync(
-            new GetByIdSpecification(request.Id),
+        var customer = await _repository.GetByIdAsync(
+            new CustomerId(request.Id),
             cancellationToken);
 
         if (customer == null)

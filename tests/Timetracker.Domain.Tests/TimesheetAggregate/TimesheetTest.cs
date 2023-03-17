@@ -4,8 +4,10 @@
 
 using Timetracker.Domain.CustomerAggregate;
 using Timetracker.Domain.CustomerAggregate.Entities;
+using Timetracker.Domain.CustomerAggregate.ValueObjects;
 using Timetracker.Domain.TimesheetAggregate;
 using Timetracker.Domain.TimesheetAggregate.Entities;
+using Timetracker.Domain.TimesheetAggregate.ValueObjects;
 
 namespace Timetracker.Domain.Tests.TimesheetAggregate;
 
@@ -118,8 +120,8 @@ public class TimesheetTest
     }
 
     [Theory]
-    [InlineData(true, false, typeof(ArgumentNullException))]
-    [InlineData(false, true, typeof(ArgumentNullException))]
+    [InlineData(true, false, typeof(ArgumentException))]
+    [InlineData(false, true, typeof(ArgumentException))]
     public void UpdateTimesheetItemActivity_WithInvalidData_ShouldThrow(
         bool useOkTimeSheetItemId,
         bool useOkActivityId,
@@ -135,8 +137,8 @@ public class TimesheetTest
             () =>
             {
                 timesheet.UpdateTimesheetItemActivity(
-                    (useOkTimeSheetItemId ? timesheet.Items.First().Id : null)!,
-                    (useOkActivityId ? customer.Activities.First().Id : null)!);
+                    (useOkTimeSheetItemId ? timesheet.Items.First().Id : TimesheetItemId.Empty)!,
+                    (useOkActivityId ? customer.Activities.First().Id : ActivityId.Empty)!);
             });
     }
 
@@ -176,7 +178,7 @@ public class TimesheetTest
             () =>
             {
                 timesheet.UpdateTimesheetItemName(
-                    (useOkTimeSheetItemId ? timesheet.Items.First().Id : null)!,
+                    (useOkTimeSheetItemId ? timesheet.Items.First().Id : TimesheetItemId.Empty)!,
                     newName!);
             });
     }
@@ -206,8 +208,10 @@ public class TimesheetTest
         var timesheet = CreateDefaultTimesheet(customer);
 
         // Assert/Act
-        Assert.Throws<ArgumentNullException>(
-            () => timesheet.UpdateTimesheetItemTimeAmount(null!, TimeSpan.FromHours(5)));
+        Assert.Throws<ArgumentException>(
+            () => timesheet.UpdateTimesheetItemTimeAmount(
+                TimesheetItemId.Empty,
+                TimeSpan.FromHours(5)));
     }
 
     private static Customer CreateDefaultCustomer()

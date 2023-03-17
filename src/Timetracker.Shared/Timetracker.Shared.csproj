@@ -8,6 +8,7 @@
 
     <ItemGroup>
       <PackageReference Include="Ardalis.Specification" Version="6.1.0" />
+      <PackageReference Include="StronglyTypedId" Version="1.0.0-beta06" />
     </ItemGroup>
 
 </Project>

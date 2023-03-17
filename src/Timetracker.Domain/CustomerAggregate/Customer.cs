@@ -31,7 +31,7 @@ public sealed class Customer : BaseEntity<CustomerId>, IAggregateRoot
     {
         Guard.Against.NullOrEmpty(name);
         Guard.Against.NullOrEmpty(customerNr);
-        return new Customer(CustomerId.CreateUniqueId(), name, customerNr);
+        return new Customer(CustomerId.New(), name, customerNr);
     }
 
     public void AddActivity(Activity activity)
