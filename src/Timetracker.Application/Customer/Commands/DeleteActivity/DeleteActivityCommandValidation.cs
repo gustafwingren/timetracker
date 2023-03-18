@@ -4,6 +4,7 @@
 
 using FluentValidation;
 using Timetracker.Domain.CustomerAggregate.Specifications;
+using Timetracker.Domain.CustomerAggregate.ValueObjects;
 using Timetracker.Shared.Interfaces;
 
 namespace Timetracker.Application.Customer.Commands.DeleteActivity;
@@ -32,7 +33,7 @@ public sealed class DeleteActivityCommandValidation : AbstractValidator<DeleteAc
         Guid id,
         CancellationToken cancellationToken = default)
     {
-        return await _repository.AnyAsync(new GetByIdSpecification(id), cancellationToken);
+        return await _repository.GetByIdAsync(new CustomerId(id), cancellationToken) != null;
     }
 
     private async Task<bool> ActivityMustExist(

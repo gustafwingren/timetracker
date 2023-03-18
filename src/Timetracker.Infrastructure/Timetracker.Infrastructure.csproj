@@ -7,6 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Timetracker.Domain\Timetracker.Domain.csproj" />
       <ProjectReference Include="..\Timetracker.Shared\Timetracker.Shared.csproj" />
     </ItemGroup>
 
@@ -18,6 +19,12 @@
 
     <ItemGroup>
       <Folder Include="Repository" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Ardalis.Specification.EntityFrameworkCore" Version="6.1.0" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore.Cosmos" Version="7.0.4" />
+      <PackageReference Include="Microsoft.Extensions.Configuration" Version="7.0.0" />
     </ItemGroup>
 
 </Project>

@@ -14,6 +14,11 @@ public sealed class Customer : BaseEntity<CustomerId>, IAggregateRoot
 {
     private readonly List<Activity> _activities = new();
 
+    private Customer()
+        : base(CustomerId.New())
+    {
+    }
+
     private Customer(CustomerId customerId, string name, string customerNr)
         : base(customerId)
     {

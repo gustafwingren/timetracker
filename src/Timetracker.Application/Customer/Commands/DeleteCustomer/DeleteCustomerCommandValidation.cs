@@ -3,7 +3,7 @@
 // </copyright>
 
 using FluentValidation;
-using Timetracker.Domain.CustomerAggregate.Specifications;
+using Timetracker.Domain.CustomerAggregate.ValueObjects;
 using Timetracker.Shared.Interfaces;
 
 namespace Timetracker.Application.Customer.Commands.DeleteCustomer;
@@ -24,6 +24,6 @@ public class DeleteCustomerCommandValidation : AbstractValidator<DeleteCustomerC
 
     private async Task<bool> CustomerMustExist(Guid id, CancellationToken cancellationToken)
     {
-        return await _readRepository.AnyAsync(new GetByIdSpecification(id), cancellationToken);
+        return await _readRepository.GetByIdAsync(new CustomerId(id), cancellationToken) != null;
     }
 }

@@ -3,7 +3,7 @@
 // </copyright>
 
 using FluentValidation;
-using Timetracker.Domain.CustomerAggregate.Specifications;
+using Timetracker.Domain.CustomerAggregate.ValueObjects;
 using Timetracker.Shared.Interfaces;
 
 namespace Timetracker.Application.Customer.Commands.AddActivity;
@@ -29,6 +29,6 @@ public sealed class AddActivityCommandValidation : AbstractValidator<AddActivity
         Guid id,
         CancellationToken cancellationToken = default)
     {
-        return await _repository.AnyAsync(new GetByIdSpecification(id), cancellationToken);
+        return await _repository.GetByIdAsync(new CustomerId(id), cancellationToken) != null;
     }
 }

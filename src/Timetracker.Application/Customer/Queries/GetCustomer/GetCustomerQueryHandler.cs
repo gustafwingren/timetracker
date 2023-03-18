@@ -3,7 +3,7 @@
 // </copyright>
 
 using MediatR;
-using Timetracker.Domain.CustomerAggregate.Specifications;
+using Timetracker.Domain.CustomerAggregate.ValueObjects;
 using Timetracker.Shared.Contracts.Responses;
 using Timetracker.Shared.Interfaces;
 
@@ -25,8 +25,8 @@ public class GetCustomerQueryHandler : IRequestHandler<GetCustomerQuery, Custome
         CancellationToken cancellationToken)
     {
         var customer =
-            await _customerRepository.SingleOrDefaultAsync(
-                new GetByIdSpecification(request.Id),
+            await _customerRepository.GetByIdAsync(
+                new CustomerId(request.Id),
                 cancellationToken);
 
         if (customer == null)

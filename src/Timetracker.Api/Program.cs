@@ -51,7 +51,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         options => { builder.Configuration.Bind("AzureAd", options); });
 
 builder.Services.AddApplicationServices();
-builder.Services.AddInfrastructureServices();
+builder.Services.AddInfrastructureServices(config);
 builder.Services.AddProblemDetails(
     options =>
     {
