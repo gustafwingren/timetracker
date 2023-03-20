@@ -1,0 +1,12 @@
+<a
+  (click)="login()"
+  *ngIf="!loginDisplay"
+  class="text-sm font-semibold leading-6 text-gray-900"
+  >Login <span aria-hidden="true">&rarr;</span></a
+>
+<a
+  (click)="logout()"
+  *ngIf="loginDisplay"
+  class="text-sm font-semibold leading-6 text-gray-900"
+  >Logout <span aria-hidden="true">&rarr;</span></a
+>
