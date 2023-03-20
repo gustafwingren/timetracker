@@ -14,7 +14,6 @@ const routes: Routes = [
   },
   {
     path: 'customers',
-    component: CustomersComponent,
     canActivate: [MsalGuard],
     loadChildren: () =>
       import('./customers/customers.module').then(m => m.CustomersModule),

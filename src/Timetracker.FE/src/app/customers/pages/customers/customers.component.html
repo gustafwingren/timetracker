@@ -1,1 +1,52 @@
-<p>customers works!</p>
+<div
+  class="mx-auto mt-8 flex max-w-7xl flex-col rounded-lg border-[1px] border-gray-200 p-6 shadow-md lg:px-8">
+  <div class="flex flex-row items-end justify-between">
+    <div class="">
+      <h2 class="py-2 font-semibold">Customers</h2>
+      <p>A list of customers that you can track time for.</p>
+    </div>
+    <div class="">
+      <a
+        routerLink="./new"
+        class="rounded-md bg-indigo-600 p-2 text-sm font-semibold leading-6 text-white"
+        >Add customer</a
+      >
+    </div>
+  </div>
+  <div class="sm:-mx-6 lg:-mx-8">
+    <div class="inline-block min-w-full py-2 sm:px-6 lg:px-8">
+      <div class="overflow-x-auto">
+        <table class="min-w-full text-left text-sm font-light">
+          <thead class="border-b font-medium dark:border-neutral-500">
+            <tr>
+              <th scope="col" class="px-6 py-4">Name</th>
+              <th scope="col" class="px-6 py-4">Number</th>
+              <th scope="col" class="px-6 py-4">Activities</th>
+              <th scope="col" class="px-6 py-4">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              class="border-b dark:border-neutral-500"
+              *ngFor="let customer of customers">
+              <td class="whitespace-nowrap px-6 py-4 font-medium">
+                {{ customer.name }}
+              </td>
+              <td class="whitespace-nowrap px-6 py-4">{{ customer.number }}</td>
+              <td class="whitespace-nowrap px-6 py-4">
+                {{ customer.activities.length }}
+              </td>
+              <td class="whitespace-nowrap px-6 py-4">
+                <a
+                  [routerLink]="'./' + customer.id + '/edit'"
+                  class="rounded-md bg-indigo-600 p-2 text-sm font-semibold leading-6 text-white"
+                  >Edit</a
+                >
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

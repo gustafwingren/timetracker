@@ -1,10 +1,32 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { CustomerService } from '../../services/customer.service';
+import { CustomerDto } from '../../models/customer-dto';
 
 @Component({
   selector: 'app-customers',
   templateUrl: './customers.component.html',
-  styleUrls: ['./customers.component.scss']
+  styleUrls: ['./customers.component.scss'],
 })
-export class CustomersComponent {
+export class CustomersComponent implements OnInit {
+  customers: CustomerDto[] = [];
 
+  constructor(private customerService: CustomerService) {}
+
+  ngOnInit(): void {
+    this.getCustomers();
+  }
+
+  getCustomers(): void {
+    this.customerService
+      .getCustomers()
+      .subscribe((customers: CustomerDto[]) => {
+        this.customers = customers;
+      });
+  }
+
+  deleteCustomer(id: string): void {
+    this.customerService.deleteCustomer(id).subscribe(() => {
+      this.getCustomers();
+    });
+  }
 }
