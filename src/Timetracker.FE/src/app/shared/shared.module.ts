@@ -8,6 +8,9 @@ import { InputComponent } from './input/input.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { LabeledInputComponent } from './labeled-input/labeled-input.component';
 import { SpinnerIconComponent } from './spinner-icon/spinner-icon.component';
+import { ButtonComponent } from './button/button.component';
+import { ButtonPrimaryComponent } from './button-primary/button-primary.component';
+import { ButtonAccentComponent } from './button-accent/button-accent.component';
 
 @NgModule({
   declarations: [
@@ -17,6 +20,9 @@ import { SpinnerIconComponent } from './spinner-icon/spinner-icon.component';
     InputComponent,
     LabeledInputComponent,
     SpinnerIconComponent,
+    ButtonComponent,
+    ButtonPrimaryComponent,
+    ButtonAccentComponent,
   ],
   imports: [CommonModule, RouterLink, ReactiveFormsModule],
   exports: [
@@ -24,6 +30,9 @@ import { SpinnerIconComponent } from './spinner-icon/spinner-icon.component';
     InputComponent,
     LabeledInputComponent,
     SpinnerIconComponent,
+    ButtonComponent,
+    ButtonPrimaryComponent,
+    ButtonAccentComponent,
   ],
 })
 export class SharedModule {}
