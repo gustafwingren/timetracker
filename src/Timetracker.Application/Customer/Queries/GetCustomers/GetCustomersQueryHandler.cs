@@ -25,7 +25,7 @@ public sealed class GetCustomersQueryHandler : IRequestHandler<GetCustomersQuery
         CancellationToken cancellationToken)
     {
         var customers = await _customerRepository.ListAsync(
-            new GetCustomersSpecification(),
+            new GetCustomersSpecification(request.UserId),
             cancellationToken);
 
         return customers.Select(

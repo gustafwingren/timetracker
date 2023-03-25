@@ -3,6 +3,7 @@
 // </copyright>
 
 using Ardalis.GuardClauses;
+using Timetracker.Domain.Common.Ids;
 using Timetracker.Domain.CustomerAggregate.Entities;
 using Timetracker.Domain.CustomerAggregate.ValueObjects;
 using Timetracker.Shared;
@@ -19,11 +20,12 @@ public sealed class Customer : BaseEntity<CustomerId>, IAggregateRoot
     {
     }
 
-    private Customer(CustomerId customerId, string name, string customerNr)
+    private Customer(CustomerId customerId, string name, string customerNr, UserId userId)
         : base(customerId)
     {
         Name = name;
         CustomerNr = customerNr;
+        UserId = userId;
     }
 
     public IEnumerable<Activity> Activities => _activities.AsReadOnly();
@@ -32,11 +34,13 @@ public sealed class Customer : BaseEntity<CustomerId>, IAggregateRoot
 
     public string CustomerNr { get; private set; }
 
-    public static Customer Create(string name, string customerNr)
+    public UserId UserId { get; }
+
+    public static Customer Create(string name, string customerNr, UserId userId)
     {
         Guard.Against.NullOrEmpty(name);
         Guard.Against.NullOrEmpty(customerNr);
-        return new Customer(CustomerId.New(), name, customerNr);
+        return new Customer(CustomerId.New(), name, customerNr, userId);
     }
 
     public void AddActivity(Activity activity)

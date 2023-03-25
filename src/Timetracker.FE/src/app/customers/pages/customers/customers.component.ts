@@ -9,6 +9,7 @@ import { CustomerDto } from '../../models/customer-dto';
 })
 export class CustomersComponent implements OnInit {
   customers: CustomerDto[] = [];
+  loading = true;
 
   constructor(private customerService: CustomerService) {}
 
@@ -21,12 +22,7 @@ export class CustomersComponent implements OnInit {
       .getCustomers()
       .subscribe((customers: CustomerDto[]) => {
         this.customers = customers;
+        this.loading = false;
       });
-  }
-
-  deleteCustomer(id: string): void {
-    this.customerService.deleteCustomer(id).subscribe(() => {
-      this.getCustomers();
-    });
   }
 }

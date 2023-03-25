@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from '../../core/services/api.service';
-import { Observable } from 'rxjs';
+import { flatMap, forkJoin, map, mergeMap, Observable, of } from 'rxjs';
 import { CustomerDto } from '../models/customer-dto';
 import { protectedResources } from '../../auth-config';
 import { ActivityDetailComponent } from '../pages/activity-detail/activity-detail.component';
 import { ActivityDto } from '../models/activity-dto';
+import { CustomerCreateDto } from '../models/customer-create-dto';
+import { ActivityCreateDto } from '../models/activity-create-dto';
 
 @Injectable({
   providedIn: 'root',
@@ -20,6 +22,10 @@ export class CustomerService {
 
   getCustomer(id: string): Observable<CustomerDto> {
     return this.apiService.get(this.url + id);
+  }
+
+  addCustomer(customer: CustomerCreateDto): Observable<CustomerDto> {
+    return this.apiService.post<CustomerDto>(this.url, customer);
   }
 
   deleteCustomer(id: string): Observable<void> {

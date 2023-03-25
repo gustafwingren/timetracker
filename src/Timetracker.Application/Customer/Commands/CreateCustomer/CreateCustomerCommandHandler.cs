@@ -3,6 +3,7 @@
 // </copyright>
 
 using MediatR;
+using Timetracker.Domain.CustomerAggregate.Entities;
 using Timetracker.Shared.Contracts.Responses;
 using Timetracker.Shared.Interfaces;
 
@@ -23,13 +24,22 @@ public sealed class
         CreateCustomerCommand request,
         CancellationToken cancellationToken)
     {
-        var customer = Domain.CustomerAggregate.Customer.Create(request.Name, request.Number);
+        var customer = Domain.CustomerAggregate.Customer.Create(
+            request.Name,
+            request.Number,
+            request.UserId);
 
         var newCustomer = await _customerRepository.AddAsync(customer, cancellationToken);
 
         if (newCustomer == null)
         {
             throw new NullReferenceException();
+        }
+
+        if (request.Activities.Any())
+        {
+            foreach (var requestActivity in request.Activities)
+                newCustomer.AddActivity(Activity.Create(requestActivity.Name));
         }
 
         await _customerRepository.SaveChangesAsync(cancellationToken);

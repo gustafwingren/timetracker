@@ -1,5 +1,5 @@
 <div
-  class="mx-auto mt-8 flex max-w-7xl flex-col rounded-lg border-[1px] border-gray-200 p-6 shadow-md lg:px-8">
+  class="relative mx-auto mt-8 flex max-w-7xl flex-col rounded-lg border-[1px] border-gray-200 p-6 shadow-md lg:px-8">
   <div class="flex flex-row items-end justify-between">
     <div class="">
       <h2 class="py-2 font-semibold">Customers</h2>
@@ -12,6 +12,11 @@
         >Add customer</a
       >
     </div>
+  </div>
+  <div
+    *ngIf="loading"
+    class="absolute top-0 left-0 flex h-full w-full items-center justify-center rounded-lg bg-gray-400 bg-opacity-50 shadow-lg">
+    <app-spinner-icon></app-spinner-icon>
   </div>
   <div class="sm:-mx-6 lg:-mx-8">
     <div class="inline-block min-w-full py-2 sm:px-6 lg:px-8">
@@ -32,7 +37,9 @@
               <td class="whitespace-nowrap px-6 py-4 font-medium">
                 {{ customer.name }}
               </td>
-              <td class="whitespace-nowrap px-6 py-4">{{ customer.number }}</td>
+              <td class="whitespace-nowrap px-6 py-4">
+                {{ customer.number }}
+              </td>
               <td class="whitespace-nowrap px-6 py-4">
                 {{ customer.activities.length }}
               </td>

@@ -8,10 +8,24 @@ import { CustomerDetailComponent } from './pages/customer-detail/customer-detail
 import { CustomerNewComponent } from './pages/customer-new/customer-new.component';
 import { ActivityDetailComponent } from './pages/activity-detail/activity-detail.component';
 import { ActivityNewComponent } from './pages/activity-new/activity-new.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
-  declarations: [CustomersComponent, CustomerDetailComponent, CustomerNewComponent, ActivityDetailComponent, ActivityNewComponent],
+  declarations: [
+    CustomersComponent,
+    CustomerDetailComponent,
+    CustomerNewComponent,
+    ActivityDetailComponent,
+    ActivityNewComponent,
+  ],
   providers: [CustomerService],
-  imports: [CommonModule, RouterLink, CustomersRoutingModule],
+  imports: [
+    CommonModule,
+    RouterLink,
+    CustomersRoutingModule,
+    ReactiveFormsModule,
+    SharedModule,
+  ],
 })
 export class CustomersModule {}

@@ -14,6 +14,7 @@ public class CosmosRepository<T> : RepositoryBase<T>, IReadRepository<T>, IRepos
     public CosmosRepository(CosmosDbContext cosmosDbContext)
         : base(cosmosDbContext)
     {
+        cosmosDbContext.Database.EnsureCreated();
     }
 
     public CosmosRepository(
@@ -21,5 +22,6 @@ public class CosmosRepository<T> : RepositoryBase<T>, IReadRepository<T>, IRepos
         ISpecificationEvaluator specificationEvaluator)
         : base(CosmosDbContext, specificationEvaluator)
     {
+        CosmosDbContext.Database.EnsureCreated();
     }
 }

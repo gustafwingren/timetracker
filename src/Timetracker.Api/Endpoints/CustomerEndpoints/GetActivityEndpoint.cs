@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 using Timetracker.Application.Customer.Queries.GetActivity;
 using Timetracker.Domain.CustomerAggregate.ValueObjects;
 using Timetracker.Shared.Contracts.Requests;
-using Timetracker.Shared.Contracts.Responses;
+using ActivityDto = Timetracker.Shared.Contracts.Responses.ActivityDto;
 
 namespace Timetracker.Api.Endpoints.CustomerEndpoints;
 

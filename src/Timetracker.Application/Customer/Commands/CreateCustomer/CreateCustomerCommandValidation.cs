@@ -25,6 +25,16 @@ public sealed class CreateCustomerCommandValidation : AbstractValidator<CreateCu
             .NotNull().WithMessage("Number is required")
             .NotEmpty().WithMessage("Number is required")
             .MustAsync(BeUniqueNumber).WithMessage("The specified number already exists");
+
+        RuleForEach(req => req.Activities)
+            .ChildRules(
+                a => a.RuleFor(x => x.Name)
+                    .NotNull().WithMessage("ActivityName is required")
+                    .NotEmpty().WithMessage("ActivityName is required"));
+
+        RuleFor(req => req.UserId)
+            .NotNull().WithMessage("UserId is required")
+            .NotEmpty().WithMessage("UserId is required");
     }
 
     private async Task<bool> BeUniqueNumber(string number, CancellationToken cancellationToken)

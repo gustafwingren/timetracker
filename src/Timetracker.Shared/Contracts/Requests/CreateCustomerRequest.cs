@@ -4,4 +4,9 @@
 
 namespace Timetracker.Shared.Contracts.Requests;
 
-public record CreateCustomerRequest(string Name, string Number);
+public record CreateCustomerRequest(
+    string Name,
+    string Number,
+    List<ActivityDto> Activities);
+
+public record ActivityDto(string Name);

@@ -9,46 +9,78 @@
         <p class="mt-1 text-sm text-gray-600">
           Fill in the form to add a new customer.
         </p>
+        <a
+          *ngIf="newestCreatedCustomer"
+          [routerLink]="'/customers/' + newestCreatedCustomer.id + '/edit'"
+          class="mt-4 inline-flex items-center justify-center rounded-md bg-indigo-600 py-2 px-5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500">
+          View customer</a
+        >
       </div>
     </div>
     <div class="mt-5 md:col-span-2 md:mt-0">
-      <form action="#" method="POST">
+      <form [formGroup]="customerForm" (ngSubmit)="onSubmit()">
         <div class="overflow-hidden shadow sm:rounded-md">
           <div class="bg-white px-4 py-5 sm:p-6">
             <div class="grid grid-cols-6 gap-6">
-              <div class="col-span-6 sm:col-span-6">
-                <label
-                  for="name"
-                  class="block text-sm font-medium leading-6 text-gray-900"
-                  >Name</label
-                >
-                <input
-                  type="text"
-                  name="name"
-                  id="name"
-                  autocomplete="name"
-                  class="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
-              </div>
+              <app-labeled-input
+                name="Name"
+                [inputControl]="customerForm.controls.name"
+                [isRequired]="true"
+                class="col-span-6 mt-2"></app-labeled-input>
+              <app-labeled-input
+                name="Number"
+                [inputControl]="customerForm.controls.number"
+                [isRequired]="true"
+                class="col-span-6 mt-2"></app-labeled-input>
 
               <div class="col-span-6 sm:col-span-6">
-                <label
-                  for="number"
-                  class="block text-sm font-medium leading-6 text-gray-900"
-                  >Number</label
+                <label class="block text-sm font-medium leading-6 text-gray-900"
+                  >Activities</label
                 >
-                <input
-                  type="text"
-                  name="number"
-                  id="number"
-                  autocomplete="number"
-                  class="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
+                <ng-container formArrayName="activities">
+                  <ng-container
+                    *ngFor="
+                      let activityForm of activities.controls;
+                      let index = index
+                    ">
+                    <ng-container [formGroupName]="index">
+                      <div class="mt-4 flex w-full items-start justify-center">
+                        <app-input
+                          [name]="'Name'"
+                          [placeholder]="'Name'"
+                          [id]="'activityName_' + index"
+                          [inputControl]="activityForm"
+                          [isRequired]="true"
+                          class="mr-4 block w-full"></app-input>
+                        <button
+                          type="button"
+                          (click)="removeActivity(index)"
+                          class="inline w-auto justify-center rounded-md bg-red-600 py-2 px-3 text-sm font-semibold text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-500">
+                          Remove
+                        </button>
+                      </div>
+                    </ng-container>
+                  </ng-container>
+                </ng-container>
+                <button
+                  type="button"
+                  (click)="addActivity()"
+                  class="mx-auto mt-4 inline-flex justify-center rounded-md bg-indigo-600 py-2 px-3 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500">
+                  Add activity
+                </button>
               </div>
             </div>
           </div>
           <div class="bg-gray-50 px-4 py-3 text-right sm:px-6">
             <button
               type="submit"
-              class="inline-flex justify-center rounded-md bg-indigo-600 py-2 px-3 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500">
+              [disabled]="customerForm.invalid || loading"
+              class="mr-2 inline-flex items-center justify-center rounded-md bg-indigo-600 py-2 px-5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500">
+              <app-spinner-icon
+                *ngIf="loading"
+                [color]="spinnerIconColor.button"
+                [size]="spinnerIconSize.small"
+                class="inline-flex items-center"></app-spinner-icon>
               Save
             </button>
           </div>

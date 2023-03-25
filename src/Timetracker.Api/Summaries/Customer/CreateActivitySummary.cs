@@ -6,6 +6,7 @@ using FastEndpoints;
 using Timetracker.Api.Endpoints.CustomerEndpoints;
 using Timetracker.Shared.Contracts.Requests;
 using Timetracker.Shared.Contracts.Responses;
+using ActivityDto = Timetracker.Shared.Contracts.Responses.ActivityDto;
 
 namespace Timetracker.Api.Summaries.Customer;
 

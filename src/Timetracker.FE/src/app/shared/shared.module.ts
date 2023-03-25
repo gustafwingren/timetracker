@@ -4,10 +4,26 @@ import { HeaderComponent } from './header/header.component';
 import { RouterLink } from '@angular/router';
 import { LinkComponent } from './link/link.component';
 import { AuthLinkComponent } from './auth-link/auth-link.component';
+import { InputComponent } from './input/input.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { LabeledInputComponent } from './labeled-input/labeled-input.component';
+import { SpinnerIconComponent } from './spinner-icon/spinner-icon.component';
 
 @NgModule({
-  declarations: [HeaderComponent, LinkComponent, AuthLinkComponent],
-  imports: [CommonModule, RouterLink],
-  exports: [HeaderComponent],
+  declarations: [
+    HeaderComponent,
+    LinkComponent,
+    AuthLinkComponent,
+    InputComponent,
+    LabeledInputComponent,
+    SpinnerIconComponent,
+  ],
+  imports: [CommonModule, RouterLink, ReactiveFormsModule],
+  exports: [
+    HeaderComponent,
+    InputComponent,
+    LabeledInputComponent,
+    SpinnerIconComponent,
+  ],
 })
 export class SharedModule {}
