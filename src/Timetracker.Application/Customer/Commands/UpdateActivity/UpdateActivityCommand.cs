@@ -3,9 +3,10 @@
 // </copyright>
 
 using MediatR;
-using Timetracker.Shared.Contracts.Responses;
+using Timetracker.Application.Contracts;
+using Timetracker.Domain.CustomerAggregate.ValueObjects;
 
 namespace Timetracker.Application.Customer.Commands.UpdateActivity;
 
 public record UpdateActivityCommand
-    (Guid CustomerId, Guid ActivityId, string Name) : IRequest<CustomerDto>;
+    (CustomerId CustomerId, ActivityId ActivityId, string Name) : IRequest<CustomerResponse>;

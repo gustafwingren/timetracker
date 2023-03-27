@@ -1,8 +1,10 @@
 using MediatR;
 using Timetracker.Application.Common.Interfaces;
-using Timetracker.Shared.Contracts.Responses;
+using Timetracker.Application.Contracts;
+using Timetracker.Domain.CustomerAggregate.ValueObjects;
 
 namespace Timetracker.Application.Customer.Commands.UpdateCustomer;
 
-public record UpdateCustomerCommand(Guid Id, string Name, string Number) : IRequest<CustomerDto>,
+public record UpdateCustomerCommand(CustomerId Id, string Name, string Number) :
+    IRequest<CustomerResponse>,
     ICommandRequest;

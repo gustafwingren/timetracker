@@ -2,11 +2,12 @@
 // Copyright (c) gustafwingren. All rights reserved.
 // </copyright>
 
-namespace Timetracker.Shared.Contracts.Requests;
+namespace Timetracker.Api.Endpoints.CustomerEndpoints.CreateCustomer;
 
 public record CreateCustomerRequest(
     string Name,
     string Number,
-    List<ActivityDto> Activities);
-
-public record ActivityDto(string Name);
+    List<CreateCustomerRequest.ActivityRequest> Activities)
+{
+    public record ActivityRequest(string Name);
+}

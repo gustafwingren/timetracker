@@ -5,15 +5,14 @@
 using FastEndpoints;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
+using Timetracker.Application.Contracts;
 using Timetracker.Application.Customer.Commands.DeleteActivity;
-using Timetracker.Shared.Contracts.Requests;
-using Timetracker.Shared.Contracts.Responses;
 
-namespace Timetracker.Api.Endpoints.CustomerEndpoints;
+namespace Timetracker.Api.Endpoints.CustomerEndpoints.DeleteActivity;
 
-[HttpDelete("customers/{CustomerId:Guid}/activities/{ActivityId:Guid}")]
+[HttpDelete("customers/{CustomerId:CustomerId}/activities/{ActivityId:ActivityId}")]
 [Authorize]
-public sealed class DeleteActivityEndpoint : Endpoint<DeleteActivityRequest, CustomerDto>
+public sealed class DeleteActivityEndpoint : Endpoint<DeleteActivityRequest, CustomerResponse>
 {
     private readonly ISender _sender;
 

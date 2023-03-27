@@ -3,8 +3,9 @@
 // </copyright>
 
 using MediatR;
-using Timetracker.Shared.Contracts.Responses;
+using Timetracker.Application.Contracts;
+using Timetracker.Domain.CustomerAggregate.ValueObjects;
 
 namespace Timetracker.Application.Customer.Queries.GetCustomer;
 
-public record GetCustomerQuery(Guid Id) : IRequest<CustomerDto>;
+public record GetCustomerQuery(CustomerId Id) : IRequest<CustomerResponse>;

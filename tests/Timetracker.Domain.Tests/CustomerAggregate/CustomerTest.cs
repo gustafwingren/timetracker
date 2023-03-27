@@ -2,6 +2,7 @@
 // Copyright (c) gustafwingren. All rights reserved.
 // </copyright>
 
+using Timetracker.Domain.Common.Ids;
 using Timetracker.Domain.CustomerAggregate;
 using Timetracker.Domain.CustomerAggregate.Entities;
 
@@ -13,7 +14,7 @@ public class CustomerTest
     public void CreateCustomer_WithValidData_ShouldCreate()
     {
         // Act
-        var expectedCustomer = Customer.Create("name", "customerNr");
+        var expectedCustomer = Customer.Create("name", "customerNr", UserId.New());
 
         // Assert
         Assert.NotNull(expectedCustomer);
@@ -26,7 +27,7 @@ public class CustomerTest
     public void AddActivity_WithValidData_ShouldContainCorrectActivity()
     {
         // Arrange
-        var customer = Customer.Create("name", "customerNr");
+        var customer = Customer.Create("name", "customerNr", UserId.New());
 
         // Act
         customer.AddActivity(Activity.Create("activityName"));
@@ -41,7 +42,7 @@ public class CustomerTest
     public void AddActivity_WithInvalidData_ShouldThrowException()
     {
         // Arrange
-        var customer = Customer.Create("name", "customerNr");
+        var customer = Customer.Create("name", "customerNr", UserId.New());
 
         // Act
         Assert.Throws<ArgumentNullException>(() => customer.AddActivity(null!));
@@ -51,7 +52,7 @@ public class CustomerTest
     public void UpdateName_WithValidData_ShouldUpdateCorrectly()
     {
         // Arrange
-        var customer = Customer.Create("name", "customerNr");
+        var customer = Customer.Create("name", "customerNr", UserId.New());
 
         // Act
         customer.UpdateName("newName");
@@ -66,7 +67,7 @@ public class CustomerTest
     public void UpdateName_WithInvalidData_ShouldThrowException(string? name, Type exceptionType)
     {
         // Arrange
-        var customer = Customer.Create("name", "customerNr");
+        var customer = Customer.Create("name", "customerNr", UserId.New());
 
         // Act
         Assert.Throws(exceptionType, () => customer.UpdateName(name!));
@@ -76,7 +77,7 @@ public class CustomerTest
     public void UpdateCustomerNr_WithValidData_ShouldUpdateCorrectly()
     {
         // Arrange
-        var customer = Customer.Create("name", "customerNr");
+        var customer = Customer.Create("name", "customerNr", UserId.New());
 
         // Act
         customer.UpdateCustomerNr("newCustomerNr");
@@ -93,7 +94,7 @@ public class CustomerTest
         Type exceptionType)
     {
         // Arrange
-        var customer = Customer.Create("name", "customerNr");
+        var customer = Customer.Create("name", "customerNr", UserId.New());
 
         // Act
         Assert.Throws(exceptionType, () => customer.UpdateCustomerNr(customerNr!));
@@ -103,7 +104,7 @@ public class CustomerTest
     public void UpdateActivityName_WithValidData_ShouldUpdateCorrectly()
     {
         // Arrange
-        var customer = Customer.Create("name", "customerNr");
+        var customer = Customer.Create("name", "customerNr", UserId.New());
         customer.AddActivity(Activity.Create("activityName"));
         var activityId = customer.Activities.FirstOrDefault();
 

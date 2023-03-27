@@ -3,7 +3,6 @@
 // </copyright>
 
 using MediatR;
-using Timetracker.Domain.CustomerAggregate.ValueObjects;
 using Timetracker.Shared.Interfaces;
 
 namespace Timetracker.Application.Customer.Commands.DeleteCustomer;
@@ -21,7 +20,7 @@ public class DeleteCustomerCommandHandler : IRequestHandler<DeleteCustomerComman
     public async Task Handle(DeleteCustomerCommand request, CancellationToken cancellationToken)
     {
         var customer = await _repository.GetByIdAsync(
-            new CustomerId(request.Id),
+            request.Id,
             cancellationToken);
 
         if (customer == null)

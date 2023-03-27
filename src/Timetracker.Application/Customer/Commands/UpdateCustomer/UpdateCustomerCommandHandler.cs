@@ -1,27 +1,30 @@
 using Ardalis.GuardClauses;
+using AutoMapper;
 using MediatR;
-using Timetracker.Domain.CustomerAggregate.ValueObjects;
-using Timetracker.Shared.Contracts.Responses;
+using Timetracker.Application.Contracts;
 using Timetracker.Shared.Interfaces;
 
 namespace Timetracker.Application.Customer.Commands.UpdateCustomer;
 
-public class UpdateCustomerCommandHandler : IRequestHandler<UpdateCustomerCommand, CustomerDto>
+public class UpdateCustomerCommandHandler : IRequestHandler<UpdateCustomerCommand, CustomerResponse>
 {
+    private readonly IMapper _mapper;
     private readonly IRepository<Domain.CustomerAggregate.Customer> _repository;
 
     public UpdateCustomerCommandHandler(
+        IMapper mapper,
         IRepository<Domain.CustomerAggregate.Customer> repository)
     {
+        _mapper = mapper;
         _repository = repository;
     }
 
-    public async Task<CustomerDto> Handle(
+    public async Task<CustomerResponse> Handle(
         UpdateCustomerCommand request,
         CancellationToken cancellationToken)
     {
         var customer = await _repository.GetByIdAsync(
-            new CustomerId(request.Id),
+            request.Id,
             cancellationToken);
 
         if (customer == null)
@@ -38,10 +41,6 @@ public class UpdateCustomerCommandHandler : IRequestHandler<UpdateCustomerComman
         await _repository.UpdateAsync(customer, cancellationToken);
         await _repository.SaveChangesAsync(cancellationToken);
 
-        return new CustomerDto(
-            customer.Id.Value,
-            customer.Name,
-            customer.CustomerNr,
-            customer.Activities.Select(x => new ActivityDto(x.Id.Value, x.Name)).ToList());
+        return _mapper.Map<CustomerResponse>(customer);
     }
 }

@@ -6,17 +6,15 @@ using FastEndpoints;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Identity.Web;
+using Timetracker.Application.Contracts;
 using Timetracker.Application.Customer.Commands.CreateCustomer;
 using Timetracker.Domain.Common.Ids;
-using Timetracker.Shared.Contracts.Requests;
-using Timetracker.Shared.Contracts.Responses;
-using ActivityDto = Timetracker.Shared.Contracts.Requests.ActivityDto;
 
-namespace Timetracker.Api.Endpoints.CustomerEndpoints;
+namespace Timetracker.Api.Endpoints.CustomerEndpoints.CreateCustomer;
 
 [HttpPost("customers")]
 [Authorize]
-public class CreateCustomerEndpoint : Endpoint<CreateCustomerRequest, CustomerDto>
+public class CreateCustomerEndpoint : Endpoint<CreateCustomerRequest, CustomerResponse>
 {
     private readonly ISender _sender;
 
@@ -25,22 +23,20 @@ public class CreateCustomerEndpoint : Endpoint<CreateCustomerRequest, CustomerDt
         _sender = sender;
     }
 
-    public override async Task HandleAsync(
-        CreateCustomerRequest req,
-        CancellationToken ct)
+    public override async Task HandleAsync(CreateCustomerRequest req, CancellationToken ct)
     {
         var userId = HttpContext.User.GetObjectId();
 
         if (userId == null)
         {
-            throw new UnauthorizedAccessException();
+            await SendUnauthorizedAsync(ct);
         }
 
         var customer = await _sender.Send(
             new CreateCustomerCommand(
                 req.Name,
                 req.Number,
-                req.Activities.Select(x => new ActivityDto(x.Name)).ToList(),
+                req.Activities.Select(x => new ActivityCommandDto(x.Name)).ToList(),
                 new UserId(Guid.Parse(userId))),
             ct);
 

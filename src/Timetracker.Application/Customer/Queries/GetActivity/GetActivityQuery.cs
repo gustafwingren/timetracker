@@ -3,10 +3,10 @@
 // </copyright>
 
 using MediatR;
+using Timetracker.Application.Contracts;
 using Timetracker.Domain.CustomerAggregate.ValueObjects;
-using Timetracker.Shared.Contracts.Responses;
 
 namespace Timetracker.Application.Customer.Queries.GetActivity;
 
 public record GetActivityQuery
-    (CustomerId CustomerId, ActivityId ActivityId) : IRequest<ActivityDto>;
+    (CustomerId CustomerId, ActivityId ActivityId) : IRequest<ActivityResponse>;

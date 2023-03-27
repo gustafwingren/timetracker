@@ -2,6 +2,7 @@
 // Copyright (c) gustafwingren. All rights reserved.
 // </copyright>
 
+using Timetracker.Domain.Common.Ids;
 using Timetracker.Domain.CustomerAggregate;
 using Timetracker.Domain.CustomerAggregate.Entities;
 using Timetracker.Domain.CustomerAggregate.ValueObjects;
@@ -216,7 +217,7 @@ public class TimesheetTest
 
     private static Customer CreateDefaultCustomer()
     {
-        var customer = Customer.Create("name", "customerNr");
+        var customer = Customer.Create("name", "customerNr", UserId.New());
         customer.AddActivity(Activity.Create("activityName"));
 
         return customer;

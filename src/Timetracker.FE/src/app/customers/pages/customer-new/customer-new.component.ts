@@ -27,8 +27,6 @@ export class CustomerNewComponent {
     activities: this.formBuilder.array([]),
   });
   loading = false;
-  spinnerIconColor = SpinnerIconColor;
-  spinnerIconSize = SpinnerIconSize;
 
   get activities() {
     return this.customerForm.get('activities') as FormArray<FormControl>;

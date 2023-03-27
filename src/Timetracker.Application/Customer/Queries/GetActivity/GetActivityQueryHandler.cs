@@ -3,22 +3,27 @@
 // </copyright>
 
 using Ardalis.GuardClauses;
+using AutoMapper;
 using MediatR;
-using Timetracker.Shared.Contracts.Responses;
+using Timetracker.Application.Contracts;
 using Timetracker.Shared.Interfaces;
 
 namespace Timetracker.Application.Customer.Queries.GetActivity;
 
-public class GetActivityQueryHandler : IRequestHandler<GetActivityQuery, ActivityDto>
+public class GetActivityQueryHandler : IRequestHandler<GetActivityQuery, ActivityResponse>
 {
+    private readonly IMapper _mapper;
     private readonly IReadRepository<Domain.CustomerAggregate.Customer> _repository;
 
-    public GetActivityQueryHandler(IReadRepository<Domain.CustomerAggregate.Customer> repository)
+    public GetActivityQueryHandler(
+        IMapper mapper,
+        IReadRepository<Domain.CustomerAggregate.Customer> repository)
     {
+        _mapper = mapper;
         _repository = repository;
     }
 
-    public async Task<ActivityDto> Handle(
+    public async Task<ActivityResponse> Handle(
         GetActivityQuery request,
         CancellationToken cancellationToken)
     {
@@ -30,6 +35,6 @@ public class GetActivityQueryHandler : IRequestHandler<GetActivityQuery, Activit
 
         Guard.Against.Null(activity);
 
-        return new ActivityDto(activity.Id.Value, activity.Name);
+        return _mapper.Map<ActivityResponse>(activity);
     }
 }

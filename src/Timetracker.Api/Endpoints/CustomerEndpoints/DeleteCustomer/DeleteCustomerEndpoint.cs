@@ -6,11 +6,10 @@ using FastEndpoints;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Timetracker.Application.Customer.Commands.DeleteCustomer;
-using Timetracker.Shared.Contracts.Requests;
 
-namespace Timetracker.Api.Endpoints.CustomerEndpoints;
+namespace Timetracker.Api.Endpoints.CustomerEndpoints.DeleteCustomer;
 
-[HttpDelete("customers/{id:Guid}")]
+[HttpDelete("customers/{id:CustomerId}")]
 [Authorize]
 public class DeleteCustomerEndpoint : Endpoint<DeleteCustomerRequest>
 {

@@ -3,8 +3,10 @@
 // </copyright>
 
 using MediatR;
-using Timetracker.Shared.Contracts.Responses;
+using Timetracker.Application.Contracts;
+using Timetracker.Domain.CustomerAggregate.ValueObjects;
 
 namespace Timetracker.Application.Customer.Commands.DeleteActivity;
 
-public record DeleteActivityCommand(Guid CustomerId, Guid ActivityId) : IRequest<CustomerDto>;
+public record DeleteActivityCommand
+    (CustomerId CustomerId, ActivityId ActivityId) : IRequest<CustomerResponse>;

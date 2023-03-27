@@ -26,9 +26,9 @@ public sealed class AddActivityCommandValidation : AbstractValidator<AddActivity
     }
 
     private async Task<bool> CustomerMustExist(
-        Guid id,
+        CustomerId id,
         CancellationToken cancellationToken = default)
     {
-        return await _repository.GetByIdAsync(new CustomerId(id), cancellationToken) != null;
+        return await _repository.GetByIdAsync(id, cancellationToken) != null;
     }
 }

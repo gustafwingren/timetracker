@@ -30,10 +30,10 @@ public sealed class DeleteActivityCommandValidation : AbstractValidator<DeleteAc
     }
 
     private async Task<bool> CustomerMustExist(
-        Guid id,
+        CustomerId id,
         CancellationToken cancellationToken = default)
     {
-        return await _repository.GetByIdAsync(new CustomerId(id), cancellationToken) != null;
+        return await _repository.GetByIdAsync(id, cancellationToken) != null;
     }
 
     private async Task<bool> ActivityMustExist(

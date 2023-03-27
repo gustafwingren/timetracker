@@ -3,10 +3,9 @@
 // </copyright>
 
 using FastEndpoints;
-using Timetracker.Api.Endpoints.CustomerEndpoints;
-using Timetracker.Shared.Contracts.Requests;
-using Timetracker.Shared.Contracts.Responses;
-using ActivityDto = Timetracker.Shared.Contracts.Responses.ActivityDto;
+using Timetracker.Api.Endpoints.CustomerEndpoints.CreateActivity;
+using Timetracker.Application.Contracts;
+using Timetracker.Domain.CustomerAggregate.ValueObjects;
 
 namespace Timetracker.Api.Summaries.Customer;
 
@@ -16,15 +15,15 @@ public class CreateActivitySummary : Summary<CreateActivityEndpoint>
     {
         Summary = "Create activity";
         Description = "Use this endpoint to add a Activity to an existing Customer";
-        ExampleRequest = new CreateActivityRequest(Guid.NewGuid(), "Name of Activity");
+        ExampleRequest = new CreateActivityRequest(CustomerId.New(), "Name of Activity");
         Response(
             200,
             "ok response with body",
-            example: new CustomerDto(
-                Guid.NewGuid(),
+            example: new CustomerResponse(
+                CustomerId.New(),
                 "Name of Customer",
                 "Customernumber",
-                new List<ActivityDto> { new(Guid.NewGuid(), "Name of Activity"), }));
+                new List<ActivityResponse> { new(ActivityId.New(), "Name of Activity"), }));
         Response<ErrorResponse>(400, "validation failure");
         Response(404, "Customer not found");
     }

@@ -2,31 +2,35 @@
 // Copyright (c) gustafwingren. All rights reserved.
 // </copyright>
 
+using AutoMapper;
 using MediatR;
-using Timetracker.Domain.CustomerAggregate.ValueObjects;
-using Timetracker.Shared.Contracts.Responses;
+using Timetracker.Application.Contracts;
 using Timetracker.Shared.Interfaces;
 
 namespace Timetracker.Application.Customer.Queries.GetCustomer;
 
-public class GetCustomerQueryHandler : IRequestHandler<GetCustomerQuery, CustomerDto>
+public class GetCustomerQueryHandler : IRequestHandler<GetCustomerQuery, CustomerResponse>
 {
     private readonly IReadRepository<Domain.CustomerAggregate.Customer>
         _customerRepository;
 
+    private readonly IMapper _mapper;
+
     public GetCustomerQueryHandler(
+        IMapper mapper,
         IReadRepository<Domain.CustomerAggregate.Customer> customerRepository)
     {
+        _mapper = mapper;
         _customerRepository = customerRepository;
     }
 
-    public async Task<CustomerDto> Handle(
+    public async Task<CustomerResponse> Handle(
         GetCustomerQuery request,
         CancellationToken cancellationToken)
     {
         var customer =
             await _customerRepository.GetByIdAsync(
-                new CustomerId(request.Id),
+                request.Id,
                 cancellationToken);
 
         if (customer == null)
@@ -34,10 +38,6 @@ public class GetCustomerQueryHandler : IRequestHandler<GetCustomerQuery, Custome
             // TODO: Return error
         }
 
-        return new CustomerDto(
-            customer.Id.Value,
-            customer.Name,
-            customer.CustomerNr,
-            customer.Activities.Select(x => new ActivityDto(x.Id.Value, x.Name)).ToList());
+        return _mapper.Map<CustomerResponse>(customer);
     }
 }

@@ -5,15 +5,14 @@
 using FastEndpoints;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
+using Timetracker.Application.Contracts;
 using Timetracker.Application.Customer.Queries.GetCustomer;
-using Timetracker.Shared.Contracts.Requests;
-using Timetracker.Shared.Contracts.Responses;
 
-namespace Timetracker.Api.Endpoints.CustomerEndpoints;
+namespace Timetracker.Api.Endpoints.CustomerEndpoints.GetCustomer;
 
-[HttpGet("customers/{id:guid}")]
+[HttpGet("customers/{id:CustomerId}")]
 [Authorize]
-public class GetCustomerEndpoint : Endpoint<GetCustomerRequest, CustomerDto>
+public class GetCustomerEndpoint : Endpoint<GetCustomerRequest, CustomerResponse>
 {
     private readonly ISender _sender;
 

@@ -4,16 +4,17 @@
 
 using MediatR;
 using Timetracker.Application.Common.Interfaces;
+using Timetracker.Application.Contracts;
 using Timetracker.Domain.Common.Ids;
-using Timetracker.Shared.Contracts.Responses;
-using ActivityDto = Timetracker.Shared.Contracts.Requests.ActivityDto;
 
 namespace Timetracker.Application.Customer.Commands.CreateCustomer;
 
 public record CreateCustomerCommand(
     string Name,
     string Number,
-    List<ActivityDto> Activities,
+    List<ActivityCommandDto> Activities,
     UserId UserId) :
-    IRequest<CustomerDto>,
+    IRequest<CustomerResponse>,
     ICommandRequest;
+
+public record ActivityCommandDto(string Name);

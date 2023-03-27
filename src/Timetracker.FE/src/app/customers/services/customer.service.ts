@@ -28,6 +28,13 @@ export class CustomerService {
     return this.apiService.post<CustomerDto>(this.url, customer);
   }
 
+  updateCustomer(
+    id: string,
+    customer: CustomerCreateDto
+  ): Observable<CustomerDto> {
+    return this.apiService.put(this.url + id, customer);
+  }
+
   deleteCustomer(id: string): Observable<void> {
     return this.apiService.delete(this.url + id);
   }

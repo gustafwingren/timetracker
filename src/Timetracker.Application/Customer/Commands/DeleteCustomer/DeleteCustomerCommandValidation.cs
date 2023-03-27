@@ -22,8 +22,8 @@ public class DeleteCustomerCommandValidation : AbstractValidator<DeleteCustomerC
             .MustAsync(CustomerMustExist).WithMessage("Customer does not exist");
     }
 
-    private async Task<bool> CustomerMustExist(Guid id, CancellationToken cancellationToken)
+    private async Task<bool> CustomerMustExist(CustomerId id, CancellationToken cancellationToken)
     {
-        return await _readRepository.GetByIdAsync(new CustomerId(id), cancellationToken) != null;
+        return await _readRepository.GetByIdAsync(id, cancellationToken) != null;
     }
 }

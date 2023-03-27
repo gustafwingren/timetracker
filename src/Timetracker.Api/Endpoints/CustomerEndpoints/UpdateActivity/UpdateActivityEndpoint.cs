@@ -5,15 +5,14 @@
 using FastEndpoints;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
+using Timetracker.Application.Contracts;
 using Timetracker.Application.Customer.Commands.UpdateActivity;
-using Timetracker.Shared.Contracts.Requests;
-using Timetracker.Shared.Contracts.Responses;
 
-namespace Timetracker.Api.Endpoints.CustomerEndpoints;
+namespace Timetracker.Api.Endpoints.CustomerEndpoints.UpdateActivity;
 
-[HttpPut("customers/{CustomerId:Guid}/activities/{ActivityId:Guid}")]
+[HttpPut("customers/{CustomerId:CustomerId}/activities/{ActivityId:Guid}")]
 [Authorize]
-public sealed class UpdateActivityEndpoint : Endpoint<UpdateActivityRequest, CustomerDto>
+public sealed class UpdateActivityEndpoint : Endpoint<UpdateActivityRequest, CustomerResponse>
 {
     private readonly ISender _sender;
 

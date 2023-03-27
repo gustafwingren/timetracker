@@ -2,25 +2,30 @@
 // Copyright (c) gustafwingren. All rights reserved.
 // </copyright>
 
+using AutoMapper;
 using MediatR;
+using Timetracker.Application.Contracts;
 using Timetracker.Domain.CustomerAggregate.Entities;
-using Timetracker.Shared.Contracts.Responses;
 using Timetracker.Shared.Interfaces;
 
 namespace Timetracker.Application.Customer.Commands.CreateCustomer;
 
 public sealed class
-    CreateCustomerCommandHandler : IRequestHandler<CreateCustomerCommand, CustomerDto>
+    CreateCustomerCommandHandler : IRequestHandler<CreateCustomerCommand,
+        CustomerResponse>
 {
     private readonly IRepository<Domain.CustomerAggregate.Customer> _customerRepository;
+    private readonly IMapper _mapper;
 
     public CreateCustomerCommandHandler(
+        IMapper mapper,
         IRepository<Domain.CustomerAggregate.Customer> customerRepository)
     {
+        _mapper = mapper;
         _customerRepository = customerRepository;
     }
 
-    public async Task<CustomerDto> Handle(
+    public async Task<CustomerResponse> Handle(
         CreateCustomerCommand request,
         CancellationToken cancellationToken)
     {
@@ -44,10 +49,6 @@ public sealed class
 
         await _customerRepository.SaveChangesAsync(cancellationToken);
 
-        return new CustomerDto(
-            newCustomer.Id.Value,
-            newCustomer.Name,
-            newCustomer.CustomerNr,
-            newCustomer.Activities.Select(x => new ActivityDto(x.Id.Value, x.Name)).ToList());
+        return _mapper.Map<CustomerResponse>(newCustomer);
     }
 }

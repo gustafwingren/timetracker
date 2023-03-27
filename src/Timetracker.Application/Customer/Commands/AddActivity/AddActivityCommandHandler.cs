@@ -1,32 +1,36 @@
-// <copyright file="AddActivityHandler.cs" company="gustafwingren">
+// <copyright file="AddActivityCommandHandler.cs" company="gustafwingren">
 // Copyright (c) gustafwingren. All rights reserved.
 // </copyright>
 
 using Ardalis.GuardClauses;
+using AutoMapper;
 using MediatR;
+using Timetracker.Application.Contracts;
 using Timetracker.Domain.CustomerAggregate.Entities;
-using Timetracker.Domain.CustomerAggregate.ValueObjects;
-using Timetracker.Shared.Contracts.Responses;
 using Timetracker.Shared.Interfaces;
 
 namespace Timetracker.Application.Customer.Commands.AddActivity;
 
-public sealed class AddActivityCommandHandler : IRequestHandler<AddActivityCommand, CustomerDto>
+public sealed class
+    AddActivityCommandHandler : IRequestHandler<AddActivityCommand, CustomerResponse>
 {
+    private readonly IMapper _mapper;
     private readonly IRepository<Domain.CustomerAggregate.Customer> _repository;
 
     public AddActivityCommandHandler(
+        IMapper mapper,
         IRepository<Domain.CustomerAggregate.Customer> repository)
     {
+        _mapper = mapper;
         _repository = repository;
     }
 
-    public async Task<CustomerDto> Handle(
+    public async Task<CustomerResponse> Handle(
         AddActivityCommand request,
         CancellationToken cancellationToken)
     {
         var customer = await _repository.GetByIdAsync(
-            new CustomerId(request.Id),
+            request.Id,
             cancellationToken);
 
         Guard.Against.Null(customer);
@@ -35,10 +39,6 @@ public sealed class AddActivityCommandHandler : IRequestHandler<AddActivityComma
 
         await _repository.SaveChangesAsync(cancellationToken);
 
-        return new CustomerDto(
-            customer.Id.Value,
-            customer.Name,
-            customer.CustomerNr,
-            customer.Activities.Select(x => new ActivityDto(x.Id.Value, x.Name)).ToList());
+        return _mapper.Map<CustomerResponse>(customer);
     }
 }
