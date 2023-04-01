@@ -4,14 +4,12 @@
 
 using FastEndpoints;
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
+using Timetracker.Api.Extensions;
 using Timetracker.Application.Customer.Commands.DeleteCustomer;
 
 namespace Timetracker.Api.Endpoints.CustomerEndpoints.DeleteCustomer;
 
-[HttpDelete("customers/{id:CustomerId}")]
-[Authorize]
-public class DeleteCustomerEndpoint : Endpoint<DeleteCustomerRequest>
+public class DeleteCustomerEndpoint : Endpoint<DeleteCustomerRequest, IResult>
 {
     private readonly ISender _sender;
 
@@ -20,11 +18,18 @@ public class DeleteCustomerEndpoint : Endpoint<DeleteCustomerRequest>
         _sender = sender;
     }
 
-    public override async Task HandleAsync(DeleteCustomerRequest req, CancellationToken ct)
+    public override void Configure()
+    {
+        Delete("customers/{@cId}", x => new { x.Id, });
+    }
+
+    public override async Task<IResult> ExecuteAsync(
+        DeleteCustomerRequest req,
+        CancellationToken ct)
     {
         var command = new DeleteCustomerCommand(req.Id);
-        await _sender.Send(command, ct);
+        var result = await _sender.Send(command, ct);
 
-        await SendOkAsync(ct);
+        return HttpContext.CreateOkResponse(result);
     }
 }

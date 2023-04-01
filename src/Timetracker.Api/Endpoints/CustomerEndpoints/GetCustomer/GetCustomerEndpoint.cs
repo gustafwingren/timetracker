@@ -4,15 +4,12 @@
 
 using FastEndpoints;
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
-using Timetracker.Application.Contracts;
+using Timetracker.Api.Extensions;
 using Timetracker.Application.Customer.Queries.GetCustomer;
 
 namespace Timetracker.Api.Endpoints.CustomerEndpoints.GetCustomer;
 
-[HttpGet("customers/{id:CustomerId}")]
-[Authorize]
-public class GetCustomerEndpoint : Endpoint<GetCustomerRequest, CustomerResponse>
+public class GetCustomerEndpoint : Endpoint<GetCustomerRequest, IResult>
 {
     private readonly ISender _sender;
 
@@ -21,17 +18,15 @@ public class GetCustomerEndpoint : Endpoint<GetCustomerRequest, CustomerResponse
         _sender = sender;
     }
 
-    public override async Task HandleAsync(
-        GetCustomerRequest request,
-        CancellationToken cancellationToken)
+    public override void Configure()
     {
-        var customer = await _sender.Send(new GetCustomerQuery(request.Id), cancellationToken);
+        Get("customers/{@cId}", x => new { x.Id, });
+    }
 
-        if (customer == null)
-        {
-            await SendNotFoundAsync(cancellationToken);
-        }
+    public override async Task<IResult> ExecuteAsync(GetCustomerRequest req, CancellationToken ct)
+    {
+        var customer = await _sender.Send(new GetCustomerQuery(req.Id), ct);
 
-        await SendOkAsync(customer, cancellationToken);
+        return HttpContext.CreateOkResponse(customer);
     }
 }

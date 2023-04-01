@@ -3,6 +3,7 @@
 // </copyright>
 
 using AutoMapper;
+using LanguageExt.Common;
 using MediatR;
 using Timetracker.Application.Contracts;
 using Timetracker.Domain.CustomerAggregate.Entities;
@@ -12,7 +13,7 @@ namespace Timetracker.Application.Customer.Commands.CreateCustomer;
 
 public sealed class
     CreateCustomerCommandHandler : IRequestHandler<CreateCustomerCommand,
-        CustomerResponse>
+        Result<CustomerResponse>>
 {
     private readonly IRepository<Domain.CustomerAggregate.Customer> _customerRepository;
     private readonly IMapper _mapper;
@@ -25,7 +26,7 @@ public sealed class
         _customerRepository = customerRepository;
     }
 
-    public async Task<CustomerResponse> Handle(
+    public async Task<Result<CustomerResponse>> Handle(
         CreateCustomerCommand request,
         CancellationToken cancellationToken)
     {
@@ -38,7 +39,7 @@ public sealed class
 
         if (newCustomer == null)
         {
-            throw new NullReferenceException();
+            return new Result<CustomerResponse>(new NullReferenceException());
         }
 
         if (request.Activities.Any())

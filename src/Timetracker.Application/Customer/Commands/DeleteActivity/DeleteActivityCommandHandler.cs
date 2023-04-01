@@ -4,14 +4,16 @@
 
 using Ardalis.GuardClauses;
 using AutoMapper;
+using LanguageExt.Common;
 using MediatR;
 using Timetracker.Application.Contracts;
+using Timetracker.Domain.CustomerAggregate.Entities;
 using Timetracker.Shared.Interfaces;
 
 namespace Timetracker.Application.Customer.Commands.DeleteActivity;
 
 public sealed class
-    DeleteActivityCommandHandler : IRequestHandler<DeleteActivityCommand, CustomerResponse>
+    DeleteActivityCommandHandler : IRequestHandler<DeleteActivityCommand, Result<CustomerResponse>>
 {
     private readonly IMapper _mapper;
     private readonly IRepository<Domain.CustomerAggregate.Customer> _repository;
@@ -24,7 +26,7 @@ public sealed class
         _repository = repository;
     }
 
-    public async Task<CustomerResponse> Handle(
+    public async Task<Result<CustomerResponse>> Handle(
         DeleteActivityCommand request,
         CancellationToken cancellationToken)
     {
@@ -32,10 +34,23 @@ public sealed class
             request.CustomerId,
             cancellationToken);
 
-        Guard.Against.Null(customer);
+        if (customer is null)
+        {
+            return new Result<CustomerResponse>(
+                new NotFoundException(
+                    request.CustomerId.ToString(),
+                    nameof(Domain.CustomerAggregate.Customer)));
+        }
 
         var activity = customer.Activities.FirstOrDefault(x => x.Id == request.ActivityId);
-        Guard.Against.Null(activity);
+
+        if (activity is null)
+        {
+            return new Result<CustomerResponse>(
+                new NotFoundException(
+                    request.ActivityId.ToString(),
+                    nameof(Activity)));
+        }
 
         customer.RemoveActivity(activity);
 

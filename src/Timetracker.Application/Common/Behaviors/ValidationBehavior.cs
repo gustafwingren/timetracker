@@ -10,6 +10,7 @@ namespace Timetracker.Application.Common.Behaviors;
 
 public sealed class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
     where TRequest : ICommandRequest
+    where TResponse : class, new()
 {
     private readonly IEnumerable<IValidator<TRequest>> _validators;
 
@@ -38,11 +39,13 @@ public sealed class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<
             .SelectMany(vr => vr.Errors)
             .ToList();
 
-        if (failures.Any())
+        if (!failures.Any())
         {
-            throw new ValidationException(failures);
+            return await next();
         }
 
-        return await next();
+        var validationResult = new ValidationException(failures);
+
+        return validationResult as TResponse ?? throw new NullReferenceException();
     }
 }

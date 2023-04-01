@@ -3,6 +3,7 @@
 // </copyright>
 
 using AutoMapper;
+using LanguageExt.Common;
 using MediatR;
 using Timetracker.Application.Contracts;
 using Timetracker.Domain.CustomerAggregate.Specifications;
@@ -11,7 +12,7 @@ using Timetracker.Shared.Interfaces;
 namespace Timetracker.Application.Customer.Queries.GetCustomers;
 
 public sealed class
-    GetCustomersQueryHandler : IRequestHandler<GetCustomersQuery, List<CustomerResponse>>
+    GetCustomersQueryHandler : IRequestHandler<GetCustomersQuery, Result<List<CustomerResponse>>>
 {
     private readonly IReadRepository<Domain.CustomerAggregate.Customer>
         _customerRepository;
@@ -26,7 +27,7 @@ public sealed class
         _customerRepository = customerRepository;
     }
 
-    public async Task<List<CustomerResponse>> Handle(
+    public async Task<Result<List<CustomerResponse>>> Handle(
         GetCustomersQuery request,
         CancellationToken cancellationToken)
     {

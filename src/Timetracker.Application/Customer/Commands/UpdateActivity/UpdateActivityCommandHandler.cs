@@ -4,13 +4,16 @@
 
 using Ardalis.GuardClauses;
 using AutoMapper;
+using LanguageExt.Common;
 using MediatR;
 using Timetracker.Application.Contracts;
+using Timetracker.Domain.CustomerAggregate.Entities;
 using Timetracker.Shared.Interfaces;
 
 namespace Timetracker.Application.Customer.Commands.UpdateActivity;
 
-public class UpdateActivityCommandHandler : IRequestHandler<UpdateActivityCommand, CustomerResponse>
+public class
+    UpdateActivityCommandHandler : IRequestHandler<UpdateActivityCommand, Result<ActivityResponse>>
 {
     private readonly IMapper _mapper;
     private readonly IRepository<Domain.CustomerAggregate.Customer> _repository;
@@ -23,22 +26,37 @@ public class UpdateActivityCommandHandler : IRequestHandler<UpdateActivityComman
         _repository = repository;
     }
 
-    public async Task<CustomerResponse> Handle(
+    public async Task<Result<ActivityResponse>> Handle(
         UpdateActivityCommand request,
         CancellationToken cancellationToken)
     {
         var customer = await _repository.GetByIdAsync(
             request.CustomerId,
             cancellationToken);
-        Guard.Against.Null(customer);
+
+        if (customer is null)
+        {
+            return new Result<ActivityResponse>(
+                new NotFoundException(
+                    request.CustomerId.ToString(),
+                    nameof(Domain.CustomerAggregate.Customer)));
+        }
 
         var activity = customer.Activities.FirstOrDefault(x => x.Id == request.ActivityId);
-        Guard.Against.Null(activity);
+
+        if (activity is null)
+        {
+            return new Result<ActivityResponse>(
+                new NotFoundException(
+                    request.ActivityId.ToString(),
+                    nameof(Activity)));
+        }
 
         customer.UpdateActivityName(activity.Id, request.Name);
 
         await _repository.SaveChangesAsync(cancellationToken);
 
-        return _mapper.Map<CustomerResponse>(customer);
+        return _mapper.Map<ActivityResponse>(
+            customer.Activities.FirstOrDefault(x => x.Id == request.ActivityId));
     }
 }

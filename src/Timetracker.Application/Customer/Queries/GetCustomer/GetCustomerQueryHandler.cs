@@ -2,14 +2,16 @@
 // Copyright (c) gustafwingren. All rights reserved.
 // </copyright>
 
+using Ardalis.GuardClauses;
 using AutoMapper;
+using LanguageExt.Common;
 using MediatR;
 using Timetracker.Application.Contracts;
 using Timetracker.Shared.Interfaces;
 
 namespace Timetracker.Application.Customer.Queries.GetCustomer;
 
-public class GetCustomerQueryHandler : IRequestHandler<GetCustomerQuery, CustomerResponse>
+public class GetCustomerQueryHandler : IRequestHandler<GetCustomerQuery, Result<CustomerResponse>>
 {
     private readonly IReadRepository<Domain.CustomerAggregate.Customer>
         _customerRepository;
@@ -24,7 +26,7 @@ public class GetCustomerQueryHandler : IRequestHandler<GetCustomerQuery, Custome
         _customerRepository = customerRepository;
     }
 
-    public async Task<CustomerResponse> Handle(
+    public async Task<Result<CustomerResponse>> Handle(
         GetCustomerQuery request,
         CancellationToken cancellationToken)
     {
@@ -35,7 +37,10 @@ public class GetCustomerQueryHandler : IRequestHandler<GetCustomerQuery, Custome
 
         if (customer == null)
         {
-            // TODO: Return error
+            return new Result<CustomerResponse>(
+                new NotFoundException(
+                    request.Id.ToString(),
+                    nameof(Domain.CustomerAggregate.Customer)));
         }
 
         return _mapper.Map<CustomerResponse>(customer);

@@ -3,6 +3,7 @@
 // </copyright>
 
 using AutoMapper;
+using Timetracker.Application.Common.Interfaces;
 using Timetracker.Application.Common.Mappings;
 using Timetracker.Domain.CustomerAggregate.ValueObjects;
 
@@ -13,8 +14,11 @@ public record CustomerResponse
     CustomerId Id,
     string Name,
     string Number,
-    IEnumerable<ActivityResponse> Activities) : IMapFrom<Domain.CustomerAggregate.Customer>
+    IEnumerable<ActivityResponse> Activities) : BaseResponse,
+    IMapFrom<Domain.CustomerAggregate.Customer>
 {
+    public override Guid Guid => Id.Value;
+
     public void Mapping(Profile profile)
     {
         profile.CreateMap<Domain.CustomerAggregate.Customer, CustomerResponse>()

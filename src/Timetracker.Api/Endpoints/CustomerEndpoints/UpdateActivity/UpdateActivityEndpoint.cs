@@ -4,15 +4,12 @@
 
 using FastEndpoints;
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
-using Timetracker.Application.Contracts;
+using Timetracker.Api.Extensions;
 using Timetracker.Application.Customer.Commands.UpdateActivity;
 
 namespace Timetracker.Api.Endpoints.CustomerEndpoints.UpdateActivity;
 
-[HttpPut("customers/{CustomerId:CustomerId}/activities/{ActivityId:Guid}")]
-[Authorize]
-public sealed class UpdateActivityEndpoint : Endpoint<UpdateActivityRequest, CustomerResponse>
+public sealed class UpdateActivityEndpoint : Endpoint<UpdateActivityRequest, IResult>
 {
     private readonly ISender _sender;
 
@@ -21,11 +18,18 @@ public sealed class UpdateActivityEndpoint : Endpoint<UpdateActivityRequest, Cus
         _sender = sender;
     }
 
-    public override async Task HandleAsync(UpdateActivityRequest req, CancellationToken ct)
+    public override void Configure()
+    {
+        Put("customers/{@cId}/activities/{@aId}", x => new { x.CustomerId, x.ActivityId, });
+    }
+
+    public override async Task<IResult> ExecuteAsync(
+        UpdateActivityRequest req,
+        CancellationToken ct)
     {
         var command = new UpdateActivityCommand(req.CustomerId, req.ActivityId, req.Name);
-        var customer = await _sender.Send(command, ct);
+        var activity = await _sender.Send(command, ct);
 
-        await SendOkAsync(customer, ct);
+        return HttpContext.CreateOkResponse(activity);
     }
 }
