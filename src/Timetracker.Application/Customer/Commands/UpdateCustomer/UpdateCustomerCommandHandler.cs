@@ -1,27 +1,23 @@
-using Ardalis.GuardClauses;
-using AutoMapper;
-using LanguageExt.Common;
+using ErrorOr;
 using MediatR;
 using Timetracker.Application.Contracts;
+using Timetracker.Application.Mapping;
 using Timetracker.Shared.Interfaces;
 
 namespace Timetracker.Application.Customer.Commands.UpdateCustomer;
 
 public class
-    UpdateCustomerCommandHandler : IRequestHandler<UpdateCustomerCommand, Result<CustomerResponse>>
+    UpdateCustomerCommandHandler : IRequestHandler<UpdateCustomerCommand, ErrorOr<CustomerResponse>>
 {
-    private readonly IMapper _mapper;
     private readonly IRepository<Domain.CustomerAggregate.Customer> _repository;
 
     public UpdateCustomerCommandHandler(
-        IMapper mapper,
         IRepository<Domain.CustomerAggregate.Customer> repository)
     {
-        _mapper = mapper;
         _repository = repository;
     }
 
-    public async Task<Result<CustomerResponse>> Handle(
+    public async Task<ErrorOr<CustomerResponse>> Handle(
         UpdateCustomerCommand request,
         CancellationToken cancellationToken)
     {
@@ -31,10 +27,7 @@ public class
 
         if (customer == null)
         {
-            return new Result<CustomerResponse>(
-                new NotFoundException(
-                    request.Id.ToString(),
-                    nameof(Domain.CustomerAggregate.Customer)));
+            return Errors.Customer.NotFound;
         }
 
         customer.UpdateName(request.Name);
@@ -43,6 +36,6 @@ public class
         await _repository.UpdateAsync(customer, cancellationToken);
         await _repository.SaveChangesAsync(cancellationToken);
 
-        return _mapper.Map<CustomerResponse>(customer);
+        return customer.Map();
     }
 }

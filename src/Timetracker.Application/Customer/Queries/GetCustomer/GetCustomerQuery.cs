@@ -2,11 +2,11 @@
 // Copyright (c) gustafwingren. All rights reserved.
 // </copyright>
 
-using LanguageExt.Common;
+using ErrorOr;
 using MediatR;
 using Timetracker.Application.Contracts;
 using Timetracker.Domain.CustomerAggregate.ValueObjects;
 
 namespace Timetracker.Application.Customer.Queries.GetCustomer;
 
-public record GetCustomerQuery(CustomerId Id) : IRequest<Result<CustomerResponse>>;
+public record GetCustomerQuery(CustomerId Id) : IRequest<ErrorOr<CustomerResponse>>;

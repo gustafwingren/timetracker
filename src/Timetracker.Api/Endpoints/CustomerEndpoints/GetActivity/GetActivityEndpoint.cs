@@ -4,12 +4,12 @@
 
 using FastEndpoints;
 using MediatR;
-using Timetracker.Api.Extensions;
+using Timetracker.Application.Contracts;
 using Timetracker.Application.Customer.Queries.GetActivity;
 
 namespace Timetracker.Api.Endpoints.CustomerEndpoints.GetActivity;
 
-public class GetActivityEndpoint : Endpoint<GetActivityRequest, IResult>
+public class GetActivityEndpoint : Endpoint<GetActivityRequest, ActivityResponse>
 {
     private readonly ISender _sender;
 
@@ -23,7 +23,7 @@ public class GetActivityEndpoint : Endpoint<GetActivityRequest, IResult>
         Get("customers/{@cId}/activity/{@aId}", x => new { x.CustomerId, x.ActivityId, });
     }
 
-    public override async Task<IResult> ExecuteAsync(GetActivityRequest req, CancellationToken ct)
+    public override async Task HandleAsync(GetActivityRequest req, CancellationToken ct)
     {
         var query = new GetActivityQuery(
             req.CustomerId,
@@ -31,6 +31,6 @@ public class GetActivityEndpoint : Endpoint<GetActivityRequest, IResult>
 
         var activity = await _sender.Send(query, ct);
 
-        return HttpContext.CreateOkResponse(activity);
+        await SendInterceptedAsync(activity, cancellation: ct);
     }
 }

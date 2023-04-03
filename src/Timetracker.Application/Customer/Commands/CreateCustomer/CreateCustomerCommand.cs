@@ -2,8 +2,7 @@
 // Copyright (c) gustafwingren. All rights reserved.
 // </copyright>
 
-using LanguageExt.Common;
-using MediatR;
+using ErrorOr;
 using Timetracker.Application.Common.Interfaces;
 using Timetracker.Application.Contracts;
 using Timetracker.Domain.Common.Ids;
@@ -15,7 +14,6 @@ public record CreateCustomerCommand(
     string Number,
     List<ActivityCommandDto> Activities,
     UserId UserId) :
-    IRequest<Result<CustomerResponse>>,
-    ICommandRequest;
+    ICommand<ErrorOr<CustomerResponse>>;
 
 public record ActivityCommandDto(string Name);

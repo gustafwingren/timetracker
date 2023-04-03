@@ -1,5 +1,4 @@
-using LanguageExt.Common;
-using MediatR;
+using ErrorOr;
 using Timetracker.Application.Common.Interfaces;
 using Timetracker.Application.Contracts;
 using Timetracker.Domain.CustomerAggregate.ValueObjects;
@@ -7,5 +6,4 @@ using Timetracker.Domain.CustomerAggregate.ValueObjects;
 namespace Timetracker.Application.Customer.Commands.UpdateCustomer;
 
 public record UpdateCustomerCommand(CustomerId Id, string Name, string Number) :
-    IRequest<Result<CustomerResponse>>,
-    ICommandRequest;
+    ICommand<ErrorOr<CustomerResponse>>;

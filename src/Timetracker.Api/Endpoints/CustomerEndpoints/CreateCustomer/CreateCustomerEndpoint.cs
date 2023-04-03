@@ -5,13 +5,13 @@
 using FastEndpoints;
 using MediatR;
 using Microsoft.Identity.Web;
-using Timetracker.Api.Extensions;
+using Timetracker.Application.Contracts;
 using Timetracker.Application.Customer.Commands.CreateCustomer;
 using Timetracker.Domain.Common.Ids;
 
 namespace Timetracker.Api.Endpoints.CustomerEndpoints.CreateCustomer;
 
-public class CreateCustomerEndpoint : Endpoint<CreateCustomerRequest, IResult>
+public class CreateCustomerEndpoint : Endpoint<CreateCustomerRequest, CustomerResponse>
 {
     private readonly ISender _sender;
 
@@ -25,9 +25,7 @@ public class CreateCustomerEndpoint : Endpoint<CreateCustomerRequest, IResult>
         Post("customers");
     }
 
-    public override async Task<IResult> ExecuteAsync(
-        CreateCustomerRequest req,
-        CancellationToken ct)
+    public override async Task HandleAsync(CreateCustomerRequest req, CancellationToken ct)
     {
         var userId = HttpContext.User.GetObjectId();
 
@@ -44,6 +42,6 @@ public class CreateCustomerEndpoint : Endpoint<CreateCustomerRequest, IResult>
                 new UserId(Guid.Parse(userId))),
             ct);
 
-        return HttpContext.CreateCreatedResponse(customer);
+        await SendInterceptedAsync(customer, cancellation: ct);
     }
 }

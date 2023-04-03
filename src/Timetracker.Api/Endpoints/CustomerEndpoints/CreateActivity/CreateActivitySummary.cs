@@ -14,7 +14,7 @@ public class CreateActivitySummary : Summary<CreateActivityEndpoint>
     {
         Summary = "Create activity";
         Description = "Use this endpoint to add a Activity to an existing Customer";
-        ExampleRequest = new CreateActivityRequest(CustomerId.New(), "Name of Activity");
+        ExampleRequest = new CreateActivityRequest(Guid.NewGuid(), "Name of Activity");
         Response(
             201,
             "Activity created",

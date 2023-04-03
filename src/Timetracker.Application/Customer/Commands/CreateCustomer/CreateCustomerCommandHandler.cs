@@ -2,10 +2,10 @@
 // Copyright (c) gustafwingren. All rights reserved.
 // </copyright>
 
-using AutoMapper;
-using LanguageExt.Common;
+using ErrorOr;
 using MediatR;
 using Timetracker.Application.Contracts;
+using Timetracker.Application.Mapping;
 using Timetracker.Domain.CustomerAggregate.Entities;
 using Timetracker.Shared.Interfaces;
 
@@ -13,20 +13,17 @@ namespace Timetracker.Application.Customer.Commands.CreateCustomer;
 
 public sealed class
     CreateCustomerCommandHandler : IRequestHandler<CreateCustomerCommand,
-        Result<CustomerResponse>>
+        ErrorOr<CustomerResponse>>
 {
     private readonly IRepository<Domain.CustomerAggregate.Customer> _customerRepository;
-    private readonly IMapper _mapper;
 
     public CreateCustomerCommandHandler(
-        IMapper mapper,
         IRepository<Domain.CustomerAggregate.Customer> customerRepository)
     {
-        _mapper = mapper;
         _customerRepository = customerRepository;
     }
 
-    public async Task<Result<CustomerResponse>> Handle(
+    public async Task<ErrorOr<CustomerResponse>> Handle(
         CreateCustomerCommand request,
         CancellationToken cancellationToken)
     {
@@ -37,11 +34,6 @@ public sealed class
 
         var newCustomer = await _customerRepository.AddAsync(customer, cancellationToken);
 
-        if (newCustomer == null)
-        {
-            return new Result<CustomerResponse>(new NullReferenceException());
-        }
-
         if (request.Activities.Any())
         {
             foreach (var requestActivity in request.Activities)
@@ -50,6 +42,6 @@ public sealed class
 
         await _customerRepository.SaveChangesAsync(cancellationToken);
 
-        return _mapper.Map<CustomerResponse>(newCustomer);
+        return newCustomer.Map();
     }
 }

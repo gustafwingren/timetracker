@@ -4,12 +4,12 @@
 
 using FastEndpoints;
 using MediatR;
-using Timetracker.Api.Extensions;
+using Timetracker.Application.Contracts;
 using Timetracker.Application.Customer.Commands.UpdateActivity;
 
 namespace Timetracker.Api.Endpoints.CustomerEndpoints.UpdateActivity;
 
-public sealed class UpdateActivityEndpoint : Endpoint<UpdateActivityRequest, IResult>
+public sealed class UpdateActivityEndpoint : Endpoint<UpdateActivityRequest, ActivityResponse>
 {
     private readonly ISender _sender;
 
@@ -23,13 +23,11 @@ public sealed class UpdateActivityEndpoint : Endpoint<UpdateActivityRequest, IRe
         Put("customers/{@cId}/activities/{@aId}", x => new { x.CustomerId, x.ActivityId, });
     }
 
-    public override async Task<IResult> ExecuteAsync(
-        UpdateActivityRequest req,
-        CancellationToken ct)
+    public override async Task HandleAsync(UpdateActivityRequest req, CancellationToken ct)
     {
         var command = new UpdateActivityCommand(req.CustomerId, req.ActivityId, req.Name);
         var activity = await _sender.Send(command, ct);
 
-        return HttpContext.CreateOkResponse(activity);
+        await SendInterceptedAsync(activity, cancellation: ct);
     }
 }

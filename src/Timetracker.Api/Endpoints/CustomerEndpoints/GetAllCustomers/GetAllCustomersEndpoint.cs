@@ -6,7 +6,7 @@ using FastEndpoints;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Identity.Web;
-using Timetracker.Api.Extensions;
+using Timetracker.Application.Contracts;
 using Timetracker.Application.Customer.Queries.GetCustomers;
 using Timetracker.Domain.Common.Ids;
 
@@ -14,7 +14,7 @@ namespace Timetracker.Api.Endpoints.CustomerEndpoints.GetAllCustomers;
 
 [HttpGet("customers")]
 [Authorize]
-public class GetAllCustomersEndpoint : EndpointWithoutRequest<IResult>
+public class GetAllCustomersEndpoint : EndpointWithoutRequest<List<CustomerResponse>>
 {
     private readonly ISender _sender;
 
@@ -23,19 +23,19 @@ public class GetAllCustomersEndpoint : EndpointWithoutRequest<IResult>
         _sender = sender;
     }
 
-    public override async Task<IResult> ExecuteAsync(CancellationToken ct)
+    public override async Task HandleAsync(CancellationToken ct)
     {
         var userId = HttpContext.User.GetObjectId();
 
         if (userId == null)
         {
-            return Results.Unauthorized();
+            await SendUnauthorizedAsync(ct);
         }
 
         var customers = await _sender.Send(
             new GetCustomersQuery(new UserId(Guid.Parse(userId))),
             ct);
 
-        return HttpContext.CreateOkResponse(customers);
+        await SendInterceptedAsync(customers, cancellation: ct);
     }
 }

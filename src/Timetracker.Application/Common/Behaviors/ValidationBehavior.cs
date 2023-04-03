@@ -2,15 +2,18 @@
 // Copyright (c) gustafwingren. All rights reserved.
 // </copyright>
 
+using System.Reflection;
+using ErrorOr;
 using FluentValidation;
+using FluentValidation.Results;
 using MediatR;
 using Timetracker.Application.Common.Interfaces;
 
 namespace Timetracker.Application.Common.Behaviors;
 
 public sealed class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
-    where TRequest : ICommandRequest
-    where TResponse : class, new()
+    where TRequest : ICommand<TResponse>
+    where TResponse : IErrorOr
 {
     private readonly IEnumerable<IValidator<TRequest>> _validators;
 
@@ -24,7 +27,7 @@ public sealed class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<
         RequestHandlerDelegate<TResponse> next,
         CancellationToken cancellationToken)
     {
-        if (_validators.Any())
+        if (!_validators.Any())
         {
             return await next();
         }
@@ -44,8 +47,27 @@ public sealed class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<
             return await next();
         }
 
-        var validationResult = new ValidationException(failures);
+        return TryCreateResponseFromErrors(failures, out var response)
+            ? response
+            : throw new ValidationException(failures);
+    }
 
-        return validationResult as TResponse ?? throw new NullReferenceException();
+    private static bool TryCreateResponseFromErrors(
+        List<ValidationFailure> validationFailures,
+        out TResponse response)
+    {
+        var errors = validationFailures.ConvertAll(
+            x => Error.Validation(
+                x.PropertyName,
+                x.ErrorMessage));
+
+        response = (TResponse?)typeof(TResponse)
+            .GetMethod(
+                nameof(ErrorOr<object>.From),
+                BindingFlags.Static | BindingFlags.Public,
+                new[] { typeof(List<Error>), })?
+            .Invoke(null, new[] { errors, })!;
+
+        return response is not null;
     }
 }

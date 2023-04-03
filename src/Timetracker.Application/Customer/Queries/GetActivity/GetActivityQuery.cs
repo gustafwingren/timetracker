@@ -2,7 +2,7 @@
 // Copyright (c) gustafwingren. All rights reserved.
 // </copyright>
 
-using LanguageExt.Common;
+using ErrorOr;
 using MediatR;
 using Timetracker.Application.Contracts;
 using Timetracker.Domain.CustomerAggregate.ValueObjects;
@@ -10,4 +10,4 @@ using Timetracker.Domain.CustomerAggregate.ValueObjects;
 namespace Timetracker.Application.Customer.Queries.GetActivity;
 
 public record GetActivityQuery
-    (CustomerId CustomerId, ActivityId ActivityId) : IRequest<Result<ActivityResponse>>;
+    (CustomerId CustomerId, ActivityId ActivityId) : IRequest<ErrorOr<ActivityResponse>>;

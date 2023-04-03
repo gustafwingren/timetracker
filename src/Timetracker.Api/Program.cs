@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Identity.Web;
 using NSwag;
 using NSwag.AspNetCore;
+using Timetracker.Api.Interceptors;
+using Timetracker.Api.PreProcessors;
 using Timetracker.Application;
 using Timetracker.Infrastructure;
 
@@ -81,7 +83,15 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.UseFastEndpoints();
+app.UseFastEndpoints(
+    c =>
+    {
+        c.Endpoints.Configurator = ep =>
+        {
+            ep.ResponseInterceptor(new ResponseInterceptor());
+            ep.PreProcessors(Order.Before, new ValidationPreProcessor());
+        };
+    });
 app.UseOpenApi();
 app.UseSwaggerUi3(
     s =>

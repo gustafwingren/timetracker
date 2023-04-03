@@ -2,8 +2,7 @@
 // Copyright (c) gustafwingren. All rights reserved.
 // </copyright>
 
-using LanguageExt.Common;
-using MediatR;
+using ErrorOr;
 using Timetracker.Application.Common.Interfaces;
 using Timetracker.Application.Contracts;
 using Timetracker.Domain.CustomerAggregate.ValueObjects;
@@ -14,4 +13,4 @@ public record UpdateActivityCommand
 (
     CustomerId CustomerId,
     ActivityId ActivityId,
-    string Name) : IRequest<Result<ActivityResponse>>, ICommandRequest;
+    string Name) : ICommand<ErrorOr<ActivityResponse>>;

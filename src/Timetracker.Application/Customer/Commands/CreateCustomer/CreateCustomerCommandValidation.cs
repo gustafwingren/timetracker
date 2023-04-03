@@ -39,8 +39,8 @@ public sealed class CreateCustomerCommandValidation : AbstractValidator<CreateCu
 
     private async Task<bool> BeUniqueNumber(string number, CancellationToken cancellationToken)
     {
-        return await _customerRepository.AnyAsync(
+        return await _customerRepository.FirstOrDefaultAsync(
             new UniqueNumberSpecification(number),
-            cancellationToken);
+            cancellationToken) != null;
     }
 }

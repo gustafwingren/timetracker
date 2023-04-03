@@ -2,32 +2,28 @@
 // Copyright (c) gustafwingren. All rights reserved.
 // </copyright>
 
-using AutoMapper;
-using LanguageExt.Common;
+using ErrorOr;
 using MediatR;
 using Timetracker.Application.Contracts;
+using Timetracker.Application.Mapping;
 using Timetracker.Domain.CustomerAggregate.Specifications;
 using Timetracker.Shared.Interfaces;
 
 namespace Timetracker.Application.Customer.Queries.GetCustomers;
 
 public sealed class
-    GetCustomersQueryHandler : IRequestHandler<GetCustomersQuery, Result<List<CustomerResponse>>>
+    GetCustomersQueryHandler : IRequestHandler<GetCustomersQuery, ErrorOr<List<CustomerResponse>>>
 {
     private readonly IReadRepository<Domain.CustomerAggregate.Customer>
         _customerRepository;
 
-    private readonly IMapper _mapper;
-
     public GetCustomersQueryHandler(
-        IMapper mapper,
         IReadRepository<Domain.CustomerAggregate.Customer> customerRepository)
     {
-        _mapper = mapper;
         _customerRepository = customerRepository;
     }
 
-    public async Task<Result<List<CustomerResponse>>> Handle(
+    public async Task<ErrorOr<List<CustomerResponse>>> Handle(
         GetCustomersQuery request,
         CancellationToken cancellationToken)
     {
@@ -35,6 +31,6 @@ public sealed class
             new GetCustomersSpecification(request.UserId),
             cancellationToken);
 
-        return _mapper.Map<List<CustomerResponse>>(customers);
+        return customers.Select(x => x.Map()).ToList();
     }
 }

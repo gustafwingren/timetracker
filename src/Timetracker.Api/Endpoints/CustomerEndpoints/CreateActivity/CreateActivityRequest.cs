@@ -2,8 +2,6 @@
 // Copyright (c) gustafwingren. All rights reserved.
 // </copyright>
 
-using Timetracker.Domain.CustomerAggregate.ValueObjects;
-
 namespace Timetracker.Api.Endpoints.CustomerEndpoints.CreateActivity;
 
-public record CreateActivityRequest(CustomerId Id, string Name);
+public record CreateActivityRequest(Guid CustomerId, string Name);

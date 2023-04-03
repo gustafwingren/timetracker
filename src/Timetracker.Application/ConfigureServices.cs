@@ -2,7 +2,7 @@
 // Copyright (c) gustafwingren. All rights reserved.
 // </copyright>
 
-using System.Reflection;
+using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using Timetracker.Application.Common.Behaviors;
@@ -14,14 +14,10 @@ public static class ConfigureServices
     public static IServiceCollection AddApplicationServices(
         this IServiceCollection serviceCollection)
     {
-        serviceCollection.AddAutoMapper(Assembly.GetExecutingAssembly());
+        serviceCollection.AddValidatorsFromAssembly(typeof(ConfigureServices).Assembly);
         serviceCollection.AddMediatR(
-            cfg =>
-            {
-                cfg.RegisterServicesFromAssembly(typeof(ConfigureServices).Assembly);
-                cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
-            }
-        );
+            cfg => cfg.RegisterServicesFromAssembly(typeof(ConfigureServices).Assembly));
+        serviceCollection.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 
         return serviceCollection;
     }

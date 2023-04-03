@@ -2,14 +2,13 @@
 // Copyright (c) gustafwingren. All rights reserved.
 // </copyright>
 
-using Ardalis.GuardClauses;
-using LanguageExt.Common;
+using ErrorOr;
 using MediatR;
 using Timetracker.Shared.Interfaces;
 
 namespace Timetracker.Application.Customer.Commands.DeleteCustomer;
 
-public class DeleteCustomerCommandHandler : IRequestHandler<DeleteCustomerCommand, Result<int>>
+public class DeleteCustomerCommandHandler : IRequestHandler<DeleteCustomerCommand, ErrorOr<int>>
 {
     private readonly IRepository<Domain.CustomerAggregate.Customer> _repository;
 
@@ -19,7 +18,7 @@ public class DeleteCustomerCommandHandler : IRequestHandler<DeleteCustomerComman
         _repository = repository;
     }
 
-    public async Task<Result<int>> Handle(
+    public async Task<ErrorOr<int>> Handle(
         DeleteCustomerCommand request,
         CancellationToken cancellationToken)
     {
@@ -29,10 +28,7 @@ public class DeleteCustomerCommandHandler : IRequestHandler<DeleteCustomerComman
 
         if (customer == null)
         {
-            return new Result<int>(
-                new NotFoundException(
-                    request.Id.ToString(),
-                    nameof(Domain.CustomerAggregate.Customer)));
+            return Errors.Customer.NotFound;
         }
 
         await _repository.DeleteAsync(customer, cancellationToken);

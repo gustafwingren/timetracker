@@ -4,12 +4,12 @@
 
 using FastEndpoints;
 using MediatR;
-using Timetracker.Api.Extensions;
+using Timetracker.Application.Contracts;
 using Timetracker.Application.Customer.Commands.DeleteActivity;
 
 namespace Timetracker.Api.Endpoints.CustomerEndpoints.DeleteActivity;
 
-public sealed class DeleteActivityEndpoint : Endpoint<DeleteActivityRequest, IResult>
+public sealed class DeleteActivityEndpoint : Endpoint<DeleteActivityRequest, CustomerResponse>
 {
     private readonly ISender _sender;
 
@@ -25,13 +25,11 @@ public sealed class DeleteActivityEndpoint : Endpoint<DeleteActivityRequest, IRe
             x => new { x.CustomerId, x.ActivityId, });
     }
 
-    public override async Task<IResult> ExecuteAsync(
-        DeleteActivityRequest req,
-        CancellationToken ct)
+    public override async Task HandleAsync(DeleteActivityRequest req, CancellationToken ct)
     {
         var command = new DeleteActivityCommand(req.CustomerId, req.ActivityId);
         var customer = await _sender.Send(command, ct);
 
-        return HttpContext.CreateOkResponse(customer);
+        await SendInterceptedAsync(customer, cancellation: ct);
     }
 }

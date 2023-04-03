@@ -2,31 +2,27 @@
 // Copyright (c) gustafwingren. All rights reserved.
 // </copyright>
 
-using Ardalis.GuardClauses;
-using AutoMapper;
-using LanguageExt.Common;
+using ErrorOr;
 using MediatR;
 using Timetracker.Application.Contracts;
+using Timetracker.Application.Mapping;
 using Timetracker.Domain.CustomerAggregate.Entities;
 using Timetracker.Shared.Interfaces;
 
 namespace Timetracker.Application.Customer.Commands.AddActivity;
 
 public sealed class
-    AddActivityCommandHandler : IRequestHandler<AddActivityCommand, Result<CustomerResponse>>
+    AddActivityCommandHandler : IRequestHandler<AddActivityCommand, ErrorOr<CustomerResponse>>
 {
-    private readonly IMapper _mapper;
     private readonly IRepository<Domain.CustomerAggregate.Customer> _repository;
 
     public AddActivityCommandHandler(
-        IMapper mapper,
         IRepository<Domain.CustomerAggregate.Customer> repository)
     {
-        _mapper = mapper;
         _repository = repository;
     }
 
-    public async Task<Result<CustomerResponse>> Handle(
+    public async Task<ErrorOr<CustomerResponse>> Handle(
         AddActivityCommand request,
         CancellationToken cancellationToken)
     {
@@ -36,16 +32,13 @@ public sealed class
 
         if (customer == null)
         {
-            return new Result<CustomerResponse>(
-                new NotFoundException(
-                    request.Id.ToString(),
-                    nameof(Domain.CustomerAggregate.Customer)));
+            return Errors.Customer.NotFound;
         }
 
         customer.AddActivity(Activity.Create(request.Name));
 
         await _repository.SaveChangesAsync(cancellationToken);
 
-        return _mapper.Map<CustomerResponse>(customer);
+        return customer.Map();
     }
 }
