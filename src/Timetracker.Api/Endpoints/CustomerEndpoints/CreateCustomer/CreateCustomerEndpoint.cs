@@ -38,7 +38,7 @@ public class CreateCustomerEndpoint : Endpoint<CreateCustomerRequest, CustomerRe
             new CreateCustomerCommand(
                 req.Name,
                 req.Number,
-                req.Activities.Select(x => new ActivityCommandDto(x.Name)).ToList(),
+                req.Activities?.Select(x => new ActivityCommandDto(x.Name)).ToList(),
                 new UserId(Guid.Parse(userId))),
             ct);
 

@@ -16,8 +16,8 @@ public class DeleteActivitySummary : Summary<DeleteActivityEndpoint>
         Summary = "Delete activity";
         Description = "Use this endpoint to delete an activity.";
         ExampleRequest = new DeleteActivityRequest(
-            CustomerId.New(),
-            ActivityId.New());
+            Guid.NewGuid(),
+            Guid.NewGuid());
         Response(
             200,
             "Activity deleted",

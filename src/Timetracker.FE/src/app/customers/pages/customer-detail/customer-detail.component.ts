@@ -17,10 +17,10 @@ import { CustomerService } from '../../services/customer.service';
 })
 export class CustomerDetailComponent implements OnInit {
   customer!: CustomerDto;
-  customerForm!: FormGroup<{
-    name: FormControl<string | null>;
-    number: FormControl<string | null>;
-  }>;
+  formModel: CustomerForm = {
+    name: '',
+    number: '',
+  };
   loadingUpdate = false;
   loadingDelete = false;
 
@@ -34,18 +34,18 @@ export class CustomerDetailComponent implements OnInit {
   ngOnInit(): void {
     this.route.data.subscribe(data => {
       this.customer = data['customer'];
-      this.customerForm = this.formBuilder.group({
-        name: [this.customer.name, Validators.required],
-        number: [this.customer.number, Validators.required],
-      });
+      this.formModel = {
+        name: this.customer.name,
+        number: this.customer.number,
+      };
     });
   }
 
   onSubmit() {
     this.loadingUpdate = true;
     const customer: CustomerCreateDto = {
-      name: this.customerForm.controls.name.value ?? '',
-      number: this.customerForm.controls.number.value ?? '',
+      name: this.formModel.name,
+      number: this.formModel.number,
     };
 
     this.customerService
@@ -62,4 +62,14 @@ export class CustomerDetailComponent implements OnInit {
       this.router.navigateByUrl('/customers');
     });
   }
+}
+interface CustomerForm {
+  name: string;
+  number: string;
+  activities?: ActivityForm[];
+}
+
+interface ActivityForm {
+  name: string;
+  id: string;
 }

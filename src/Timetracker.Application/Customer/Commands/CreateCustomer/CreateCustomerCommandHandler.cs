@@ -34,7 +34,7 @@ public sealed class
 
         var newCustomer = await _customerRepository.AddAsync(customer, cancellationToken);
 
-        if (request.Activities.Any())
+        if (request.Activities != null && request.Activities.Any())
         {
             foreach (var requestActivity in request.Activities)
                 newCustomer.AddActivity(Activity.Create(requestActivity.Name));

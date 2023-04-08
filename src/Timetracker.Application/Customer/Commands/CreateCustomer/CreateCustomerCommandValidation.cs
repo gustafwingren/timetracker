@@ -41,6 +41,6 @@ public sealed class CreateCustomerCommandValidation : AbstractValidator<CreateCu
     {
         return await _customerRepository.FirstOrDefaultAsync(
             new UniqueNumberSpecification(number),
-            cancellationToken) != null;
+            cancellationToken) == null;
     }
 }

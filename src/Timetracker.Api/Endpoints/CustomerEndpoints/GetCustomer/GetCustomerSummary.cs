@@ -15,7 +15,7 @@ public class GetCustomerSummary : Summary<GetCustomerEndpoint>
     {
         Summary = "Get a customer";
         Description = "Use this endpoint to get a customer";
-        ExampleRequest = new GetCustomerRequest(CustomerId.New());
+        ExampleRequest = new GetCustomerRequest(Guid.NewGuid());
         Response(
             200,
             "Customer",

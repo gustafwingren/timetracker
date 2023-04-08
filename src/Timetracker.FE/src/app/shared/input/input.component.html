@@ -1,13 +1,18 @@
 <input
   type="text"
-  [name]="id"
-  [id]="id"
+  [name]="name"
   [placeholder]="placeholder"
   [required]="isRequired"
-  [formControl]="inputControl"
-  class="block w-full rounded-md border-0 py-1.5 px-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
+  [ngModel]="value"
+  (ngModelChange)="valueChange.emit($event)"
+  #input="ngModel"
+  class="block w-full rounded-md border-0 py-1.5 px-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+  [ngClass]="{ 'ng-invalid': serverValidationFailed }" />
 <div
-  *ngIf="inputControl.invalid && (inputControl.dirty || inputControl.touched)"
+  *ngIf="
+    (input.invalid && (input.dirty || input.touched)) || serverValidationFailed
+  "
   class="alert">
-  <div *ngIf="inputControl.errors?.['required']">{{ name }} is required.</div>
+  <div *ngIf="input.errors?.['required']">{{ name }} is required.</div>
+  <div *ngFor="let error of serverValidationErrors">{{ error }}</div>
 </div>

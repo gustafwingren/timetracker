@@ -15,7 +15,7 @@ public class GetActivitySummary : Summary<GetActivityEndpoint>
     {
         Summary = "Get activity for a customer";
         Description = "Use this endpoint to get activity for a customer";
-        ExampleRequest = new GetActivityRequest(CustomerId.New(), ActivityId.New());
+        ExampleRequest = new GetActivityRequest(Guid.NewGuid(), Guid.NewGuid());
         Response(
             200,
             "Activity for customer",

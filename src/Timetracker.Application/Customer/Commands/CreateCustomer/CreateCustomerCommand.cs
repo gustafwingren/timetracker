@@ -12,7 +12,7 @@ namespace Timetracker.Application.Customer.Commands.CreateCustomer;
 public record CreateCustomerCommand(
     string Name,
     string Number,
-    List<ActivityCommandDto> Activities,
+    List<ActivityCommandDto>? Activities,
     UserId UserId) :
     ICommand<ErrorOr<CustomerResponse>>;
 

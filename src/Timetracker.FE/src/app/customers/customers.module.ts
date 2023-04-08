@@ -8,7 +8,7 @@ import { CustomerDetailComponent } from './pages/customer-detail/customer-detail
 import { CustomerNewComponent } from './pages/customer-new/customer-new.component';
 import { ActivityDetailComponent } from './pages/activity-detail/activity-detail.component';
 import { ActivityNewComponent } from './pages/activity-new/activity-new.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
@@ -26,6 +26,7 @@ import { SharedModule } from '../shared/shared.module';
     CustomersRoutingModule,
     ReactiveFormsModule,
     SharedModule,
+    FormsModule,
   ],
 })
 export class CustomersModule {}

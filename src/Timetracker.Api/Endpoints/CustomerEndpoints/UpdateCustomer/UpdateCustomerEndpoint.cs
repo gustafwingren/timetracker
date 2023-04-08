@@ -6,6 +6,7 @@ using FastEndpoints;
 using MediatR;
 using Timetracker.Application.Contracts;
 using Timetracker.Application.Customer.Commands.UpdateCustomer;
+using Timetracker.Domain.CustomerAggregate.ValueObjects;
 
 namespace Timetracker.Api.Endpoints.CustomerEndpoints.UpdateCustomer;
 
@@ -20,13 +21,13 @@ public class UpdateCustomerEndpoint : Endpoint<UpdateCustomerRequest, CustomerRe
 
     public override void Configure()
     {
-        Put("customers/{@cId}", x => new { x.Id, });
+        Put("customers/{Id:Guid}");
     }
 
     public override async Task HandleAsync(UpdateCustomerRequest req, CancellationToken ct)
     {
         var customer = await _sender.Send(
-            new UpdateCustomerCommand(req.Id, req.Name, req.Number),
+            new UpdateCustomerCommand(new CustomerId(req.Id), req.Name, req.Number),
             ct);
 
         await SendInterceptedAsync(customer, cancellation: ct);

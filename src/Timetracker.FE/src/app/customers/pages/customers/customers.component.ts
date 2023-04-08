@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CustomerService } from '../../services/customer.service';
 import { CustomerDto } from '../../models/customer-dto';
+import { map } from 'rxjs';
 
 @Component({
   selector: 'app-customers',

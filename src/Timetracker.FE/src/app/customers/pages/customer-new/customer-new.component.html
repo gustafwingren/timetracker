@@ -18,18 +18,22 @@
       </div>
     </div>
     <div class="mt-5 md:col-span-2 md:mt-0">
-      <form [formGroup]="customerForm" (ngSubmit)="onSubmit()">
+      <form #form="ngForm" (submit)="onSubmit()">
         <div class="overflow-hidden shadow sm:rounded-md">
           <div class="bg-white px-4 py-5 sm:p-6">
             <div class="grid grid-cols-6 gap-6">
               <app-labeled-input
                 name="Name"
-                [inputControl]="customerForm.controls.name"
+                [(value)]="model.name"
+                [serverValidationFailed]="hasError && containsError('Name')"
+                [serverValidationErrors]="errorsForField('Name')"
                 [isRequired]="true"
                 class="col-span-6 mt-2"></app-labeled-input>
               <app-labeled-input
                 name="Number"
-                [inputControl]="customerForm.controls.number"
+                [(value)]="model.number"
+                [serverValidationFailed]="hasError && containsError('Number')"
+                [serverValidationErrors]="errorsForField('Number')"
                 [isRequired]="true"
                 class="col-span-6 mt-2"></app-labeled-input>
 
@@ -37,29 +41,31 @@
                 <label class="block text-sm font-medium leading-6 text-gray-900"
                   >Activities</label
                 >
-                <ng-container formArrayName="activities">
+                <ng-container ngModelGroup="activities">
                   <ng-container
                     *ngFor="
-                      let activityForm of activities.controls;
+                      let activityForm of model.activities;
                       let index = index
                     ">
-                    <ng-container [formGroupName]="index">
-                      <div class="mt-4 flex w-full items-start justify-center">
-                        <app-input
-                          [name]="'Name'"
-                          [placeholder]="'Name'"
-                          [id]="'activityName_' + index"
-                          [inputControl]="activityForm"
-                          [isRequired]="true"
-                          class="mr-4 block w-full"></app-input>
-                        <app-button-accent
-                          type="button"
-                          text="Remove"
-                          (clickEvent)="
-                            removeActivity(index)
-                          "></app-button-accent>
-                      </div>
-                    </ng-container>
+                    <div class="mt-4 flex w-full items-start justify-center">
+                      <app-input
+                        [name]="'activityName_' + index"
+                        [placeholder]="'Name'"
+                        [id]="'activityName_' + index"
+                        [(value)]="activityForm.name"
+                        [isRequired]="true"
+                        [serverValidationFailed]="
+                          hasError && containsError('Name')
+                        "
+                        [serverValidationErrors]="errorsForField('Name')"
+                        class="mr-4 block w-full"></app-input>
+                      <app-button-accent
+                        type="button"
+                        text="Remove"
+                        (clickEvent)="
+                          removeActivity(activityForm.id)
+                        "></app-button-accent>
+                    </div>
                   </ng-container>
                 </ng-container>
                 <app-button-primary
@@ -73,7 +79,7 @@
           <div class="bg-gray-50 px-4 py-3 text-right sm:px-6">
             <app-button-primary
               type="submit"
-              [disabled]="customerForm.invalid || loading"
+              [disabled]="form.invalid || loading"
               text="Save"
               [loading]="loading"></app-button-primary>
           </div>

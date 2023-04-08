@@ -15,7 +15,7 @@ public class UpdateActivitySummary : Summary<UpdateActivityEndpoint>
     {
         Summary = "Update activity";
         Description = "Use this endpoint to update an activity";
-        ExampleRequest = new UpdateActivityRequest(CustomerId.New(), ActivityId.New(), "New name");
+        ExampleRequest = new UpdateActivityRequest(Guid.NewGuid(), Guid.NewGuid(), "New name");
         Response(
             200,
             "Updated customer",

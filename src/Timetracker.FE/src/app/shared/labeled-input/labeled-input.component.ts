@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormControl } from '@angular/forms';
 
 @Component({
@@ -8,7 +8,9 @@ import { FormControl } from '@angular/forms';
 })
 export class LabeledInputComponent {
   @Input() name!: string;
-  @Input() id!: string;
-  @Input() inputControl!: FormControl;
+  @Input() value = '';
+  @Output() valueChange: EventEmitter<string> = new EventEmitter<string>();
   @Input() isRequired = false;
+  @Input() serverValidationFailed = false;
+  @Input() serverValidationErrors: string[] = [];
 }

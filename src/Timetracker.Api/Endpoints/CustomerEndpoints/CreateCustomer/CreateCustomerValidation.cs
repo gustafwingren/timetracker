@@ -26,6 +26,6 @@ public class CreateCustomerValidation : Validator<CreateCustomerRequest>
                     x.RuleFor(y => y.Name)
                         .NotNull().WithMessage("Name is required")
                         .NotEmpty().WithMessage("Name is required");
-                }).When(x => x.Activities.Any());
+                }).When(x => x.Activities != null && x.Activities.Any());
     }
 }

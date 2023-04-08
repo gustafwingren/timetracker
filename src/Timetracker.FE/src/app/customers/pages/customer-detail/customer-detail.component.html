@@ -12,18 +12,18 @@
       </div>
     </div>
     <div class="mt-5 md:col-span-2 md:mt-0">
-      <form [formGroup]="customerForm" (ngSubmit)="onSubmit()">
+      <form #form="ngForm" (submit)="onSubmit()">
         <div class="overflow-hidden shadow sm:rounded-md">
           <div class="bg-white px-4 py-5 sm:p-6">
             <div class="grid grid-cols-6 gap-6">
               <app-labeled-input
                 name="Name"
-                [inputControl]="customerForm.controls.name"
+                [(value)]="formModel.name"
                 [isRequired]="true"
                 class="col-span-6 mt-2"></app-labeled-input>
               <app-labeled-input
                 name="Number"
-                [inputControl]="customerForm.controls.number"
+                [value]="formModel.number"
                 [isRequired]="true"
                 class="col-span-6 mt-2"></app-labeled-input>
             </div>
@@ -31,7 +31,7 @@
           <div class="bg-gray-50 px-4 py-3 text-right sm:px-6">
             <app-button-primary
               type="submit"
-              [disabled]="customerForm.invalid || loadingUpdate"
+              [disabled]="form.invalid || loadingUpdate"
               text="Update"
               [loading]="loadingUpdate"></app-button-primary>
             <app-button-accent

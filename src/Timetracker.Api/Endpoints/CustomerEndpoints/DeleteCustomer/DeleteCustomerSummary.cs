@@ -3,7 +3,6 @@
 // </copyright>
 
 using FastEndpoints;
-using Timetracker.Domain.CustomerAggregate.ValueObjects;
 
 namespace Timetracker.Api.Endpoints.CustomerEndpoints.DeleteCustomer;
 
@@ -13,7 +12,7 @@ public class DeleteCustomerSummary : Summary<DeleteCustomerEndpoint>
     {
         Summary = "Delete a customer";
         Description = "Use this endpoint to delete a customer";
-        ExampleRequest = new DeleteCustomerRequest(CustomerId.New());
+        ExampleRequest = new DeleteCustomerRequest(Guid.NewGuid());
         Response(200, "Customer deleted");
         Response(400, "Bad request");
         Response(401, "Unauthorized");

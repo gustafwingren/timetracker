@@ -15,7 +15,7 @@ public class UpdateCustomerSummary : Summary<UpdateCustomerEndpoint>
     {
         Summary = "Update a customer";
         Description = "Use this endpoint to update a customer";
-        ExampleRequest = new UpdateCustomerRequest(CustomerId.New(), "New name", "New number");
+        ExampleRequest = new UpdateCustomerRequest(Guid.NewGuid(), "New name", "New number");
         Response(
             200,
             "Customer updated",
