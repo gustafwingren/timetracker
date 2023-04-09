@@ -82,7 +82,8 @@ module.exports = {
         '950': '#450a0a',
       },
       transparent: 'transparent',
-      current: 'currentColor'
+      current: 'currentColor',
+      white: '#ffffff',
     },
     extend: {},
   },
