@@ -3,13 +3,13 @@
 @tailwind utilities;
 
 .ng-valid[required], .ng-valid.required  {
-  @apply border-l-green-800 border-l-[5px];
+  @apply border-l-spring-rain-700 border-l-[5px];
 }
 
 .ng-invalid:not(form)  {
-  @apply border-l-red-900 border-l-[5px];
+  @apply border-l-flamingo-900 border-l-[5px];
 }
 
 .alert div {
-  @apply text-gray-900 font-light text-sm;
+  @apply text-spring-rain-900 font-light text-sm;
 }
