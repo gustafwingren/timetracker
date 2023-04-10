@@ -9,8 +9,6 @@ import { FormsModule } from '@angular/forms';
 import { LabeledInputComponent } from './labeled-input/labeled-input.component';
 import { SpinnerIconComponent } from './spinner-icon/spinner-icon.component';
 import { ButtonComponent } from './button/button.component';
-import { ButtonPrimaryComponent } from './button-primary/button-primary.component';
-import { ButtonAccentComponent } from './button-accent/button-accent.component';
 
 @NgModule({
   declarations: [
@@ -21,8 +19,6 @@ import { ButtonAccentComponent } from './button-accent/button-accent.component';
     LabeledInputComponent,
     SpinnerIconComponent,
     ButtonComponent,
-    ButtonPrimaryComponent,
-    ButtonAccentComponent,
   ],
   imports: [FormsModule, CommonModule, RouterLink],
   exports: [
@@ -31,8 +27,6 @@ import { ButtonAccentComponent } from './button-accent/button-accent.component';
     LabeledInputComponent,
     SpinnerIconComponent,
     ButtonComponent,
-    ButtonPrimaryComponent,
-    ButtonAccentComponent,
   ],
 })
 export class SharedModule {}

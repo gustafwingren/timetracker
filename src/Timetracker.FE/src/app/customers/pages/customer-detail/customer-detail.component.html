@@ -1,12 +1,12 @@
 <div
-  class="mx-auto mt-8 flex max-w-7xl flex-col rounded-lg border-[1px] border-gray-200 p-6 shadow-md lg:px-8">
+  class="border-gray-200 mx-auto mt-8 flex max-w-7xl flex-col rounded-lg border-[1px] p-6 shadow-md lg:px-8">
   <div class="md:grid md:grid-cols-3 md:gap-6">
     <div class="md:col-span-1">
       <div class="px-4 sm:px-0">
-        <h3 class="text-base font-semibold leading-6 text-gray-900">
+        <h3 class="text-gray-900 text-base font-semibold leading-6">
           Customer information
         </h3>
-        <p class="mt-1 text-sm text-gray-600">
+        <p class="text-gray-600 mt-1 text-sm">
           Fill in the form to add a new customer.
         </p>
       </div>
@@ -29,23 +29,23 @@
             </div>
           </div>
           <div class="bg-gray-50 px-4 py-3 text-right sm:px-6">
-            <app-button-primary
-              type="submit"
-              [disabled]="form.invalid || loadingUpdate"
-              text="Update"
-              [loading]="loadingUpdate"></app-button-primary>
-            <app-button-accent
-              type="button"
-              text="Delete"
-              [loading]="loadingDelete"
-              (clickEvent)="onDelete()"
-              class="ml-4">
-            </app-button-accent>
+            <!--            <app-button-primary-->
+            <!--              type="submit"-->
+            <!--              [disabled]="form.invalid || loadingUpdate"-->
+            <!--              text="Update"-->
+            <!--              [loading]="loadingUpdate"></app-button-primary>-->
+            <!--            <app-button-accent-->
+            <!--              type="button"-->
+            <!--              text="Delete"-->
+            <!--              [loading]="loadingDelete"-->
+            <!--              (clickEvent)="onDelete()"-->
+            <!--              class="ml-4">-->
+            <!--            </app-button-accent>-->
           </div>
         </div>
       </form>
     </div>
-    <div class="col-span-3 h-0.5 bg-gray-200"></div>
+    <div class="bg-gray-200 col-span-3 h-0.5"></div>
     <div class="col-span-3">
       <div class="flex flex-row items-end justify-between">
         <div class="">
@@ -55,7 +55,7 @@
         <div class="">
           <a
             [routerLink]="'/customers/' + customer.id + '/activity/new'"
-            class="rounded-md bg-indigo-600 p-2 text-sm font-semibold leading-6 text-white"
+            class="bg-indigo-600 rounded-md p-2 text-sm font-semibold leading-6 text-white"
             >Add activity</a
           >
         </div>
@@ -64,7 +64,7 @@
         <div class="inline-block min-w-full py-2 sm:px-6 lg:px-8">
           <div class="overflow-x-auto">
             <table class="min-w-full text-left text-sm font-light">
-              <thead class="border-b font-medium dark:border-neutral-500">
+              <thead class="dark:border-neutral-500 border-b font-medium">
                 <tr>
                   <th scope="col" class="px-6 py-4">Name</th>
                   <th scope="col" class="px-6 py-4">Actions</th>
@@ -72,7 +72,7 @@
               </thead>
               <tbody>
                 <tr
-                  class="border-b dark:border-neutral-500"
+                  class="dark:border-neutral-500 border-b"
                   *ngFor="let activity of customer.activities">
                   <td class="whitespace-nowrap px-6 py-4 font-medium">
                     {{ activity.name }}
@@ -86,7 +86,7 @@
                         activity.id +
                         '/edit'
                       "
-                      class="rounded-md bg-indigo-600 p-2 text-sm font-semibold leading-6 text-white"
+                      class="bg-indigo-600 rounded-md p-2 text-sm font-semibold leading-6 text-white"
                       >Edit</a
                     >
                   </td>

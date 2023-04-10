@@ -4,6 +4,7 @@ import { CustomerCreateDto } from '../../models/customer-create-dto';
 import { CustomerService } from '../../services/customer.service';
 import { ActivityCreateDto } from '../../models/activity-create-dto';
 import { CustomerDto } from '../../models/customer-dto';
+import { ButtonColor } from '../../../shared/button/button-color';
 
 @Component({
   selector: 'app-customer-new',
@@ -89,6 +90,8 @@ export class CustomerNewComponent {
       .filter(error => error.field === field)
       .map(error => error.error);
   }
+
+  protected readonly ButtonColor = ButtonColor;
 }
 interface CustomerForm {
   name: string;

@@ -1,18 +1,18 @@
 <div
-  class="mx-auto mt-8 flex max-w-7xl flex-col rounded-lg border-[1px] border-gray-200 p-6 shadow-md lg:px-8">
+  class="border-gray-200 mx-auto mt-8 flex max-w-7xl flex-col rounded-lg border-[1px] p-6 shadow-md lg:px-8">
   <div class="md:grid md:grid-cols-3 md:gap-6">
     <div class="md:col-span-1">
       <div class="px-4 sm:px-0">
-        <h3 class="text-base font-semibold leading-6 text-gray-900">
+        <h3 class="text-gray-900 text-base font-semibold leading-6">
           Customer information
         </h3>
-        <p class="mt-1 text-sm text-gray-600">
+        <p class="text-gray-600 mt-1 text-sm">
           Fill in the form to add a new customer.
         </p>
         <a
           *ngIf="newestCreatedCustomer"
           [routerLink]="'/customers/' + newestCreatedCustomer.id + '/edit'"
-          class="mt-4 inline-flex items-center justify-center rounded-md bg-indigo-600 py-2 px-5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500">
+          class="bg-indigo-600 hover:bg-indigo-500 focus-visible:outline-indigo-500 mt-4 inline-flex items-center justify-center rounded-md py-2 px-5 text-sm font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2">
           View customer</a
         >
       </div>
@@ -38,7 +38,7 @@
                 class="col-span-6 mt-2"></app-labeled-input>
 
               <div class="col-span-6 sm:col-span-6">
-                <label class="block text-sm font-medium leading-6 text-gray-900"
+                <label class="text-gray-900 block text-sm font-medium leading-6"
                   >Activities</label
                 >
                 <ng-container ngModelGroup="activities">
@@ -59,29 +59,34 @@
                         "
                         [serverValidationErrors]="errorsForField('Name')"
                         class="mr-4 block w-full"></app-input>
-                      <app-button-accent
+                      <button
+                        app-button
+                        [color]="ButtonColor.accent"
                         type="button"
-                        text="Remove"
-                        (clickEvent)="
-                          removeActivity(activityForm.id)
-                        "></app-button-accent>
+                        (click)="removeActivity(activityForm.id)">
+                        Remove
+                      </button>
                     </div>
                   </ng-container>
                 </ng-container>
-                <app-button-primary
+                <button
+                  app-button
+                  (click)="addActivity()"
                   type="button"
-                  text="Add activity"
-                  (clickEvent)="addActivity()"
-                  class="mt-4"></app-button-primary>
+                  class="mt-4">
+                  Add activity
+                </button>
               </div>
             </div>
           </div>
           <div class="bg-gray-50 px-4 py-3 text-right sm:px-6">
-            <app-button-primary
+            <button
+              app-button
               type="submit"
               [disabled]="form.invalid || loading"
-              text="Save"
-              [loading]="loading"></app-button-primary>
+              [loading]="loading">
+              Save
+            </button>
           </div>
         </div>
       </form>
