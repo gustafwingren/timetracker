@@ -22,21 +22,42 @@
         <div class="overflow-hidden shadow sm:rounded-md">
           <div class="bg-white px-4 py-5 sm:p-6">
             <div class="grid grid-cols-6 gap-6">
-              <app-labeled-input
-                name="Name"
-                [(value)]="model.name"
-                [serverValidationFailed]="hasError && containsError('Name')"
-                [serverValidationErrors]="errorsForField('Name')"
-                [isRequired]="true"
-                class="col-span-6 mt-2"></app-labeled-input>
-              <app-labeled-input
-                name="Number"
-                [(value)]="model.number"
-                [serverValidationFailed]="hasError && containsError('Number')"
-                [serverValidationErrors]="errorsForField('Number')"
-                [isRequired]="true"
-                class="col-span-6 mt-2"></app-labeled-input>
-
+              <app-form-field class="col-span-6 mt-2">
+                <app-label>Name</app-label>
+                <input
+                  appInput
+                  type="text"
+                  id="name"
+                  name="name"
+                  placeholder="e.g. Test customer"
+                  required
+                  #nameField="ngModel"
+                  [(ngModel)]="model.name" />
+                <app-error *ngIf="nameField.invalid && nameField.touched"
+                  >Name cannot be empty</app-error
+                >
+                <app-error *ngFor="let error of errorsForField('Name')">{{
+                  error
+                }}</app-error>
+              </app-form-field>
+              <app-form-field class="col-span-6 mt-2">
+                <app-label>Number</app-label>
+                <input
+                  appInput
+                  type="text"
+                  id="number"
+                  name="number"
+                  placeholder="e.g. 123456"
+                  required
+                  #numberField="ngModel"
+                  [(ngModel)]="model.number" />
+                <app-error *ngIf="numberField.invalid && numberField.touched"
+                  >Number cannot be empty</app-error
+                >
+                <app-error *ngFor="let error of errorsForField('Number')">{{
+                  error
+                }}</app-error>
+              </app-form-field>
               <div class="col-span-6 sm:col-span-6">
                 <label class="text-gray-900 block text-sm font-medium leading-6"
                   >Activities</label
@@ -46,26 +67,42 @@
                     *ngFor="
                       let activityForm of model.activities;
                       let index = index
-                    ">
-                    <div class="mt-4 flex w-full items-start justify-center">
-                      <app-input
-                        [name]="'activityName_' + index"
-                        [placeholder]="'Name'"
-                        [id]="'activityName_' + index"
-                        [(value)]="activityForm.name"
-                        [isRequired]="true"
-                        [serverValidationFailed]="
-                          hasError && containsError('Name')
-                        "
-                        [serverValidationErrors]="errorsForField('Name')"
-                        class="mr-4 block w-full"></app-input>
-                      <button
-                        app-button
-                        [color]="ButtonColor.accent"
-                        type="button"
-                        (click)="removeActivity(activityForm.id)">
-                        Remove
-                      </button>
+                    "
+                    [ngModelGroup]="activityForm.id"
+                    #activityForm1="ngModelGroup">
+                    <div class="mt-4 block w-full">
+                      <app-form-field class="w-full">
+                        <div class="flex items-center">
+                          <input
+                            appInput
+                            type="text"
+                            [id]="'activityName_' + index"
+                            name="'activityName_' + index"
+                            placeholder="Name"
+                            required
+                            [(ngModel)]="activityForm.name"
+                            class="!mt-0" />
+                          <button
+                            app-button
+                            [color]="ButtonColor.Danger"
+                            type="button"
+                            (click)="removeActivity(activityForm.id)"
+                            class="!ml-4">
+                            Remove
+                          </button>
+                        </div>
+
+                        <app-error
+                          *ngIf="activityForm1.invalid && activityForm1.touched"
+                          class="basis-full"
+                          >Name cannot be empty</app-error
+                        >
+                        <app-error
+                          *ngFor="let error of errorsForField('Name')"
+                          class="basis-full"
+                          >{{ error }}</app-error
+                        >
+                      </app-form-field>
                     </div>
                   </ng-container>
                 </ng-container>

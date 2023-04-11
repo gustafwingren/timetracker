@@ -53,6 +53,12 @@ export const Accent: Story = {
   },
 };
 
+export const Danger: Story = {
+  args: {
+    color: ButtonColor.Danger,
+  },
+};
+
 export const Loading: Story = {
   args: {
     color: ButtonColor.Default,

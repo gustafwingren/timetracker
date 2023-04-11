@@ -17,6 +17,11 @@ export class ButtonComponent {
     return this.color === ButtonColor.Accent;
   }
 
+  @HostBinding('class.danger')
+  private get isDanger(): boolean {
+    return this.color === ButtonColor.Danger;
+  }
+
   @Input()
   loading = false;
   spinnerIconColor: SpinnerIconColor = SpinnerIconColor.button;

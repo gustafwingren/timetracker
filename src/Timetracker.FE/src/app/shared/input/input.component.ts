@@ -1,19 +1,9 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { FormControl } from '@angular/forms';
-import { FormViewProvider } from '../formViewProvider';
+import { Component } from '@angular/core';
 
 @Component({
-  selector: 'app-input',
-  templateUrl: './input.component.html',
-  viewProviders: [FormViewProvider],
+  // eslint-disable-next-line @angular-eslint/component-selector
+  selector: 'input[appInput]',
+  template: '<ng-content></ng-content>',
   styleUrls: ['./input.component.scss'],
 })
-export class InputComponent {
-  @Input() name!: string;
-  @Input() placeholder = '';
-  @Input() value = '';
-  @Output() valueChange: EventEmitter<string> = new EventEmitter<string>();
-  @Input() isRequired = false;
-  @Input() serverValidationFailed = false;
-  @Input() serverValidationErrors: string[] = [];
-}
+export class InputComponent {}

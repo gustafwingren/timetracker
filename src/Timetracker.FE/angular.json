@@ -114,7 +114,8 @@
             "browserTarget": "Timetracker.FE:build",
             "compodoc": false,
             "port": 6006,
-            "styles": [".storybook/test.css"]
+            "styles": [
+              "src/styles.scss"]
           }
         },
         "build-storybook": {

@@ -3,11 +3,13 @@
 @tailwind utilities;
 
 .ng-valid[required], .ng-valid.required  {
-  @apply border-l-spring-rain-700 border-l-[5px];
+  @apply border-spring-rain-400 focus:border-spring-rain-400 focus:outline-none focus:ring focus:ring-spring-rain-300 focus:ring-opacity-40;
 }
 
 .ng-invalid:not(form)  {
-  @apply border-l-flamingo-900 border-l-[5px];
+  &.ng-touched {
+    @apply border-flamingo-400 focus:border-flamingo-400 focus:outline-none focus:ring focus:ring-flamingo-300 focus:ring-opacity-40;
+  }
 }
 
 .alert div {
