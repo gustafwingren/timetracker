@@ -1,7 +1,7 @@
 :host {
-  @apply block mt-2 w-full placeholder-nandor-400/70 rounded-lg border border-nandor-200 bg-white px-5 py-2.5 text-nandor-700 focus:border-lavender-400 focus:outline-none focus:ring focus:ring-lavender-300 focus:ring-opacity-40;
+  @apply block mt-2 w-full placeholder-gray-400/70 rounded-lg border border-gray-200 bg-white px-5 py-2.5 text-gray-700 focus:border-lavender-400 focus:outline-none focus:ring focus:ring-lavender-300 focus:ring-opacity-40;
 }
 
 :host(:disabled) {
-  @apply bg-nandor-50 cursor-not-allowed;
+  @apply bg-gray-50 cursor-not-allowed;
 }
