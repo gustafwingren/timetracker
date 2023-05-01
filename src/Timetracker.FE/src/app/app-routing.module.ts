@@ -5,28 +5,38 @@ import { HomeComponent } from './home/pages/home/home.component';
 import { TrackComponent } from './track/pages/track/track.component';
 import { RedirectHandler } from '@azure/msal-browser/dist/interaction_handler/RedirectHandler';
 import { MsalGuard, MsalRedirectComponent } from '@azure/msal-angular';
+import { authGuard } from './core/guards/auth.guard';
+import { LoginComponent } from './login/login.component';
+import { redirectGuard } from './core/guards/redirect.guard';
 
 const routes: Routes = [
   {
     path: 'home',
     component: HomeComponent,
+    canActivate: [authGuard, MsalGuard],
     loadChildren: () => import('./home/home.module').then(m => m.HomeModule),
   },
   {
     path: 'customers',
-    canActivate: [MsalGuard],
+    canActivate: [authGuard, MsalGuard],
     loadChildren: () =>
       import('./customers/customers.module').then(m => m.CustomersModule),
   },
   {
     path: 'track',
     component: TrackComponent,
-    canActivate: [MsalGuard],
+    canActivate: [authGuard, MsalGuard],
     loadChildren: () => import('./track/track.module').then(m => m.TrackModule),
   },
   {
     path: 'auth',
     component: MsalRedirectComponent,
+  },
+  {
+    path: 'login',
+    component: LoginComponent,
+    canActivate: [redirectGuard],
+    loadChildren: () => import('./login/login.module').then(m => m.LoginModule),
   },
   {
     path: '',

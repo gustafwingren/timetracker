@@ -1,0 +1,14 @@
+<div class="flex h-screen w-screen items-center justify-center">
+  <div
+    class="flex h-auto w-56 flex-col items-center rounded-xl bg-white p-8 shadow-xl">
+    <img src="assets/images/logo.svg" alt="logo" />
+    <button
+      class="mt-8"
+      app-button
+      [color]="ButtonColor.Default"
+      [loading]="loading"
+      (click)="login()">
+      Login
+    </button>
+  </div>
+</div>

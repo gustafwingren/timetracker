@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { HeaderComponent } from './header/header.component';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { LinkComponent } from './link/link.component';
-import { AuthLinkComponent } from './auth-link/auth-link.component';
 import { InputComponent } from './input/input.component';
 import { FormsModule } from '@angular/forms';
 import { SpinnerIconComponent } from './spinner-icon/spinner-icon.component';
@@ -18,7 +17,6 @@ import { SideMenuComponent } from './side-menu/side-menu.component';
   declarations: [
     HeaderComponent,
     LinkComponent,
-    AuthLinkComponent,
     InputComponent,
     SpinnerIconComponent,
     ButtonComponent,

@@ -1,12 +1,34 @@
 <header class="relative bg-white shadow">
-  <div class="container mx-auto px-6 py-4">
+  <div class="container relative mx-auto px-6 py-4">
     <div class="flex items-center justify-end">
-      <button
-        type="button"
-        class="flex items-center focus:outline-none"
-        aria-label="toggle profile dropdown">
-        <app-profile-icon class="h-6 w-6 overflow-hidden"></app-profile-icon>
-      </button>
+      <div class="relative block">
+        <button
+          #toggleButton
+          type="button"
+          (click)="toggleProfileMenu()"
+          class="flex items-center focus:outline-none"
+          aria-label="toggle profile dropdown">
+          <app-profile-icon class="h-6 w-6 overflow-hidden"></app-profile-icon>
+        </button>
+        <div
+          #profileMenu
+          class="absolute right-0 z-20 mt-2 w-56 origin-top-right overflow-hidden rounded-md bg-white py-2 shadow-xl"
+          [ngClass]="{ hidden: !profileMenuOpen }">
+          <div class="-mt-2 flex items-center p-3 text-sm text-gray-600">
+            <div class="mx-1">
+              <p class="text-sm font-semibold text-gray-700">Username</p>
+              <p class="text-sm text-gray-500">username@test.se</p>
+            </div>
+          </div>
+          <hr class="border-gray-20" />
+          <a
+            (click)="logout()"
+            class="flex transform cursor-pointer items-center p-3 text-sm capitalize text-gray-600 transition-colors duration-300 hover:bg-gray-100">
+            <app-logout-icon class="h-5 w-5"></app-logout-icon>
+            <span class="mx-1">Sign Out</span>
+          </a>
+        </div>
+      </div>
     </div>
   </div>
 </header>
