@@ -1,18 +1,29 @@
-import { Component, ElementRef, Renderer2, ViewChild } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  OnInit,
+  Renderer2,
+  ViewChild,
+} from '@angular/core';
 import { MsalService } from '@azure/msal-angular';
+import { AuthService } from '../../core/services/auth.service';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { UserInfoDto } from '../../core/models/user-info-dto';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnInit {
   profileMenuOpen = false;
 
   @ViewChild('toggleButton') toggleButton!: ElementRef;
   @ViewChild('profileMenu') profileMenu!: ElementRef;
 
-  constructor(private renderer: Renderer2, private authService: MsalService) {
+  userInfo$: Subject<UserInfoDto> = new Subject<UserInfoDto>();
+
+  constructor(private renderer: Renderer2, private authService: AuthService) {
     this.renderer.listen('window', 'click', (e: Event) => {
       if (
         !this.toggleButton.nativeElement.contains(e.target) &&
@@ -23,17 +34,21 @@ export class HeaderComponent {
     });
   }
 
+  ngOnInit() {
+    this.getUserInfo();
+  }
+
   toggleProfileMenu() {
     this.profileMenuOpen = !this.profileMenuOpen;
   }
 
   logout() {
-    const activeAccount =
-      this.authService.instance.getActiveAccount() ||
-      this.authService.instance.getAllAccounts()[0];
+    this.authService.logout();
+  }
 
-    this.authService.logoutRedirect({
-      account: activeAccount,
+  getUserInfo() {
+    this.authService.getUserInfo().subscribe(data => {
+      this.userInfo$.next(data);
     });
   }
 }

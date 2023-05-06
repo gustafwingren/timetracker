@@ -12,12 +12,16 @@
         </button>
         <div
           #profileMenu
-          class="absolute right-0 z-20 mt-2 w-56 origin-top-right overflow-hidden rounded-md bg-white py-2 shadow-xl"
+          class="absolute right-0 z-20 mt-2 min-w-[14rem] origin-top-right overflow-hidden rounded-md bg-white py-2 shadow-xl"
           [ngClass]="{ hidden: !profileMenuOpen }">
           <div class="-mt-2 flex items-center p-3 text-sm text-gray-600">
             <div class="mx-1">
-              <p class="text-sm font-semibold text-gray-700">Username</p>
-              <p class="text-sm text-gray-500">username@test.se</p>
+              <p class="text-sm font-semibold text-gray-700">
+                {{ (userInfo$ | async)?.displayName }}
+              </p>
+              <p class="text-sm text-gray-500">
+                {{ (userInfo$ | async)?.userName }}
+              </p>
             </div>
           </div>
           <hr class="border-gray-20" />

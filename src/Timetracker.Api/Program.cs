@@ -40,6 +40,10 @@ builder.Services.AddSwaggerDoc(
                                 "api://a7c9672e-5357-494a-ba92-88f28cda925e/Customers.ReadWrite",
                                 "Reads and Write the customers"
                             },
+                            {
+                                "api://a7c9672e-5357-494a-ba92-88f28cda925e/User.Read",
+                                "Reads the userinfo"
+                            },
                         },
                     },
                 },
@@ -48,13 +52,10 @@ builder.Services.AddSwaggerDoc(
     addJWTBearerAuth: false);
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddMicrosoftIdentityWebApi(
-        options =>
-        {
-            builder.Configuration.Bind("AzureAd", options);
-            options.Events = new JwtBearerEvents();
-        },
-        options => { builder.Configuration.Bind("AzureAd", options); });
+    .AddMicrosoftIdentityWebApi(config)
+    .EnableTokenAcquisitionToCallDownstreamApi()
+    .AddMicrosoftGraph(config.GetSection("GraphApi"))
+    .AddInMemoryTokenCaches();
 
 builder.Services.AddApplicationServices();
 builder.Services.AddInfrastructureServices(config);

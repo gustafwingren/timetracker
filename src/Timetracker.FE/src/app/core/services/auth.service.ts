@@ -7,15 +7,22 @@ import {
 } from '@azure/msal-angular';
 import { Router } from '@angular/router';
 import { RedirectRequest } from '@azure/msal-browser';
+import { Observable } from 'rxjs';
+import { UserInfoDto } from '../models/user-info-dto';
+import { ApiService } from './api.service';
+import { protectedResources } from '../../auth-config';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
+  url = protectedResources.apiUsers.endpoint;
+
   constructor(
     private msalService: MsalService,
     private router: Router,
     private msalBroadcastService: MsalBroadcastService,
+    private apiService: ApiService,
     @Inject(MSAL_GUARD_CONFIG) private msalGuardConfig: MsalGuardConfiguration
   ) {}
 
@@ -31,5 +38,19 @@ export class AuthService {
     } else {
       this.msalService.loginRedirect();
     }
+  }
+
+  logout(): void {
+    const activeAccount =
+      this.msalService.instance.getActiveAccount() ||
+      this.msalService.instance.getAllAccounts()[0];
+
+    this.msalService.logoutRedirect({
+      account: activeAccount,
+    });
+  }
+
+  getUserInfo(): Observable<UserInfoDto> {
+    return this.apiService.get(this.url + 'me');
   }
 }

@@ -37,6 +37,12 @@ export const protectedResources = {
       write: ['api://a7c9672e-5357-494a-ba92-88f28cda925e/Customers.ReadWrite'],
     },
   },
+  apiUsers: {
+    endpoint: 'https://localhost:7160/users/',
+    scopes: {
+      userread: ['api://a7c9672e-5357-494a-ba92-88f28cda925e/User.Read'],
+    },
+  },
 };
 
 /**

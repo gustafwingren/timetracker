@@ -62,6 +62,12 @@ export function MSALInterceptorConfigFactory(): MsalInterceptorConfiguration {
       scopes: [...protectedResources.apiCustomers.scopes.write],
     },
   ]);
+  protectedResourceMap.set(protectedResources.apiUsers.endpoint, [
+    {
+      httpMethod: 'GET',
+      scopes: [...protectedResources.apiUsers.scopes.userread],
+    },
+  ]);
 
   return {
     interactionType: InteractionType.Popup,
