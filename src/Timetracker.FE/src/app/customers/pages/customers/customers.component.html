@@ -8,7 +8,7 @@
     <div class="">
       <a
         routerLink="./new"
-        class="rounded-md bg-indigo-600 p-2 text-sm font-semibold leading-6 text-white"
+        class="bg-indigo-600 rounded-md p-2 text-sm font-semibold leading-6 text-white"
         >Add customer</a
       >
     </div>
@@ -22,7 +22,7 @@
     <div class="inline-block min-w-full py-2 sm:px-6 lg:px-8">
       <div class="overflow-x-auto">
         <table class="min-w-full text-left text-sm font-light">
-          <thead class="border-b font-medium dark:border-neutral-500">
+          <thead class="dark:border-neutral-500 border-b font-medium">
             <tr>
               <th scope="col" class="px-6 py-4">Name</th>
               <th scope="col" class="px-6 py-4">Number</th>
@@ -32,7 +32,7 @@
           </thead>
           <tbody>
             <tr
-              class="border-b dark:border-neutral-500"
+              class="dark:border-neutral-500 border-b"
               *ngFor="let customer of customers">
               <td class="whitespace-nowrap px-6 py-4 font-medium">
                 {{ customer.name }}
@@ -46,7 +46,7 @@
               <td class="whitespace-nowrap px-6 py-4">
                 <a
                   [routerLink]="'./' + customer.id + '/edit'"
-                  class="rounded-md bg-indigo-600 p-2 text-sm font-semibold leading-6 text-white"
+                  class="bg-indigo-600 rounded-md p-2 text-sm font-semibold leading-6 text-white"
                   >Edit</a
                 >
               </td>

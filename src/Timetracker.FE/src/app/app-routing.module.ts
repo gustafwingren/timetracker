@@ -12,20 +12,26 @@ import { redirectGuard } from './core/guards/redirect.guard';
 const routes: Routes = [
   {
     path: 'home',
+    title: 'Home',
     component: HomeComponent,
     canActivate: [authGuard, MsalGuard],
+    data: { breadcrumb: 'Home' },
     loadChildren: () => import('./home/home.module').then(m => m.HomeModule),
   },
   {
     path: 'customers',
+    title: 'Customers',
     canActivate: [authGuard, MsalGuard],
+    data: { breadcrumb: 'Customers' },
     loadChildren: () =>
       import('./customers/customers.module').then(m => m.CustomersModule),
   },
   {
     path: 'track',
+    title: 'Track',
     component: TrackComponent,
     canActivate: [authGuard, MsalGuard],
+    data: { breadcrumb: 'Track' },
     loadChildren: () => import('./track/track.module').then(m => m.TrackModule),
   },
   {

@@ -12,6 +12,8 @@ import { ErrorComponent } from './error/error.component';
 import { LabelComponent } from './label/label.component';
 import { IconsModule } from './icons/icons.module';
 import { SideMenuComponent } from './side-menu/side-menu.component';
+import { BreadcrumbsComponent } from './breadcrumbs/breadcrumbs.component';
+import { PageTitleComponent } from './page-title/page-title.component';
 
 @NgModule({
   declarations: [
@@ -24,6 +26,8 @@ import { SideMenuComponent } from './side-menu/side-menu.component';
     ErrorComponent,
     LabelComponent,
     SideMenuComponent,
+    BreadcrumbsComponent,
+    PageTitleComponent,
   ],
   imports: [
     FormsModule,
@@ -41,6 +45,8 @@ import { SideMenuComponent } from './side-menu/side-menu.component';
     ErrorComponent,
     LabelComponent,
     SideMenuComponent,
+    BreadcrumbsComponent,
+    PageTitleComponent,
   ],
 })
 export class SharedModule {}

@@ -12,30 +12,41 @@ import { ActivityNewComponent } from './pages/activity-new/activity-new.componen
 const customersRoutes: Routes = [
   {
     path: '',
+    pathMatch: 'full',
+    title: 'Customers',
     component: CustomersComponent,
+    data: { breadcrumb: 'Customers' },
   },
   {
     path: 'new',
+    title: 'New Customer',
     component: CustomerNewComponent,
     canActivate: [MsalGuard],
+    data: { breadcrumb: 'New' },
   },
   {
     path: ':id/edit',
+    title: 'Edit Customer',
     component: CustomerDetailComponent,
     canActivate: [MsalGuard],
+    data: { breadcrumb: 'Edit' },
     resolve: {
       customer: customerDetailResolver,
     },
   },
   {
     path: ':id/activity/new',
+    title: 'New Activity',
     component: ActivityNewComponent,
     canActivate: [MsalGuard],
+    data: { breadcrumb: 'New' },
   },
   {
     path: ':id/activity/:activityId/edit',
+    title: 'Edit Activity',
     component: ActivityDetailComponent,
     canActivate: [MsalGuard],
+    data: { breadcrumb: 'Edit' },
     resolve: {
       activity: activityDetailResolver,
     },
