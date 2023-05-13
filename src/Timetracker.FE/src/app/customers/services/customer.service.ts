@@ -7,6 +7,7 @@ import { ActivityDetailComponent } from '../pages/activity-detail/activity-detai
 import { ActivityDto } from '../models/activity-dto';
 import { CustomerCreateDto } from '../models/customer-create-dto';
 import { ActivityCreateDto } from '../models/activity-create-dto';
+import { PagedResponse } from '../../core/models/paged-response';
 
 @Injectable({
   providedIn: 'root',
@@ -16,8 +17,13 @@ export class CustomerService {
 
   constructor(private apiService: ApiService) {}
 
-  getCustomers(): Observable<CustomerDto[]> {
-    return this.apiService.get(this.url);
+  getCustomers(
+    page: number,
+    pageSize: number
+  ): Observable<PagedResponse<CustomerDto>> {
+    return this.apiService.get(
+      this.url + '?page=' + page + '&pageSize=' + pageSize
+    );
   }
 
   getCustomer(id: string): Observable<CustomerDto> {

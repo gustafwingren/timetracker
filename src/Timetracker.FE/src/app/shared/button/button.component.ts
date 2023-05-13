@@ -5,7 +5,7 @@ import { ButtonColor } from './button-color';
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
-  selector: 'button[app-button]',
+  selector: 'button[app-button],a[app-button]',
   templateUrl: './button.component.html',
   styleUrls: ['./button.component.scss'],
 })

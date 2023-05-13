@@ -12,7 +12,8 @@ using Timetracker.Shared.Interfaces;
 namespace Timetracker.Application.Customer.Queries.GetCustomers;
 
 public sealed class
-    GetCustomersQueryHandler : IRequestHandler<GetCustomersQuery, ErrorOr<List<CustomerResponse>>>
+    GetCustomersQueryHandler : IRequestHandler<GetCustomersQuery,
+        ErrorOr<PagedResponse<CustomerResponse>>>
 {
     private readonly IReadRepository<Domain.CustomerAggregate.Customer>
         _customerRepository;
@@ -23,14 +24,24 @@ public sealed class
         _customerRepository = customerRepository;
     }
 
-    public async Task<ErrorOr<List<CustomerResponse>>> Handle(
+    public async Task<ErrorOr<PagedResponse<CustomerResponse>>> Handle(
         GetCustomersQuery request,
         CancellationToken cancellationToken)
     {
         var customers = await _customerRepository.ListAsync(
-            new GetCustomersSpecification(request.UserId),
+            new GetCustomersSpecification(request.UserId, request.Page, request.PageSize),
             cancellationToken);
 
-        return customers.Select(x => x.Map()).ToList();
+        if (customers == null || !customers.Any())
+        {
+            return Errors.Customer.NotFound;
+        }
+
+        var customerCount = await _customerRepository.CountAsync(
+            new GetCustomersSpecification(request.UserId),
+            cancellationToken);
+        var customerResponses = customers.Select(x => x.Map());
+
+        return new PagedResponse<CustomerResponse>(customerResponses.ToList(), customerCount);
     }
 }

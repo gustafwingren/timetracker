@@ -9,4 +9,5 @@ using Timetracker.Domain.Common.Ids;
 
 namespace Timetracker.Application.Customer.Queries.GetCustomers;
 
-public record GetCustomersQuery(UserId UserId) : IRequest<ErrorOr<List<CustomerResponse>>>;
+public record GetCustomersQuery
+    (UserId UserId, int Page, int PageSize) : IRequest<ErrorOr<PagedResponse<CustomerResponse>>>;
