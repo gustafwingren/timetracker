@@ -1,13 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { CustomerService } from '../../services/customer.service';
 import { CustomerDto } from '../../models/customer-dto';
-import { map } from 'rxjs';
 import { PagedResponse } from '../../../core/models/paged-response';
+import { NgIf, NgFor } from '@angular/common';
+import { RouterLink } from '@angular/router';
+import { ButtonComponent } from '../../../shared/button/button.component';
 
 @Component({
   selector: 'app-customers',
   templateUrl: './customers.component.html',
   styleUrls: ['./customers.component.scss'],
+  standalone: true,
+  imports: [ButtonComponent, RouterLink, NgIf, NgFor],
 })
 export class CustomersComponent implements OnInit {
   customers: CustomerDto[] = [];

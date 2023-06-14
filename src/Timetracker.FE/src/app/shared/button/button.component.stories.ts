@@ -1,7 +1,6 @@
 import { ButtonComponent } from './button.component';
 import { Meta, moduleMetadata, StoryObj } from '@storybook/angular';
 import { ButtonColor } from './button-color';
-import { SharedModule } from '../shared.module';
 
 const meta: Meta<ButtonComponent> = {
   title: 'Button',
@@ -9,7 +8,7 @@ const meta: Meta<ButtonComponent> = {
   tags: ['autodocs'],
   decorators: [
     moduleMetadata({
-      imports: [SharedModule],
+      imports: [],
     }),
   ],
   render: (args: ButtonComponent) => ({

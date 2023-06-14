@@ -1,60 +1,63 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import { CustomersComponent } from './pages/customers/customers.component';
 import { MsalGuard } from '@azure/msal-angular';
-import { CustomerDetailComponent } from './pages/customer-detail/customer-detail.component';
-import { CustomerNewComponent } from './pages/customer-new/customer-new.component';
 import { customerDetailResolver } from './pages/customer-detail/customer-detail.resolver';
-import { ActivityDetailComponent } from './pages/activity-detail/activity-detail.component';
 import { activityDetailResolver } from './pages/activity-detail/activity-detail.resolver';
-import { ActivityNewComponent } from './pages/activity-new/activity-new.component';
+import { Routes } from '@angular/router';
 
-const customersRoutes: Routes = [
+export const CustomerRoutes: Routes = [
   {
     path: '',
     pathMatch: 'full',
     title: 'Customers',
-    component: CustomersComponent,
     data: { breadcrumb: 'Customers' },
+    loadComponent: () =>
+      import('./pages/customers/customers.component').then(
+        m => m.CustomersComponent
+      ),
   },
   {
     path: 'new',
     title: 'New Customer',
-    component: CustomerNewComponent,
     canActivate: [MsalGuard],
     data: { breadcrumb: 'New' },
+    loadComponent: () =>
+      import('./pages/customer-new/customer-new.component').then(
+        m => m.CustomerNewComponent
+      ),
   },
   {
     path: ':id/edit',
     title: 'Edit Customer',
-    component: CustomerDetailComponent,
     canActivate: [MsalGuard],
     data: { breadcrumb: 'Edit' },
     resolve: {
       customer: customerDetailResolver,
     },
+    loadComponent: () =>
+      import('./pages/customer-detail/customer-detail.component').then(
+        m => m.CustomerDetailComponent
+      ),
   },
   {
     path: ':id/activity/new',
     title: 'New Activity',
-    component: ActivityNewComponent,
     canActivate: [MsalGuard],
     data: { breadcrumb: 'New' },
+    loadComponent: () =>
+      import('./pages/activity-new/activity-new.component').then(
+        m => m.ActivityNewComponent
+      ),
   },
   {
     path: ':id/activity/:activityId/edit',
     title: 'Edit Activity',
-    component: ActivityDetailComponent,
     canActivate: [MsalGuard],
     data: { breadcrumb: 'Edit' },
     resolve: {
       activity: activityDetailResolver,
     },
+    loadComponent: () =>
+      import('./pages/activity-detail/activity-detail.component').then(
+        m => m.ActivityDetailComponent
+      ),
   },
 ];
-
-@NgModule({
-  imports: [RouterModule.forChild(customersRoutes)],
-  exports: [RouterModule],
-})
-export class CustomersRoutingModule {}

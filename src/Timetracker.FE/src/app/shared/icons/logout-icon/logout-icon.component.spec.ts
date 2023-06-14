@@ -8,9 +8,8 @@ describe('LogoutIconComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ LogoutIconComponent ]
-    })
-    .compileComponents();
+      imports: [LogoutIconComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(LogoutIconComponent);
     component = fixture.componentInstance;

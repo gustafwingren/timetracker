@@ -1,7 +1,6 @@
 import { inject } from '@angular/core';
 import { Router, ActivatedRouteSnapshot, ResolveFn } from '@angular/router';
 import { EMPTY, mergeMap, of } from 'rxjs';
-import { CustomerDto } from '../../models/customer-dto';
 import { CustomerService } from '../../services/customer.service';
 import { ActivityDto } from '../../models/activity-dto';
 

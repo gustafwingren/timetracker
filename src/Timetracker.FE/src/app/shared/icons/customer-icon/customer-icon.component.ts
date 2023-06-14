@@ -4,5 +4,6 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   selector: 'app-customer-icon',
   templateUrl: './customer-icon.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
 })
 export class CustomerIconComponent {}

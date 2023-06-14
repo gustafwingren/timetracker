@@ -4,5 +4,6 @@ import { Component } from '@angular/core';
   selector: 'app-label',
   template: '<ng-content></ng-content>',
   styleUrls: ['./label.component.scss'],
+  standalone: true,
 })
 export class LabelComponent {}

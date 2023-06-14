@@ -1,15 +1,34 @@
 import { Component, ViewChild } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { NgForm, FormsModule } from '@angular/forms';
 import { CustomerCreateDto } from '../../models/customer-create-dto';
 import { CustomerService } from '../../services/customer.service';
 import { ActivityCreateDto } from '../../models/activity-create-dto';
 import { CustomerDto } from '../../models/customer-dto';
 import { ButtonColor } from '../../../shared/button/button-color';
+import { ButtonComponent } from '../../../shared/button/button.component';
+import { ErrorComponent } from '../../../shared/error/error.component';
+import { InputComponent } from '../../../shared/input/input.component';
+import { LabelComponent } from '../../../shared/label/label.component';
+import { FormFieldComponent } from '../../../shared/form-field/form-field.component';
+import { RouterLink } from '@angular/router';
+import { NgIf, NgFor } from '@angular/common';
 
 @Component({
   selector: 'app-customer-new',
   templateUrl: './customer-new.component.html',
   styleUrls: ['./customer-new.component.scss'],
+  standalone: true,
+  imports: [
+    NgIf,
+    RouterLink,
+    FormsModule,
+    FormFieldComponent,
+    LabelComponent,
+    InputComponent,
+    ErrorComponent,
+    NgFor,
+    ButtonComponent,
+  ],
 })
 export class CustomerNewComponent {
   newestCreatedCustomer?: CustomerDto;

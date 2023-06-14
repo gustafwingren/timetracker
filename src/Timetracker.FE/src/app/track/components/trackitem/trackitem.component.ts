@@ -4,5 +4,6 @@ import { Component } from '@angular/core';
   selector: 'app-trackitem',
   templateUrl: './trackitem.component.html',
   styleUrls: ['./trackitem.component.scss'],
+  standalone: true,
 })
 export class TrackitemComponent {}

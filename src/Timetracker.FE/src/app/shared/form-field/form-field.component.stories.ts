@@ -1,12 +1,6 @@
 import { FormFieldComponent } from './form-field.component';
-import {
-  componentWrapperDecorator,
-  Meta,
-  moduleMetadata,
-  StoryContext,
-  StoryObj,
-} from '@storybook/angular';
-import { SharedModule } from '../shared.module';
+import { Meta, moduleMetadata, StoryObj } from '@storybook/angular';
+import { NgIf } from '@angular/common';
 
 const meta: Meta<FormFieldComponent> = {
   title: 'Form Fields',
@@ -14,7 +8,8 @@ const meta: Meta<FormFieldComponent> = {
   tags: ['autodocs'],
   decorators: [
     moduleMetadata({
-      imports: [SharedModule],
+      imports: [NgIf],
+      providers: [NgIf],
     }),
   ],
   render: (args: any) => ({

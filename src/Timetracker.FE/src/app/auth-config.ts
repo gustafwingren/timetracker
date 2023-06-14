@@ -14,15 +14,18 @@ export const msalConfiguration: Configuration = {
     clientId: 'a7c9672e-5357-494a-ba92-88f28cda925e',
     authority:
       'https://login.microsoftonline.com/02b6749b-5ce0-4853-bd5c-a05f9bd9dd3a',
-    redirectUri: '/auth',
+    redirectUri: '/login',
     postLogoutRedirectUri: '/',
     clientCapabilities: ['CP1'],
+    navigateToLoginRequestUrl: false,
   },
   cache: {
     cacheLocation: BrowserCacheLocation.SessionStorage,
     storeAuthStateInCookie: isIE,
   },
-  system: {},
+  system: {
+    allowNativeBroker: false,
+  },
 };
 
 /**

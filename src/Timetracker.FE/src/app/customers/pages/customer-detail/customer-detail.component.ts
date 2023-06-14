@@ -1,19 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { CustomerDto } from '../../models/customer-dto';
-import { ActivatedRoute, Router } from '@angular/router';
-import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { FormBuilder, FormsModule } from '@angular/forms';
 import { CustomerCreateDto } from '../../models/customer-create-dto';
 import { CustomerService } from '../../services/customer.service';
+import { NgFor } from '@angular/common';
 
 @Component({
   selector: 'app-customer-detail',
   templateUrl: './customer-detail.component.html',
   styleUrls: ['./customer-detail.component.scss'],
+  standalone: true,
+  imports: [FormsModule, RouterLink, NgFor],
 })
 export class CustomerDetailComponent implements OnInit {
   customer!: CustomerDto;

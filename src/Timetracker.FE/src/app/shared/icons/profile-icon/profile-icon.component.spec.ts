@@ -8,9 +8,8 @@ describe('ProfileIconComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ProfileIconComponent ]
-    })
-    .compileComponents();
+      imports: [ProfileIconComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(ProfileIconComponent);
     component = fixture.componentInstance;

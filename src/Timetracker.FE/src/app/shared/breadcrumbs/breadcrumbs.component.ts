@@ -4,14 +4,22 @@ import {
   Component,
   OnInit,
 } from '@angular/core';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
-import { BehaviorSubject, filter, Subject } from 'rxjs';
+import {
+  ActivatedRoute,
+  NavigationEnd,
+  Router,
+  RouterLink,
+} from '@angular/router';
+import { BehaviorSubject, filter } from 'rxjs';
+import { NgFor, NgClass, AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-breadcrumbs',
   templateUrl: './breadcrumbs.component.html',
   styleUrls: ['./breadcrumbs.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [RouterLink, NgFor, NgClass, AsyncPipe],
 })
 export class BreadcrumbsComponent implements OnInit {
   breadcrumbs$ = new BehaviorSubject<{ label: string; url: string }[]>([]);
@@ -25,7 +33,7 @@ export class BreadcrumbsComponent implements OnInit {
   ngOnInit() {
     this.router.events
       .pipe(filter(event => event instanceof NavigationEnd))
-      .subscribe(event => {
+      .subscribe(() => {
         const breadcrumbs: { label: string; url: string }[] = [];
         let currentRoute: ActivatedRoute | null = this.activatedRoute.root;
         let url = '';

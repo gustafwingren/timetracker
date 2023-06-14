@@ -1,11 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivityDto } from '../../models/activity-dto';
 import { ActivatedRoute } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-activity-detail',
   templateUrl: './activity-detail.component.html',
   styleUrls: ['./activity-detail.component.scss'],
+  standalone: true,
+  imports: [FormsModule],
 })
 export class ActivityDetailComponent implements OnInit {
   activity!: ActivityDto;

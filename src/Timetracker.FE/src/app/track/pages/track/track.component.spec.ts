@@ -8,9 +8,8 @@ describe('TrackComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ TrackComponent ]
-    })
-    .compileComponents();
+      imports: [TrackComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(TrackComponent);
     component = fixture.componentInstance;

@@ -4,5 +4,6 @@ import { Component } from '@angular/core';
   selector: 'app-form-field',
   templateUrl: './form-field.component.html',
   styleUrls: ['./form-field.component.scss'],
+  standalone: true,
 })
 export class FormFieldComponent {}

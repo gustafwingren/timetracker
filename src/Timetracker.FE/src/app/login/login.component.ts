@@ -2,14 +2,17 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ButtonColor } from '../shared/button/button-color';
 import { AuthService } from '../core/services/auth.service';
 import { MsalBroadcastService } from '@azure/msal-angular';
-import { filter, Subject, takeUntil } from 'rxjs';
+import { filter, Subject } from 'rxjs';
 import { InteractionStatus } from '@azure/msal-browser';
 import { Router } from '@angular/router';
+import { ButtonComponent } from '../shared/button/button.component';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
+  standalone: true,
+  imports: [ButtonComponent],
 })
 export class LoginComponent implements OnInit, OnDestroy {
   protected readonly ButtonColor = ButtonColor;

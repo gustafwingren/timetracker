@@ -1,19 +1,6 @@
-import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { SharedModule } from './shared/shared.module';
 import {
-  MSAL_GUARD_CONFIG,
-  MSAL_INSTANCE,
-  MSAL_INTERCEPTOR_CONFIG,
   MsalGuardConfiguration,
-  MsalInterceptor,
   MsalInterceptorConfiguration,
-  MsalModule,
-  MsalRedirectComponent,
-  MsalService,
   ProtectedResourceScopes,
 } from '@azure/msal-angular';
 import {
@@ -26,8 +13,6 @@ import {
   msalConfiguration,
   protectedResources,
 } from './auth-config';
-import { ApiService } from './core/services/api.service';
-import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 
 export function MSALInstanceFactory(): IPublicClientApplication {
   return new PublicClientApplication(msalConfiguration);
@@ -85,38 +70,3 @@ export function MSALGuardConfigFactory(): MsalGuardConfiguration {
     authRequest: loginRequest,
   };
 }
-
-@NgModule({
-  declarations: [AppComponent],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    BrowserAnimationsModule,
-    SharedModule,
-    MsalModule,
-    HttpClientModule,
-  ],
-  providers: [
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: MsalInterceptor,
-      multi: true,
-    },
-    {
-      provide: MSAL_INSTANCE,
-      useFactory: MSALInstanceFactory,
-    },
-    {
-      provide: MSAL_GUARD_CONFIG,
-      useFactory: MSALGuardConfigFactory,
-    },
-    {
-      provide: MSAL_INTERCEPTOR_CONFIG,
-      useFactory: MSALInterceptorConfigFactory,
-    },
-    MsalService,
-    ApiService,
-  ],
-  bootstrap: [AppComponent, MsalRedirectComponent],
-})
-export class AppModule {}

@@ -5,15 +5,19 @@ import {
   Renderer2,
   ViewChild,
 } from '@angular/core';
-import { MsalService } from '@azure/msal-angular';
 import { AuthService } from '../../core/services/auth.service';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 import { UserInfoDto } from '../../core/models/user-info-dto';
+import { LogoutIconComponent } from '../icons/logout-icon/logout-icon.component';
+import { NgClass, AsyncPipe } from '@angular/common';
+import { ProfileIconComponent } from '../icons/profile-icon/profile-icon.component';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
+  standalone: true,
+  imports: [ProfileIconComponent, NgClass, LogoutIconComponent, AsyncPipe],
 })
 export class HeaderComponent implements OnInit {
   profileMenuOpen = false;

@@ -1,8 +1,7 @@
 import { HeaderComponent } from './header.component';
 import { Meta, moduleMetadata, StoryObj } from '@storybook/angular';
-import { SharedModule } from '../shared.module';
 import { RouterTestingModule } from '@angular/router/testing';
-import { MsalService } from '@azure/msal-angular';
+import { AuthService } from '../../core/services/auth.service';
 
 const meta: Meta<HeaderComponent> = {
   title: 'Header',
@@ -10,8 +9,8 @@ const meta: Meta<HeaderComponent> = {
   tags: ['autodocs'],
   decorators: [
     moduleMetadata({
-      imports: [SharedModule, RouterTestingModule],
-      providers: [{ provide: MsalService, useValue: {} }],
+      imports: [RouterTestingModule],
+      providers: [{ provide: AuthService, useValue: {} }],
     }),
   ],
 };

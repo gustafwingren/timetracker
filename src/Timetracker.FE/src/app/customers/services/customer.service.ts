@@ -1,12 +1,10 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from '../../core/services/api.service';
-import { flatMap, forkJoin, map, mergeMap, Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { CustomerDto } from '../models/customer-dto';
 import { protectedResources } from '../../auth-config';
-import { ActivityDetailComponent } from '../pages/activity-detail/activity-detail.component';
 import { ActivityDto } from '../models/activity-dto';
 import { CustomerCreateDto } from '../models/customer-create-dto';
-import { ActivityCreateDto } from '../models/activity-create-dto';
 import { PagedResponse } from '../../core/models/paged-response';
 
 @Injectable({

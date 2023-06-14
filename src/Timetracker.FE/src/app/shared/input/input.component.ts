@@ -5,5 +5,6 @@ import { Component } from '@angular/core';
   selector: 'input[appInput]',
   template: '<ng-content></ng-content>',
   styleUrls: ['./input.component.scss'],
+  standalone: true,
 })
 export class InputComponent {}
