@@ -1,0 +1,83 @@
+<div class="mt-6 flex flex-col">
+  <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+    <div class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
+      <div class="overflow-hidden border border-gray-200 md:rounded-lg">
+        <table class="min-w-full divide-y divide-gray-200">
+          <thead class="bg-gray-50">
+            <tr>
+              <ng-container *ngFor="let header of headers">
+                <th
+                  *ngIf="!header.actions"
+                  scope="col"
+                  class="px-4 py-4 text-left text-sm font-normal text-gray-500">
+                  {{ header.displayName }}
+                </th>
+
+                <th
+                  *ngIf="header.actions"
+                  scope="col"
+                  class="relative px-4 py-4">
+                  <span class="sr-only">Actions</span>
+                </th>
+              </ng-container>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-200 bg-white">
+            <ng-container *ngIf="loading">
+              <tr class="animate-pulse">
+                <td class="p-4">
+                  <div class="h-2 rounded bg-gray-300"></div>
+                </td>
+                <td class="p-4">
+                  <div class="h-2 rounded bg-gray-300"></div>
+                </td>
+                <td class="p-4">
+                  <div class="h-2 rounded bg-gray-300"></div>
+                </td>
+              </tr>
+            </ng-container>
+            <ng-container *ngIf="!loading">
+              <tr *ngFor="let customer of objects">
+                <td
+                  *ngFor="let header of headers"
+                  class="whitespace-nowrap px-4 py-4 text-sm font-medium">
+                  <div
+                    class="text-emerald-500 bg-emerald-100/60 inline rounded-full py-1 text-sm font-normal">
+                    <ng-container *ngIf="!header.actions">
+                      <ng-container *ngIf="header.bold">
+                        <h2 class="font-medium text-gray-800">
+                          {{ customer[header.fieldName] }}
+                        </h2>
+                      </ng-container>
+                      <ng-container *ngIf="!header.bold">
+                        {{ customer[header.fieldName] }}
+                      </ng-container>
+                    </ng-container>
+                    <ng-container *ngIf="header.actions">
+                      <button
+                        [routerLink]="customer.id + '/edit'"
+                        class="rounded-lg px-1 py-1 text-gray-500 transition-colors duration-200 hover:bg-gray-100">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke-width="1.5"
+                          stroke="currentColor"
+                          class="h-6 w-6">
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M12 6.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 12.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 18.75a.75.75 0 110-1.5.75.75 0 010 1.5z" />
+                        </svg>
+                      </button>
+                    </ng-container>
+                  </div>
+                </td>
+              </tr>
+            </ng-container>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

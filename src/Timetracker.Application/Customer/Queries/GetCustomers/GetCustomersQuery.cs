@@ -10,4 +10,5 @@ using Timetracker.Domain.Common.Ids;
 namespace Timetracker.Application.Customer.Queries.GetCustomers;
 
 public record GetCustomersQuery
-    (UserId UserId, int Page, int PageSize) : IRequest<ErrorOr<PagedResponse<CustomerResponse>>>;
+    (UserId UserId, string SearchString, int Page, int PageSize) : IRequest<
+        ErrorOr<PagedResponse<CustomerResponse>>>;

@@ -16,11 +16,18 @@ export class CustomerService {
   constructor(private apiService: ApiService) {}
 
   getCustomers(
+    searchString: string,
     page: number,
     pageSize: number
   ): Observable<PagedResponse<CustomerDto>> {
     return this.apiService.get(
-      this.url + '?page=' + page + '&pageSize=' + pageSize
+      this.url +
+        '?searchString=' +
+        searchString +
+        '&page=' +
+        page +
+        '&pageSize=' +
+        pageSize
     );
   }
 

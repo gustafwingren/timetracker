@@ -36,7 +36,11 @@ public class
         }
 
         var customers = await _sender.Send(
-            new GetCustomersQuery(new UserId(Guid.Parse(userId)), request.Page, request.PageSize),
+            new GetCustomersQuery(
+                new UserId(Guid.Parse(userId)),
+                request.SearchString,
+                request.Page,
+                request.PageSize),
             ct);
 
         await SendInterceptedAsync(customers, cancellation: ct);

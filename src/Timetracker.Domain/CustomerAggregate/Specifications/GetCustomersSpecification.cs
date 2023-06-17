@@ -9,9 +9,22 @@ namespace Timetracker.Domain.CustomerAggregate.Specifications;
 
 public sealed class GetCustomersSpecification : Specification<Customer>
 {
-    public GetCustomersSpecification(UserId userId, int? page = null, int? pageSize = null)
+    public GetCustomersSpecification(
+        UserId userId,
+        string? searchString = null,
+        int? page = null,
+        int? pageSize = null)
     {
         Query.Where(x => x.UserId == userId);
+
+        if (searchString != null)
+        {
+            Query.Where(
+                x => x.Name.ToLower().Contains(searchString.ToLower()) ||
+                     x.CustomerNr.ToLower().Contains(searchString.ToLower()));
+        }
+
+        Query.OrderBy(x => x.Name);
 
         if (page == null || pageSize == null)
         {

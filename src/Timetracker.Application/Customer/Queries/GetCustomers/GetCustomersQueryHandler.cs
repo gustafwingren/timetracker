@@ -29,16 +29,15 @@ public sealed class
         CancellationToken cancellationToken)
     {
         var customers = await _customerRepository.ListAsync(
-            new GetCustomersSpecification(request.UserId, request.Page, request.PageSize),
+            new GetCustomersSpecification(
+                request.UserId,
+                request.SearchString,
+                request.Page,
+                request.PageSize),
             cancellationToken);
 
-        if (customers == null || !customers.Any())
-        {
-            return Errors.Customer.NotFound;
-        }
-
         var customerCount = await _customerRepository.CountAsync(
-            new GetCustomersSpecification(request.UserId),
+            new GetCustomersSpecification(request.UserId, request.SearchString),
             cancellationToken);
         var customerResponses = customers.Select(x => x.Map());
 
