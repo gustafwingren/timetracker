@@ -16,6 +16,9 @@ import { PaginationComponent } from '../../../shared/pagination/pagination.compo
 import { TableComponent } from '../../../shared/table/table.component';
 import { TableHeader } from '../../../shared/table/tableHeader';
 import { ButtonColor } from '../../../shared/button/button-color';
+import { PlusIconComponent } from '../../../shared/icons/plus-icon/plus-icon.component';
+import { SearchIconComponent } from '../../../shared/icons/search-icon/search-icon.component';
+import { SearchInputComponent } from '../../../shared/search-input/search-input.component';
 
 @Component({
   selector: 'app-customers',
@@ -33,6 +36,9 @@ import { ButtonColor } from '../../../shared/button/button-color';
     NgSwitch,
     NgSwitchCase,
     NgSwitchDefault,
+    PlusIconComponent,
+    SearchIconComponent,
+    SearchInputComponent,
   ],
 })
 export class CustomersComponent implements OnInit {
@@ -64,8 +70,8 @@ export class CustomersComponent implements OnInit {
     this.getCustomers();
   }
 
-  search(event: Event): void {
-    this.searchString = (event.target as HTMLInputElement).value;
+  search(searchString: string): void {
+    this.searchString = searchString;
     this.currentPage = 1;
     this.getCustomers();
   }
