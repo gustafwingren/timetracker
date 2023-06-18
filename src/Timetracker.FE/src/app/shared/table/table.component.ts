@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, ContentChild, Input, TemplateRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { TableHeader } from './tableHeader';
@@ -14,4 +14,10 @@ export class TableComponent {
   @Input({ required: true }) loading = false;
   @Input({ required: true }) headers: TableHeader[] = [];
   @Input({ required: true }) objects: any[] = [];
+
+  @Input()
+  headerTemplate: TemplateRef<any> | null = null;
+
+  @Input()
+  itemTemplate: TemplateRef<any> | null = null;
 }

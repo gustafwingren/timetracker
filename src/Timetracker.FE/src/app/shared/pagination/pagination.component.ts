@@ -15,4 +15,5 @@ export class PaginationComponent {
   @Input({ required: true }) totalCount = 0;
   @Output() previousPage: EventEmitter<void> = new EventEmitter();
   @Output() nextPage: EventEmitter<void> = new EventEmitter();
+  protected readonly Math = Math;
 }

@@ -2,13 +2,20 @@ import { Component, OnInit } from '@angular/core';
 import { CustomerService } from '../../services/customer.service';
 import { CustomerDto } from '../../models/customer-dto';
 import { PagedResponse } from '../../../core/models/paged-response';
-import { NgIf, NgFor } from '@angular/common';
+import {
+  NgIf,
+  NgFor,
+  NgSwitch,
+  NgSwitchCase,
+  NgSwitchDefault,
+} from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { ButtonComponent } from '../../../shared/button/button.component';
 import { InputComponent } from '../../../shared/input/input.component';
 import { PaginationComponent } from '../../../shared/pagination/pagination.component';
 import { TableComponent } from '../../../shared/table/table.component';
 import { TableHeader } from '../../../shared/table/tableHeader';
+import { ButtonColor } from '../../../shared/button/button-color';
 
 @Component({
   selector: 'app-customers',
@@ -23,6 +30,9 @@ import { TableHeader } from '../../../shared/table/tableHeader';
     InputComponent,
     PaginationComponent,
     TableComponent,
+    NgSwitch,
+    NgSwitchCase,
+    NgSwitchDefault,
   ],
 })
 export class CustomersComponent implements OnInit {
@@ -33,9 +43,9 @@ export class CustomersComponent implements OnInit {
   loading = true;
   searchString = '';
   tableHeaders: TableHeader[] = [
-    { fieldName: 'name', displayName: 'Name', bold: true },
+    { fieldName: 'name', displayName: 'Name' },
     { fieldName: 'number', displayName: 'Number' },
-    { fieldName: 'actions', displayName: '', actions: true },
+    { fieldName: 'actions', displayName: '' },
   ];
 
   constructor(private customerService: CustomerService) {}
@@ -72,4 +82,5 @@ export class CustomersComponent implements OnInit {
   }
 
   protected readonly event = event;
+  protected readonly ButtonColor = ButtonColor;
 }

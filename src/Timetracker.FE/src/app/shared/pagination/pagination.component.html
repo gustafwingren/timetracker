@@ -2,7 +2,7 @@
   <div class="text-sm text-gray-500">
     Page
     <span class="font-medium text-gray-700"
-      >{{ currentPage }} of {{ totalCount / pageSize }}</span
+      >{{ currentPage }} of {{ Math.ceil(totalCount / pageSize) }}</span
     >
   </div>
 

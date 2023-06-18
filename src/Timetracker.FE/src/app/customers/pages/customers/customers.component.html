@@ -55,7 +55,33 @@
   <app-table
     [loading]="loading"
     [objects]="customers"
-    [headers]="tableHeaders" />
+    [headers]="tableHeaders"
+    [headerTemplate]="headerTemplate"
+    [itemTemplate]="itemTemplate" />
+
+  <ng-template #headerTemplate let-header>
+    <ng-container [ngSwitch]="header.fieldName">
+      <span *ngSwitchDefault>{{ header.displayName }}</span>
+    </ng-container>
+  </ng-template>
+
+  <ng-template #itemTemplate let-customer let-header="header">
+    <ng-container [ngSwitch]="header.fieldName">
+      <div *ngSwitchCase="'actions'">
+        <button
+          app-button
+          [color]="ButtonColor.Default"
+          [routerLink]="customer.id + '/edit'">
+          Edit
+        </button>
+      </div>
+      <div
+        class="text-emerald-500 bg-emerald-100/60 inline rounded-full py-1 text-sm font-normal"
+        *ngSwitchDefault>
+        {{ customer[header.fieldName] }}
+      </div>
+    </ng-container>
+  </ng-template>
 
   <app-pagination
     [currentPage]="currentPage"
