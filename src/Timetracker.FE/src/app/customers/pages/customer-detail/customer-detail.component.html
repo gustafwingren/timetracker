@@ -1,51 +1,79 @@
+<section class="container mx-auto">
+  <div class="sm:flex sm:items-center sm:justify-between">
+    <div>
+      <p class="mt-1 text-sm text-gray-500">Edit the customer information.</p>
+    </div>
+  </div>
+
+  <div class="mt-6 md:flex md:items-end md:justify-between">
+    <form #form="ngForm" (submit)="onSubmit()">
+      <div class="overflow-hidden shadow sm:rounded-md">
+        <div class="bg-white px-4 py-5 sm:p-6">
+          <div class="grid w-96 grid-cols-6 gap-6">
+            <app-form-field class="col-span-6 mt-2">
+              <app-label>Name</app-label>
+              <input
+                appInput
+                type="text"
+                id="name"
+                name="name"
+                placeholder="e.g. Test customer"
+                required
+                #nameField="ngModel"
+                [(ngModel)]="model.name" />
+              <app-error *ngIf="nameField.invalid && nameField.touched"
+                >Name cannot be empty</app-error
+              >
+              <app-error *ngFor="let error of errorsForField('Name')">{{
+                error
+              }}</app-error>
+            </app-form-field>
+            <app-form-field class="col-span-6 mt-2">
+              <app-label>Number</app-label>
+              <input
+                appInput
+                type="text"
+                id="number"
+                name="number"
+                placeholder="e.g. 123456"
+                required
+                #numberField="ngModel"
+                [(ngModel)]="model.number" />
+              <app-error *ngIf="numberField.invalid && numberField.touched"
+                >Number cannot be empty</app-error
+              >
+              <app-error *ngFor="let error of errorsForField('Number')">{{
+                error
+              }}</app-error>
+            </app-form-field>
+          </div>
+        </div>
+        <div class="bg-gray-50 px-4 py-3 text-right sm:px-6">
+          <button
+            app-button
+            type="submit"
+            [disabled]="form.invalid || loadingUpdate"
+            [loading]="loadingUpdate">
+            Update
+          </button>
+          <button
+            app-button
+            [color]="ButtonColor.Danger"
+            type="button"
+            [loading]="loadingDelete"
+            (click)="onDelete()"
+            class="!ml-4">
+            Delete
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</section>
+
 <div
   class="mx-auto mt-8 flex max-w-7xl flex-col rounded-lg border-[1px] border-gray-200 p-6 shadow-md lg:px-8">
   <div class="md:grid md:grid-cols-3 md:gap-6">
-    <div class="md:col-span-1">
-      <div class="px-4 sm:px-0">
-        <h3 class="text-base font-semibold leading-6 text-gray-900">
-          Customer information
-        </h3>
-        <p class="mt-1 text-sm text-gray-600">
-          Fill in the form to add a new customer.
-        </p>
-      </div>
-    </div>
-    <div class="mt-5 md:col-span-2 md:mt-0">
-      <form #form="ngForm" (submit)="onSubmit()">
-        <div class="overflow-hidden shadow sm:rounded-md">
-          <div class="bg-white px-4 py-5 sm:p-6">
-            <div class="grid grid-cols-6 gap-6">
-              <!--              <app-labeled-input-->
-              <!--                name="Name"-->
-              <!--                [(value)]="formModel.name"-->
-              <!--                [isRequired]="true"-->
-              <!--                class="col-span-6 mt-2"></app-labeled-input>-->
-              <!--              <app-labeled-input-->
-              <!--                name="Number"-->
-              <!--                [value]="formModel.number"-->
-              <!--                [isRequired]="true"-->
-              <!--                class="col-span-6 mt-2"></app-labeled-input>-->
-            </div>
-          </div>
-          <div class="bg-gray-50 px-4 py-3 text-right sm:px-6">
-            <!--            <app-button-primary-->
-            <!--              type="submit"-->
-            <!--              [disabled]="form.invalid || loadingUpdate"-->
-            <!--              text="Update"-->
-            <!--              [loading]="loadingUpdate"></app-button-primary>-->
-            <!--            <app-button-accent-->
-            <!--              type="button"-->
-            <!--              text="Delete"-->
-            <!--              [loading]="loadingDelete"-->
-            <!--              (clickEvent)="onDelete()"-->
-            <!--              class="ml-4">-->
-            <!--            </app-button-accent>-->
-          </div>
-        </div>
-      </form>
-    </div>
-    <div class="col-span-3 h-0.5 bg-gray-200"></div>
     <div class="col-span-3">
       <div class="flex flex-row items-end justify-between">
         <div class="">
@@ -60,42 +88,68 @@
           >
         </div>
       </div>
-      <div class="sm:-mx-6 lg:-mx-8">
-        <div class="inline-block min-w-full py-2 sm:px-6 lg:px-8">
-          <div class="overflow-x-auto">
-            <table class="min-w-full text-left text-sm font-light">
-              <thead class="dark:border-neutral-500 border-b font-medium">
-                <tr>
-                  <th scope="col" class="px-6 py-4">Name</th>
-                  <th scope="col" class="px-6 py-4">Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr
-                  class="dark:border-neutral-500 border-b"
-                  *ngFor="let activity of customer.activities">
-                  <td class="whitespace-nowrap px-6 py-4 font-medium">
-                    {{ activity.name }}
-                  </td>
-                  <td class="whitespace-nowrap px-6 py-4">
-                    <a
-                      [routerLink]="
-                        '/customers/' +
-                        customer.id +
-                        '/activity/' +
-                        activity.id +
-                        '/edit'
-                      "
-                      class="bg-indigo-600 rounded-md p-2 text-sm font-semibold leading-6 text-white"
-                      >Edit</a
-                    >
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+      <app-table
+        [headers]="activitiesTableHeader"
+        [objects]="customer.activities"
+        [loading]="false"
+        [itemTemplate]="itemTemplate" />
+
+      <ng-template #itemTemplate let-activity let-header="header">
+        <ng-container [ngSwitch]="header.fieldName">
+          <div *ngSwitchCase="'actions'">
+            <button
+              app-button
+              [color]="ButtonColor.Default"
+              [routerLink]="
+                '/customers/' +
+                customer.id +
+                '/activity/' +
+                activity.id +
+                '/edit'
+              ">
+              Edit
+            </button>
           </div>
-        </div>
-      </div>
+          <div *ngSwitchDefault>{{ activity[header.fieldName] }}</div>
+        </ng-container>
+      </ng-template>
+
+      <!--      <div class="sm:-mx-6 lg:-mx-8">-->
+      <!--        <div class="inline-block min-w-full py-2 sm:px-6 lg:px-8">-->
+      <!--          <div class="overflow-x-auto">-->
+      <!--            <table class="min-w-full text-left text-sm font-light">-->
+      <!--              <thead class="dark:border-neutral-500 border-b font-medium">-->
+      <!--                <tr>-->
+      <!--                  <th scope="col" class="px-6 py-4">Name</th>-->
+      <!--                  <th scope="col" class="px-6 py-4">Actions</th>-->
+      <!--                </tr>-->
+      <!--              </thead>-->
+      <!--              <tbody>-->
+      <!--                <tr-->
+      <!--                  class="dark:border-neutral-500 border-b"-->
+      <!--                  *ngFor="let activity of customer.activities">-->
+      <!--                  <td class="whitespace-nowrap px-6 py-4 font-medium">-->
+      <!--                    {{ activity.name }}-->
+      <!--                  </td>-->
+      <!--                  <td class="whitespace-nowrap px-6 py-4">-->
+      <!--                    <a-->
+      <!--                      [routerLink]="-->
+      <!--                        '/customers/' +-->
+      <!--                        customer.id +-->
+      <!--                        '/activity/' +-->
+      <!--                        activity.id +-->
+      <!--                        '/edit'-->
+      <!--                      "-->
+      <!--                      class="bg-indigo-600 rounded-md p-2 text-sm font-semibold leading-6 text-white"-->
+      <!--                      >Edit</a-->
+      <!--                    >-->
+      <!--                  </td>-->
+      <!--                </tr>-->
+      <!--              </tbody>-->
+      <!--            </table>-->
+      <!--          </div>-->
+      <!--        </div>-->
+      <!--      </div>-->
     </div>
   </div>
 </div>

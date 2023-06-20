@@ -1,4 +1,5 @@
 using FluentValidation;
+using Timetracker.Domain.CustomerAggregate.Specifications;
 using Timetracker.Domain.CustomerAggregate.ValueObjects;
 using Timetracker.Shared.Interfaces;
 
@@ -18,7 +19,8 @@ public class UpdateCustomerCommandValidation : AbstractValidator<UpdateCustomerC
 
         RuleFor(x => x.Number)
             .NotNull().WithMessage("Number is required")
-            .NotEmpty().WithMessage("Number is required");
+            .NotEmpty().WithMessage("Number is required")
+            .MustAsync(BeUniqueNumber).WithMessage("The specified number already exists");
 
         RuleFor(x => x.Id)
             .MustAsync(CustomerMustExist).WithMessage("Customer must exist");
@@ -29,5 +31,12 @@ public class UpdateCustomerCommandValidation : AbstractValidator<UpdateCustomerC
         CancellationToken cancellationToken = default)
     {
         return await _repository.GetByIdAsync(id, cancellationToken) != null;
+    }
+
+    private async Task<bool> BeUniqueNumber(string number, CancellationToken cancellationToken)
+    {
+        return await _repository.FirstOrDefaultAsync(
+            new UniqueNumberSpecification(number),
+            cancellationToken) == null;
     }
 }
