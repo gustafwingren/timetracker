@@ -1,17 +1,19 @@
 <ng-container *ngIf="isLoggedIn()">
   <div class="relative flex min-h-screen">
-    <app-side-menu></app-side-menu>
+    <app-side-menu />
     <div class="h-screen flex-1 space-y-8 overflow-y-auto bg-gray-100 pb-12">
-      <app-header></app-header>
+      <app-header />
       <div class="container px-8">
-        <app-page-title></app-page-title>
-        <app-breadcrumbs></app-breadcrumbs>
+        <app-page-title />
+        <app-breadcrumbs />
 
-        <router-outlet></router-outlet>
+        <router-outlet />
       </div>
     </div>
   </div>
 </ng-container>
 <ng-container *ngIf="!isLoggedIn()">
-  <router-outlet></router-outlet>
+  <router-outlet />
 </ng-container>
+
+<app-modal />

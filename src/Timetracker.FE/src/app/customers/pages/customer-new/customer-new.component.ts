@@ -10,8 +10,9 @@ import { ErrorComponent } from '../../../shared/error/error.component';
 import { InputComponent } from '../../../shared/input/input.component';
 import { LabelComponent } from '../../../shared/label/label.component';
 import { FormFieldComponent } from '../../../shared/form-field/form-field.component';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { NgIf, NgFor } from '@angular/common';
+import { ModalService } from '../../../core/services/modal.service';
 
 @Component({
   selector: 'app-customer-new',
@@ -43,7 +44,11 @@ export class CustomerNewComponent {
 
   @ViewChild(NgForm) form!: NgForm;
 
-  constructor(private customerService: CustomerService) {}
+  constructor(
+    private customerService: CustomerService,
+    private modalService: ModalService,
+    private routerService: Router
+  ) {}
 
   addActivity() {
     if (this.model.activities === undefined) {
@@ -87,6 +92,15 @@ export class CustomerNewComponent {
             name: '',
             number: '',
           };
+          this.form.resetForm();
+          this.modalService.showModal(
+            'Kund tillagd',
+            'Kunden är nu tillagd och du kan börja rapportera tid på kunden.',
+            undefined,
+            undefined,
+            this.navigateToCreatedCustomer.bind(this),
+            'Visa kund'
+          );
           return;
         }
       },
@@ -100,8 +114,10 @@ export class CustomerNewComponent {
     );
   }
 
-  containsError(field: string): boolean {
-    return this.errors.some(error => error.field === field);
+  navigateToCreatedCustomer() {
+    this.routerService.navigateByUrl(
+      '/customers/' + this.newestCreatedCustomer?.id + '/edit'
+    );
   }
 
   errorsForField(field: string): string[] {
