@@ -19,6 +19,8 @@ import { FormFieldComponent } from '../../../shared/form-field/form-field.compon
 import { InputComponent } from '../../../shared/input/input.component';
 import { ErrorComponent } from '../../../shared/error/error.component';
 import { LabelComponent } from '../../../shared/label/label.component';
+import { ToastType } from '../../../core/enums/toastType';
+import { ToastService } from '../../../core/services/toast.service';
 
 @Component({
   selector: 'app-customer-detail',
@@ -60,7 +62,8 @@ export class CustomerDetailComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private formBuilder: FormBuilder,
-    private customerService: CustomerService
+    private customerService: CustomerService,
+    private toastService: ToastService
   ) {}
 
   ngOnInit(): void {
@@ -84,6 +87,11 @@ export class CustomerDetailComponent implements OnInit {
 
     this.customerService.updateCustomer(this.customer.id, customer).subscribe(
       () => {
+        this.toastService.addToast(
+          ToastType.Success,
+          'Success',
+          'Customer updated successfully'
+        );
         this.loadingUpdate = false;
       },
       error => {

@@ -8,6 +8,7 @@ import { PageTitleComponent } from './shared/page-title/page-title.component';
 import { BreadcrumbsComponent } from './shared/breadcrumbs/breadcrumbs.component';
 import { MsalRedirectComponent, MsalService } from '@azure/msal-angular';
 import { ModalComponent } from './shared/modal/modal.component';
+import { ToastComponent } from './shared/toast/toast.component';
 
 @Component({
   selector: 'app-root',
@@ -22,6 +23,7 @@ import { ModalComponent } from './shared/modal/modal.component';
     PageTitleComponent,
     BreadcrumbsComponent,
     ModalComponent,
+    ToastComponent,
   ],
 })
 export class AppComponent extends MsalRedirectComponent {
