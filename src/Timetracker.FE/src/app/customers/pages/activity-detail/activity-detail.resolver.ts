@@ -9,10 +9,10 @@ export const activityDetailResolver: ResolveFn<ActivityDto> = (
 ) => {
   const router = inject(Router);
   const cs = inject(CustomerService);
-  const id = route.paramMap.get('id')!;
+  const id = route.parent?.paramMap.get('id');
   const activityId = route.paramMap.get('activityId')!;
 
-  return cs.getActivity(id, activityId).pipe(
+  return cs.getActivity(id!, activityId).pipe(
     mergeMap(activity => {
       if (activity) {
         return of(activity);

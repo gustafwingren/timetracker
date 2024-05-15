@@ -13,6 +13,7 @@ export const CustomerRoutes: Routes = [
       import('./pages/customers/customers.component').then(
         m => m.CustomersComponent
       ),
+    z,
   },
   {
     path: 'new',

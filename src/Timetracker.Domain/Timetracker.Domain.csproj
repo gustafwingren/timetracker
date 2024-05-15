@@ -1,17 +1,18 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net7.0</TargetFramework>
+        <TargetFramework>net8.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <LangVersion>12</LangVersion>
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="Ardalis.GuardClauses" Version="4.0.1" />
+        <PackageReference Include="Ardalis.GuardClauses" Version="4.5.0"/>
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Timetracker.Shared\Timetracker.Shared.csproj" />
+        <ProjectReference Include="..\Timetracker.Shared\Timetracker.Shared.csproj"/>
     </ItemGroup>
 
 </Project>

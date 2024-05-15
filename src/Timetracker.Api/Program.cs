@@ -1,12 +1,9 @@
 using FastEndpoints;
 using FastEndpoints.Swagger;
-using Hellang.Middleware.ProblemDetails;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Identity.Web;
 using NSwag;
 using NSwag.AspNetCore;
-using Timetracker.Api.Interceptors;
-using Timetracker.Api.PreProcessors;
 using Timetracker.Application;
 using Timetracker.Infrastructure;
 
@@ -14,7 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
 var config = builder.Configuration;
 
 builder.Services.AddFastEndpoints();
-builder.Services.AddSwaggerDoc(
+builder.Services.AddSwaggerDocument(
     s =>
     {
         s.AddAuth(
@@ -48,8 +45,7 @@ builder.Services.AddSwaggerDoc(
                     },
                 },
             });
-    },
-    addJWTBearerAuth: false);
+    });
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddMicrosoftIdentityWebApi(config)
@@ -59,11 +55,6 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 builder.Services.AddApplicationServices();
 builder.Services.AddInfrastructureServices(config);
-builder.Services.AddProblemDetails(
-    options =>
-    {
-        options.IncludeExceptionDetails = (_, _) => !builder.Environment.IsProduction();
-    });
 
 builder.Services.AddCors(
     o => o.AddPolicy(
@@ -76,25 +67,24 @@ builder.Services.AddCors(
 
 var app = builder.Build();
 
-app.UseProblemDetails();
 app.UseCors("default");
 app.UseHttpsRedirection();
 
-// app.UseCors();
 app.UseAuthentication();
 app.UseAuthorization();
 
 app.UseFastEndpoints(
     c =>
     {
-        c.Endpoints.Configurator = ep =>
-        {
-            ep.ResponseInterceptor(new ResponseInterceptor());
-            ep.PreProcessors(Order.Before, new ValidationPreProcessor());
-        };
+        // c.Endpoints.Configurator = ep =>
+        // {
+        //     ep.ResponseInterceptor(new ResponseInterceptor());
+        //     ep.PreProcessors(Order.Before, new ValidationPreProcessor());
+        // };
+        c.Errors.UseProblemDetails();
     });
 app.UseOpenApi();
-app.UseSwaggerUi3(
+app.UseSwaggerUi(
     s =>
     {
         s.ConfigureDefaults();
